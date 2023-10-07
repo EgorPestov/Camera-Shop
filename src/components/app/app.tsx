@@ -4,6 +4,7 @@ import { AppRoute } from '../../const';
 import { Catalog } from '../../pages/catalog/catalog';
 import { NotFound } from '../../pages/404/404';
 import { Basket } from '../../pages/basket/basket';
+import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { fetchProducts } from '../../store/api-actions';
 import { useLayoutEffect } from 'react';
@@ -30,6 +31,10 @@ export const App = () => {
         <Route
           path={AppRoute.Root}
           element={<Catalog />}
+        />
+        <Route
+          path={`${AppRoute.Item}/:id`}
+          element={<Item />}
         />
         <Route
           path={AppRoute.Basket}
