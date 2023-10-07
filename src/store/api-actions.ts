@@ -4,8 +4,8 @@ import { AppDispatch } from '../hooks/use-app-dispatch/use-app-dispatch';
 import { State } from '../hooks/use-app-selector/use-app-selector';
 import { ProductType } from '../types';
 import { APIRoute } from '../const';
-import { toast } from 'react-toastify';
-import { setProducts, setBackupProducts, setProductsLoadStatus, setError } from './product-process/product-process';
+// import { toast } from 'react-toastify';
+import { setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts } from './product-process/product-process';
 
 type thunkObjType = {
   dispatch: AppDispatch;
@@ -27,6 +27,7 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
+      dispatch(sortProducts());
     }
   }
 );

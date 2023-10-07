@@ -7,6 +7,8 @@ export type ProductsProcessType = {
   backupProducts: ProductType[];
   isProductsLoading: boolean;
   hasError: boolean;
+  sortingType: 'price' | 'popularity';
+  sortingDirection: 'top' | 'down';
 }
 
 export const initialState: ProductsProcessType = {
@@ -14,6 +16,8 @@ export const initialState: ProductsProcessType = {
   backupProducts: [],
   isProductsLoading: true,
   hasError: false,
+  sortingType: 'price',
+  sortingDirection: 'top',
 };
 
 export const productsProcessSlice = createSlice({
@@ -32,7 +36,14 @@ export const productsProcessSlice = createSlice({
     setError: (state, action: PayloadAction<boolean>) => {
       state.hasError = action.payload;
     },
+    sortProducts: (state) => {
+      if (state.sortingType === 'price' && state.sortingDirection === 'top') {
+        state.products = state.products.sort((a, b) => a.price - b.price);
+      } else if (state.sortingType === 'price' && state.sortingDirection === 'down') {
+        state.products = state.products.sort((a, b) => b.price - a.price);
+      }
+    }
   }
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setError } = productsProcessSlice.actions;
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setError, sortProducts } = productsProcessSlice.actions;
