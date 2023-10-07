@@ -6,3 +6,5 @@ export const getProducts = (state: State): ProductType[] => state[NameSpace.Prod
 export const getBackupProducts = (state: State): ProductType[] => state[NameSpace.Products].backupProducts;
 export const getProductsLoadStatus = (state: State): boolean => state[NameSpace.Products].isProductsLoading;
 export const hasError = (state: State): boolean => state[NameSpace.Products].hasError;
+export const getSortingType = (state: State): 'price' | 'popularity' => state[NameSpace.Products].sortingType;
+export const getSortingDirection = (state: State): 'top' | 'down' => state[NameSpace.Products].sortingDirection;

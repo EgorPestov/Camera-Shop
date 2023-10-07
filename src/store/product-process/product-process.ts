@@ -36,6 +36,12 @@ export const productsProcessSlice = createSlice({
     setError: (state, action: PayloadAction<boolean>) => {
       state.hasError = action.payload;
     },
+    setSortingType: (state, action: PayloadAction<'price' | 'popularity'>) => {
+      state.sortingType = action.payload;
+    },
+    setSortingDirection: (state, action: PayloadAction<'top' | 'down'>) => {
+      state.sortingDirection = action.payload;
+    },
     sortProducts: (state) => {
       if (state.sortingType === 'price' && state.sortingDirection === 'top') {
         state.products = state.products.sort((a, b) => a.price - b.price);
@@ -46,4 +52,4 @@ export const productsProcessSlice = createSlice({
   }
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setError, sortProducts } = productsProcessSlice.actions;
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setError, sortProducts, setSortingDirection, setSortingType } = productsProcessSlice.actions;
