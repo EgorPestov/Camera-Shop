@@ -6,12 +6,14 @@ export type ProductsProcessType = {
   products: ProductType[];
   backupProducts: ProductType[];
   isProductsLoading: boolean;
+  hasError: boolean;
 }
 
 export const initialState: ProductsProcessType = {
   products: [],
   backupProducts: [],
   isProductsLoading: true,
+  hasError: false,
 };
 
 export const productsProcessSlice = createSlice({
@@ -26,8 +28,11 @@ export const productsProcessSlice = createSlice({
     },
     setProductsLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isProductsLoading = action.payload;
-    }
+    },
+    setError: (state, action: PayloadAction<boolean>) => {
+      state.hasError = action.payload;
+    },
   }
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus } = productsProcessSlice.actions;
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setError } = productsProcessSlice.actions;

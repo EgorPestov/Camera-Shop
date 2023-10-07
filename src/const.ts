@@ -8,3 +8,12 @@ export const AppRoute = {
 export const NameSpace = {
   Products: 'PRODUCTS',
 } as const;
+
+export const APIRoute = {
+  Products: '/cameras',
+  Similar: '/similar',
+  Promo: '/promo',
+  Reviews: '/reviews',
+  Coupons: '/coupons',
+  Order: '/orders',
+} as const;
