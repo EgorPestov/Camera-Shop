@@ -8,3 +8,5 @@ export const formatPrice = (number: number): string => {
   const part2 = numberString.slice(lastIndex);
   return `${part1} ${part2}`;
 };
+
+
