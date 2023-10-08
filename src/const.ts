@@ -1,3 +1,5 @@
+export const BANNER_SHOW_TIME = 3000;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',

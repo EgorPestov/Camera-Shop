@@ -2,7 +2,7 @@ import Swiper from 'swiper/bundle';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
-import { BannerInfo } from '../../const';
+import { BANNER_SHOW_TIME, BannerInfo } from '../../const';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getProducts } from '../../store/product-process/selectors';
 import { Link } from 'react-router-dom';
@@ -30,7 +30,7 @@ export const Banner = () => {
           prevEl: '.swiper-button-prev',
         },
         autoplay: {
-          delay: 3000,
+          delay: BANNER_SHOW_TIME,
           disableOnInteraction: false,
         },
       });
