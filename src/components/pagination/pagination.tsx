@@ -29,20 +29,24 @@ export const Pagination = () => {
   const pagesCount = Math.ceil(productsLength / SHOWABLE_CARDS_PER_PAGE_COUNT);
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
-  const numberButtons = Array.from({ length: pagesCount }, (_, index) => (
-    <li key={index} className="pagination__item">
-      <Link
-        className={`pagination__link ${currentPage === index + 1 ? 'pagination__link--active' : ''} ${Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT) === currentBlock ? '' : 'visually-hidden'}`}
-        to={`${AppRoute.Root}?page=${index + 1}`}
-        onClick={() => {
-          dispatch(setShowableProducts());
-          setCurrentBlock(Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT));
-        }}
-      >
-        {index + 1}
-      </Link>
-    </li>
-  ));
+  const numberButtons = Array.from({ length: 5 }, (_, index) => {
+    if (Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT) === currentBlock) {
+      return (
+        <li key={index} className="pagination__item">
+          <Link
+            className={`pagination__link ${currentPage === index + 1 ? 'pagination__link--active' : ''}`}
+            to={`${AppRoute.Root}?page=${index + 1}`}
+            onClick={() => {
+              dispatch(setShowableProducts());
+              setCurrentBlock(Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT));
+            }}
+          >
+            {index + 1}
+          </Link>
+        </li>
+      );
+    }
+  });
 
   if (productsLength > SHOWABLE_CARDS_PER_PAGE_COUNT) {
     return (
@@ -51,7 +55,7 @@ export const Pagination = () => {
           <li className="pagination__item">
             <Link
               className={`pagination__link pagination__link--text ${currentBlock === 1 ? 'visually-hidden' : ''}`}
-              to={`${AppRoute.Root}?page=${Number(currentPage) - 1}`}
+              to={`${AppRoute.Root}?page=${(currentBlock - 1) * SHOWABLE_PAGES_COUNT - 2}`}
               onClick={() => {
                 dispatch(setShowableProducts());
                 setCurrentBlock(currentBlock - 1);
@@ -64,7 +68,7 @@ export const Pagination = () => {
           <li className="pagination__item">
             <Link
               className={`pagination__link pagination__link--text ${currentBlock === blocksCount ? 'visually-hidden' : ''}`}
-              to={`${AppRoute.Root}?page=${currentPage + 1}`}
+              to={`${AppRoute.Root}?page=${currentBlock * SHOWABLE_PAGES_COUNT + 1}`}
               onClick={() => {
                 dispatch(setShowableProducts());
                 setCurrentBlock(currentBlock + 1);
