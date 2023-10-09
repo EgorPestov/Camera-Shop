@@ -27,7 +27,6 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
-      dispatch(setCurrentPage(1));
       dispatch(sortProducts());
       dispatch(setShowableProducts());
     }
