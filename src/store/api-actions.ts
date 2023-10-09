@@ -5,7 +5,7 @@ import { State } from '../hooks/use-app-selector/use-app-selector';
 import { ProductType } from '../types';
 import { APIRoute } from '../const';
 // import { toast } from 'react-toastify';
-import { setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts, setCurrentPage, setShowableProducts } from './product-process/product-process';
+import { setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts, setShowableProducts } from './product-process/product-process';
 
 type thunkObjType = {
   dispatch: AppDispatch;
