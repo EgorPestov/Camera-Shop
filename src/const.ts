@@ -1,5 +1,7 @@
 export const BANNER_SHOW_TIME = 3000;
 
+export const SHOWABLE_CARDS_PER_PAGE_COUNT = 9;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',

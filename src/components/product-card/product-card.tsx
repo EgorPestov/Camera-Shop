@@ -35,21 +35,11 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
       </div>
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-full-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-star" />
-          </svg>
-          <svg width={17} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-star" />
-          </svg>
+          {Array.from({ length: 5 }, (_, index) => (
+            <svg key={index} width={17} height={16} aria-hidden="true">
+              <use xlinkHref={index < rating ? '#icon-full-star' : '#icon-star'} />
+            </svg>
+          ))}
           <p className="visually-hidden">Рейтинг: {rating}</p>
           <p className="rate__count">
             <span className="visually-hidden">Всего оценок:</span>{reviewCount}
