@@ -55,7 +55,7 @@ export const Pagination = () => {
           <li className="pagination__item">
             <Link
               className={`pagination__link pagination__link--text ${currentBlock === 1 ? 'visually-hidden' : ''}`}
-              to={`${AppRoute.Root}?page=${(currentBlock - 1) * SHOWABLE_PAGES_COUNT - 2}`}
+              to={`${AppRoute.Root}?page=${(currentBlock - 1) * SHOWABLE_PAGES_COUNT}`}
               onClick={() => {
                 dispatch(setShowableProducts());
                 setCurrentBlock(currentBlock - 1);
