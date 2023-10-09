@@ -8,3 +8,5 @@ export const getProductsLoadStatus = (state: State): boolean => state[NameSpace.
 export const hasError = (state: State): boolean => state[NameSpace.Products].hasError;
 export const getSortingType = (state: State): 'price' | 'popularity' => state[NameSpace.Products].sortingType;
 export const getSortingDirection = (state: State): 'top' | 'down' => state[NameSpace.Products].sortingDirection;
+export const getShowableProducts = (state: State): ProductType[] => state[NameSpace.Products].showableProducts;
+export const getCurrentPage = (state: State): number => state[NameSpace.Products].currentPage;

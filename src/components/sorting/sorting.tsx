@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setSortingType, setSortingDirection, sortProducts } from '../../store/product-process/product-process';
+import { setSortingType, setSortingDirection, sortProducts, setShowableProducts } from '../../store/product-process/product-process';
 
 
 export const Sorting = () => {
@@ -8,11 +8,13 @@ export const Sorting = () => {
   const handleTypeClick = (item: 'price' | 'popularity') => {
     dispatch(setSortingType(item));
     dispatch(sortProducts());
+    dispatch(setShowableProducts());
   };
 
   const handleDirectionClick = (item: 'top' | 'down') => {
     dispatch(setSortingDirection(item));
     dispatch(sortProducts());
+    dispatch(setShowableProducts());
   };
 
   return (

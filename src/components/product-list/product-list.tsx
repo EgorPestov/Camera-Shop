@@ -1,10 +1,10 @@
 import { ProductCard } from '../product-card/product-card';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { getProducts, getProductsLoadStatus } from '../../store/product-process/selectors';
+import { getShowableProducts, getProductsLoadStatus } from '../../store/product-process/selectors';
 import { LoadingScreen } from '../loading-screen/loading-screen';
 
 export const ProductList = () => {
-  const products = useAppSelector(getProducts);
+  const products = useAppSelector(getShowableProducts);
   const isLoading = useAppSelector(getProductsLoadStatus);
 
   if (isLoading) {
