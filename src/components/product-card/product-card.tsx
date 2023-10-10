@@ -2,8 +2,11 @@ import { ProductType } from '../../types';
 import { formatPrice } from '../../utils';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
+import { setIsModalAddItemOpen, setCurrentId } from '../../store/product-process/product-process';
 
 export const ProductCard = ({ product }: { product: ProductType }) => {
+  const dispatch = useAppDispatch();
   const {
     id,
     name,
@@ -15,6 +18,11 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
     rating,
     reviewCount,
   } = product;
+
+  const handleBuyClick = () => {
+    dispatch(setCurrentId(id));
+    dispatch(setIsModalAddItemOpen(true));
+  };
 
   return (
     <div className="product-card">
@@ -56,6 +64,7 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
         <button
           className="btn btn--purple product-card__btn"
           type="button"
+          onClick={handleBuyClick}
         >
           Купить
         </button>

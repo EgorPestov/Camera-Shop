@@ -47,3 +47,8 @@ export const BannerInfo = [
     description: 'Профессиональная камера от известного производителя',
   }
 ];
+
+export const CameraNames: Record<string, string> = {
+  'Фотоаппарат': 'фотокамера',
+  'Видеокамера': 'видеокамера',
+};

@@ -12,6 +12,9 @@ export type ProductsProcessType = {
   sortingDirection: 'top' | 'down';
   currentPage: number;
   showableProducts: ProductType[];
+  currentId: number;
+  isModalAddItemOpen: boolean;
+  isModalAddItemSuccessOpen: boolean;
 }
 
 export const initialState: ProductsProcessType = {
@@ -23,6 +26,9 @@ export const initialState: ProductsProcessType = {
   sortingDirection: 'top',
   currentPage: 1,
   showableProducts: [],
+  currentId: 0,
+  isModalAddItemOpen: false,
+  isModalAddItemSuccessOpen: false,
 };
 
 export const productsProcessSlice = createSlice({
@@ -60,8 +66,17 @@ export const productsProcessSlice = createSlice({
     setShowableProducts: (state) => {
       state.showableProducts = state.products.slice((state.currentPage - 1) * SHOWABLE_CARDS_PER_PAGE_COUNT, state.currentPage * SHOWABLE_CARDS_PER_PAGE_COUNT);
     },
+    setCurrentId: (state, action: PayloadAction<number>) => {
+      state.currentId = action.payload;
+    },
+    setIsModalAddItemOpen: (state, action: PayloadAction<boolean>) => {
+      state.isModalAddItemOpen = action.payload;
+    },
+    setIsModalAddItemSuccess: (state, action: PayloadAction<boolean>) => {
+      state.isModalAddItemSuccessOpen = action.payload;
+    }
   }
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus,
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setIsModalAddItemOpen, setIsModalAddItemSuccess,
   setError, sortProducts, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage } = productsProcessSlice.actions;
