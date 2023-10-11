@@ -12,10 +12,15 @@ import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-i
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/product-process/selectors';
+import { useEffect } from 'react';
 
 export const Catalog = () => {
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="wrapper">

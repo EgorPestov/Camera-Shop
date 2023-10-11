@@ -1,6 +1,6 @@
 import { AppRoute } from '../../../const';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
-import { setIsModalAddItemSuccess } from '../../../store/product-process/product-process';
+import { setIsModalAddItemSuccessOpen } from '../../../store/product-process/product-process';
 import { Link } from 'react-router-dom';
 
 export const ModalAddItemSuccess = () => {
@@ -16,14 +16,14 @@ export const ModalAddItemSuccess = () => {
             <use xlinkHref="#icon-success" />
           </svg>
           <div className="modal__buttons">
-            <Link className="btn btn--transparent modal__btn" to={AppRoute.Root} onClick={() => dispatch(setIsModalAddItemSuccess(false))}>
+            <Link className="btn btn--transparent modal__btn" to={AppRoute.Root} onClick={() => dispatch(setIsModalAddItemSuccessOpen(false))}>
               Продолжить покупки
             </Link>
-            <button className="btn btn--purple modal__btn modal__btn--fit-width"> {/* тут наверное редирект в корзину или изменить на Link?*/}
+            <Link className="btn btn--purple modal__btn modal__btn--fit-width" onClick={() => dispatch(setIsModalAddItemSuccessOpen(false))} to={AppRoute.Basket}> {/* тут наверное редирект в корзину или изменить на Link?*/}
               Перейти в корзину
-            </button>
+            </Link>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setIsModalAddItemSuccess(false))}>
+          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setIsModalAddItemSuccessOpen(false))}>
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg>

@@ -68,7 +68,7 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
         >
           Купить
         </button>
-        <Link className="btn btn--transparent" to={`${AppRoute.Item}/${id}`}>
+        <Link className="btn btn--transparent" onClick={() => dispatch(setCurrentId(id))} to={`${AppRoute.Item}/${id}`}>
           Подробнее
         </Link>
       </div>

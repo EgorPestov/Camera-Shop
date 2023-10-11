@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setIsModalAddItemOpen, setIsModalAddItemSuccess } from '../../../store/product-process/product-process';
+import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen } from '../../../store/product-process/product-process';
 import { getCurrentProduct } from '../../../store/product-process/selectors';
 import { CameraNames } from '../../../const';
 import { formatPrice } from '../../../utils';
@@ -22,11 +22,11 @@ export const ModalAddItem = () => {
                 <picture>
                   <source
                     type="image/webp"
-                    srcSet={`${product.previewImgWebp}, ${product.previewImgWebp2x} 2x`}
+                    srcSet={`/markup/${product.previewImgWebp}, /markup/${product.previewImgWebp2x} 2x`}
                   />
                   <img
-                    src={product.previewImg}
-                    srcSet={`${product.previewImgWebp2x} 2x`}
+                    src={`/markup/${product.previewImg}`}
+                    srcSet={`/markup/${product.previewImgWebp2x} 2x`}
                     width={140}
                     height={120}
                     alt={product.name}
@@ -37,7 +37,7 @@ export const ModalAddItem = () => {
                 <p className="basket-item__title">{product.name}</p>
                 <ul className="basket-item__list">
                   <li className="basket-item__list-item">
-                    <span className="basket-item__article">Артикул:</span>
+                    <span className="basket-item__article">Артикул: </span>
                     <span className="basket-item__number">{product.vendorCode}</span>
                   </li>
                   <li className="basket-item__list-item">{`${product.type} ${CameraNames[product.category]}`}</li>
@@ -54,7 +54,7 @@ export const ModalAddItem = () => {
                 type="button"
                 onClick={() => {
                   dispatch(setIsModalAddItemOpen(false));
-                  dispatch(setIsModalAddItemSuccess(true));
+                  dispatch(setIsModalAddItemSuccessOpen(true));
                 }}
               >
                 <svg width={24} height={16} aria-hidden="true">

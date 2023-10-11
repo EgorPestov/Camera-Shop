@@ -72,11 +72,11 @@ export const productsProcessSlice = createSlice({
     setIsModalAddItemOpen: (state, action: PayloadAction<boolean>) => {
       state.isModalAddItemOpen = action.payload;
     },
-    setIsModalAddItemSuccess: (state, action: PayloadAction<boolean>) => {
+    setIsModalAddItemSuccessOpen: (state, action: PayloadAction<boolean>) => {
       state.isModalAddItemSuccessOpen = action.payload;
     }
   }
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setIsModalAddItemOpen, setIsModalAddItemSuccess,
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setIsModalAddItemOpen, setIsModalAddItemSuccessOpen,
   setError, sortProducts, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage } = productsProcessSlice.actions;
