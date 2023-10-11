@@ -8,7 +8,7 @@ import { getCurrentProduct, getProductsLoadStatus, getModalAddItemStatus, getMod
 import { setIsModalAddItemOpen } from '../../store/product-process/product-process';
 import { setCurrentId } from '../../store/product-process/product-process';
 import { useParams, Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppRoute } from '../../const';
 import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-item';
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
@@ -16,6 +16,7 @@ import { Reviews } from '../../components/reviews/reviews';
 import { Helmet } from 'react-helmet-async';
 
 export const Item = () => {
+  const [isActive, setIsActive] = useState(true);
   const currentId = useParams().id;
   const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
@@ -109,15 +110,23 @@ export const Item = () => {
                     </button>
                     <div className="tabs product__tabs">
                       <div className="tabs__controls product__tabs-controls">
-                        <button className="tabs__control is-active" type="button">
+                        <button
+                          className={`tabs__control ${isActive ? '' : 'is-active'}`}
+                          type="button"
+                          onClick={() => setIsActive(!isActive)}
+                        >
                           Характеристики
                         </button>
-                        <button className="tabs__control" type="button">
+                        <button
+                          className={`tabs__control ${isActive ? 'is-active' : ''}`}
+                          type="button"
+                          onClick={() => setIsActive(!isActive)}
+                        >
                           Описание
                         </button>
                       </div>
                       <div className="tabs__content">
-                        <div className="tabs__element is-active">
+                        <div className={`tabs__element ${isActive ? '' : 'is-active'}`}>
                           <ul className="product__tabs-list">
                             <li className="item-list">
                               <span className="item-list__title">Артикул: </span>
@@ -137,7 +146,7 @@ export const Item = () => {
                             </li>
                           </ul>
                         </div>
-                        <div className="tabs__element">
+                        <div className={`tabs__element ${isActive ? 'is-active' : ''}`}>
                           <div className="product__tabs-text">
                             <p>
                               {product.description}
