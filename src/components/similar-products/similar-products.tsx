@@ -289,11 +289,11 @@ export const SimilarProducts = () => (
               <picture>
                 <source
                   type="image/webp"
-                  srcSet="img/content/instaprinter.webp, img/content/instaprinter@2x.webp 2x"
+                  srcSet="/markup/img/content/instaprinter.webp, /markup/img/content/instaprinter@2x.webp 2x"
                 />
                 <img
-                  src="img/content/instaprinter.jpg"
-                  srcSet="img/content/instaprinter@2x.jpg 2x"
+                  src="/markup/img/content/instaprinter.jpg"
+                  srcSet="/markup/img/content/instaprinter@2x.jpg 2x"
                   width={280}
                   height={240}
                   alt="Фотоаппарат Instaprinter P2"

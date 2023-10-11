@@ -3,15 +3,18 @@ import { Helmet } from 'react-helmet-async';
 import { AppRoute } from '../../const';
 
 export const NotFound = () => (
-  <div>
+  <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
     <Helmet>
       <title>404</title>
     </Helmet>
-    <h1>
-      404.
-      <br />
-      <small>Страница не найдена</small>
+    <h1 style={{ fontSize: '120px' }}>
+      404
     </h1>
-    <Link to={AppRoute.Root}>Вернуться на главную</Link>
+    <h1 style={{ fontSize: '40px' }}>Страница не найдена</h1>
+
+    <Link to={AppRoute.Root} style={{ color: 'blue' }}>
+      Вернуться на главную
+    </Link>
   </div>
+
 );

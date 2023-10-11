@@ -7,32 +7,49 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { getCurrentProduct, getProductsLoadStatus, getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/product-process/selectors';
 import { setIsModalAddItemOpen } from '../../store/product-process/product-process';
 import { setCurrentId } from '../../store/product-process/product-process';
-import { useParams, Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
 import { AppRoute } from '../../const';
 import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-item';
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { Reviews } from '../../components/reviews/reviews';
 import { Helmet } from 'react-helmet-async';
+import { redirectToRoute } from '../../store/actions';
 
 export const Item = () => {
-  const [isActive, setIsActive] = useState(true);
   const currentId = useParams().id;
   const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
 
+  const location = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  let currentOption = searchParams.get('tab');
+
+
+  if (!currentOption) {
+    currentOption = 'dscrptn';
+  }
+
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(setCurrentId(Number(currentId)));
-  }, [dispatch, currentId]);
+
+    const baseUrl = location.pathname;
+
+    if (!searchParams.has('tab')) {
+      searchParams.append('tab', 'dscrptn');
+      const newUrl = `${baseUrl}?${searchParams.toString()}`;
+      history.replaceState(null, '', newUrl);
+    }
+  }, [dispatch, currentId, location, searchParams]);
 
   const product = useAppSelector(getCurrentProduct);
   const isProductsLoading = useAppSelector(getProductsLoadStatus);
 
   if (isProductsLoading) {
     return (<LoadingScreen />);
-  } else if (product !== undefined) {
+  } else if (product !== undefined && currentId !== undefined) {
     return (
       <div className="wrapper">
         <Helmet>
@@ -79,7 +96,7 @@ export const Item = () => {
                       />
                       <img
                         src={`/markup/${product.previewImg}`}
-                        srcSet={`/markup/${product.previewImgWebp2x} 2x`}
+                        srcSet={`/markup/${product.previewImg2x} 2x`}
                         width={560}
                         height={480}
                         alt={product.name}
@@ -111,22 +128,26 @@ export const Item = () => {
                     <div className="tabs product__tabs">
                       <div className="tabs__controls product__tabs-controls">
                         <button
-                          className={`tabs__control ${isActive ? '' : 'is-active'}`}
+                          className={`tabs__control ${currentOption === 'spec' ? 'is-active' : ''}`}
                           type="button"
-                          onClick={() => setIsActive(!isActive)}
+                          onClick={() => {
+                            dispatch(redirectToRoute(`${AppRoute.Item}/${currentId}?tab=spec`));
+                          }}
                         >
                           Характеристики
                         </button>
                         <button
-                          className={`tabs__control ${isActive ? 'is-active' : ''}`}
+                          className={`tabs__control ${currentOption === 'dscrptn' ? 'is-active' : ''}`}
                           type="button"
-                          onClick={() => setIsActive(!isActive)}
+                          onClick={() => {
+                            dispatch(redirectToRoute(`${AppRoute.Item}/${currentId}?tab=dscrptn`));
+                          }}
                         >
                           Описание
                         </button>
                       </div>
                       <div className="tabs__content">
-                        <div className={`tabs__element ${isActive ? '' : 'is-active'}`}>
+                        <div className={`tabs__element ${currentOption === 'spec' ? 'is-active' : ''}`}>
                           <ul className="product__tabs-list">
                             <li className="item-list">
                               <span className="item-list__title">Артикул: </span>
@@ -146,7 +167,7 @@ export const Item = () => {
                             </li>
                           </ul>
                         </div>
-                        <div className={`tabs__element ${isActive ? 'is-active' : ''}`}>
+                        <div className={`tabs__element ${currentOption === 'dscrptn' ? 'is-active' : ''}`}>
                           <div className="product__tabs-text">
                             <p>
                               {product.description}

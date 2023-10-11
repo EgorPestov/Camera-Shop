@@ -11,6 +11,8 @@ export const AppRoute = {
   NotFound: '/404',
 } as const;
 
+export type AppRouteType = typeof AppRoute;
+
 export const NameSpace = {
   Products: 'PRODUCTS',
 } as const;
