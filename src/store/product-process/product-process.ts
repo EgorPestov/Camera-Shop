@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductType } from '../../types';
+import { ProductType, ReviewType } from '../../types';
 import { NameSpace } from '../../const';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from '../../const';
 
@@ -17,6 +17,8 @@ export type ProductsProcessType = {
   isModalAddItemSuccessOpen: boolean;
   similarProducts: ProductType[];
   isSimilarProductsLoading: boolean;
+  reviews: ReviewType[];
+  isReviewsLoading: boolean;
 }
 
 export const initialState: ProductsProcessType = {
@@ -33,6 +35,8 @@ export const initialState: ProductsProcessType = {
   isModalAddItemSuccessOpen: false,
   similarProducts: [],
   isSimilarProductsLoading: false,
+  reviews: [],
+  isReviewsLoading: false,
 };
 
 export const productsProcessSlice = createSlice({
@@ -85,8 +89,16 @@ export const productsProcessSlice = createSlice({
     setSimilarProductsLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isSimilarProductsLoading = action.payload;
     },
-  }
+    setReviews: (state, action: PayloadAction<ReviewType[]>) => {
+      state.reviews = action.payload;
+    },
+    setReviewsLoadStatus: (state, action: PayloadAction<boolean>) => {
+      state.isReviewsLoading = action.payload;
+    }
+  },
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setIsModalAddItemOpen, setIsModalAddItemSuccessOpen,
-  setError, sortProducts, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts, setSimilarProductsLoadStatus } = productsProcessSlice.actions;
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId,
+  setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setError, sortProducts, setSortingDirection,
+  setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
+  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus } = productsProcessSlice.actions;
