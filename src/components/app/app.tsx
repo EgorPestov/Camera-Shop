@@ -7,12 +7,12 @@ import { Basket } from '../../pages/basket/basket';
 import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { fetchProducts } from '../../store/api-actions';
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 export const App = () => {
   const dispatch = useAppDispatch();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {

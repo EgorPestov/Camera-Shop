@@ -13,3 +13,6 @@ export const getCurrentPage = (state: State): number => state[NameSpace.Products
 export const getCurrentProduct = (state: State): ProductType | undefined => state[NameSpace.Products].products.find((product) => product.id === state[NameSpace.Products].currentId);
 export const getModalAddItemStatus = (state: State): boolean => state[NameSpace.Products].isModalAddItemOpen;
 export const getModalAddItemSuccessStatus = (state: State): boolean => state[NameSpace.Products].isModalAddItemSuccessOpen;
+export const getSimilarProducts = (state: State): ProductType[] => state[NameSpace.Products].similarProducts;
+export const getSimilarProductsLoadStatus = (state: State): boolean => state[NameSpace.Products].isSimilarProductsLoading;
+export const getCurrentId = (state: State): number => state[NameSpace.Products].currentId;

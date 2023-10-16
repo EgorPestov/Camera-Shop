@@ -5,7 +5,7 @@ import { State } from '../hooks/use-app-selector/use-app-selector';
 import { ProductType } from '../types';
 import { APIRoute } from '../const';
 // import { toast } from 'react-toastify';
-import { setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts, setShowableProducts } from './product-process/product-process';
+import { setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts, setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus } from './product-process/product-process';
 
 type thunkObjType = {
   dispatch: AppDispatch;
@@ -29,6 +29,22 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       dispatch(setProductsLoadStatus(false));
       dispatch(sortProducts());
       dispatch(setShowableProducts());
+    }
+  }
+);
+
+export const fetchSimilarProducts = createAsyncThunk<void, { id: number }, thunkObjType>(
+  'PRODUCTS/fetchSimilarProducts',
+  async ({ id }, { dispatch, extra: api }) => {
+    try {
+      dispatch(setSimilarProductsLoadStatus(true));
+      const url = `${APIRoute.Products}/${id}${APIRoute.Similar}`;
+      const { data } = await api.get<ProductType[]>(url);
+      dispatch(setSimilarProducts(data));
+    } catch {
+      throw new Error;
+    } finally {
+      dispatch(setSimilarProductsLoadStatus(false));
     }
   }
 );

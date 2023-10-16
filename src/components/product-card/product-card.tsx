@@ -5,7 +5,7 @@ import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setIsModalAddItemOpen, setCurrentId } from '../../store/product-process/product-process';
 
-export const ProductCard = ({ product }: { product: ProductType }) => {
+export const ProductCard = ({ product, isActive = false }: { product: ProductType; isActive?: boolean }) => {
   const dispatch = useAppDispatch();
   const {
     id,
@@ -25,16 +25,16 @@ export const ProductCard = ({ product }: { product: ProductType }) => {
   };
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isActive ? 'is-active' : ''} `}>
       <div className="product-card__img">
         <picture>
           <source
             type="image/webp"
-            srcSet={`${previewImgWebp}, ${previewImgWebp2x} 2x`}
+            srcSet={`/markup/${previewImgWebp}, /markup/${previewImgWebp2x} 2x`}
           />
           <img
             src={previewImg}
-            srcSet={`${previewImg2x} 2x`}
+            srcSet={`/markup/${previewImg2x} 2x`}
             width={280}
             height={240}
             alt={name}
