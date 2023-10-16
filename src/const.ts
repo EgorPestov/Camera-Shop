@@ -4,6 +4,10 @@ export const SHOWABLE_CARDS_PER_PAGE_COUNT = 9;
 
 export const SHOWABLE_PAGES_COUNT = 3;
 
+export const SHOWABLE_SIMILAR_CARDS_COUNT = 3;
+
+export const SIMILAR_CARDS_SLIDER_DELAY_TIME = 100;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',
