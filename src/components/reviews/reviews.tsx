@@ -1,16 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { fetchReviews } from '../../store/api-actions';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getCurrentId, getReviewsLoadStatus, getReviews } from '../../store/product-process/selectors';
 import { LoadingScreen } from '../loading-screen/loading-screen';
 import { formatDateToHumanType, formatDateToMachineType } from '../../utils';
+import { SHOWABLE_REVIEWS_COUNT } from '../../const';
 
 export const Reviews = () => {
   const dispatch = useAppDispatch();
   const id = useAppSelector(getCurrentId);
   const isReviewsLoading = useAppSelector(getReviewsLoadStatus);
-  const reviews = useAppSelector(getReviews);
+  const reviews = useAppSelector(getReviews).slice().sort((a, b) => {
+    const dateA = new Date(a.createAt).getTime();
+    const dateB = new Date(b.createAt).getTime();
+    return dateB - dateA;
+  });
+  const [visibleReviews, setVisibleReviews] = useState(SHOWABLE_REVIEWS_COUNT);
+
+  const handleShowMoreClick = () => {
+    setVisibleReviews(visibleReviews + SHOWABLE_REVIEWS_COUNT);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -23,6 +33,29 @@ export const Reviews = () => {
       isMounted = false;
     };
   }, [dispatch, id]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      if (scrollY + windowHeight >= documentHeight - 100) {
+        setVisibleReviews(visibleReviews + SHOWABLE_REVIEWS_COUNT);
+      }
+    };
+
+    if (isMounted) {
+      window.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [visibleReviews]);
 
   if (isReviewsLoading) {
     return (<LoadingScreen />);
@@ -38,7 +71,7 @@ export const Reviews = () => {
           </div>
           <ul className="review-block__list">
 
-            {reviews.map((review) => (
+            {reviews.slice(0, visibleReviews).map((review) => (
               <li className="review-card" key={review.id}>
                 <div className="review-card__head">
                   <p className="title title--h4">{review.userName}</p>
@@ -78,11 +111,12 @@ export const Reviews = () => {
             ))}
 
           </ul>
-          <div className="review-block__buttons">
-            <button className="btn btn--purple" type="button">
-              Показать больше отзывов
-            </button>
-          </div>
+          {visibleReviews < reviews.length && (
+            <div className="review-block__buttons">
+              <button className="btn btn--purple" type="button" onClick={handleShowMoreClick} >
+                Показать больше отзывов
+              </button>
+            </div>)}
         </div>
       </section>
     );
