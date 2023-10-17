@@ -16,5 +16,10 @@ export const getModalAddItemSuccessStatus = (state: State): boolean => state[Nam
 export const getSimilarProducts = (state: State): ProductType[] => state[NameSpace.Products].similarProducts;
 export const getSimilarProductsLoadStatus = (state: State): boolean => state[NameSpace.Products].isSimilarProductsLoading;
 export const getCurrentId = (state: State): number => state[NameSpace.Products].currentId;
-export const getReviews = (state: State): ReviewType[] => state[NameSpace.Products].reviews;
+export const getReviews = (state: State): ReviewType[] =>
+  state[NameSpace.Products].reviews.slice().sort((a, b) => {
+    const dateA = new Date(a.createAt).getTime();
+    const dateB = new Date(b.createAt).getTime();
+    return dateB - dateA;
+  });
 export const getReviewsLoadStatus = (state: State): boolean => state[NameSpace.Products].isReviewsLoading;
