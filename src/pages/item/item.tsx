@@ -15,6 +15,7 @@ import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-succ
 import { Reviews } from '../../components/reviews/reviews';
 import { Helmet } from 'react-helmet-async';
 import { redirectToRoute } from '../../store/actions';
+import { ModalAddReview } from '../../components/modals/modal-add-review/modal-add-review';
 
 export const Item = () => {
   const currentId = useParams().id;
@@ -195,6 +196,7 @@ export const Item = () => {
             <use xlinkHref="#icon-arrow2" />
           </svg>
         </a>
+        <ModalAddReview />
         <Footer />
       </div>
     );

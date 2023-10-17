@@ -6,6 +6,7 @@ import { getCurrentId, getReviewsLoadStatus, getReviews } from '../../store/prod
 import { LoadingScreen } from '../loading-screen/loading-screen';
 import { formatDateToHumanType, formatDateToMachineType } from '../../utils';
 import { SHOWABLE_REVIEWS_COUNT } from '../../const';
+import { setAddReviewModalStatus } from '../../store/product-process/product-process';
 
 export const Reviews = () => {
   const dispatch = useAppDispatch();
@@ -65,7 +66,7 @@ export const Reviews = () => {
         <div className="container">
           <div className="page-content__headed">
             <h2 className="title title--h3">Отзывы</h2>
-            <button className="btn" type="button">
+            <button className="btn" type="button" onClick={() => dispatch(setAddReviewModalStatus(true))}>
               Оставить свой отзыв
             </button>
           </div>

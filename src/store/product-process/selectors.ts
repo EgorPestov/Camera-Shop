@@ -18,3 +18,4 @@ export const getSimilarProductsLoadStatus = (state: State): boolean => state[Nam
 export const getCurrentId = (state: State): number => state[NameSpace.Products].currentId;
 export const getReviews = (state: State): ReviewType[] => state[NameSpace.Products].reviews;
 export const getReviewsLoadStatus = (state: State): boolean => state[NameSpace.Products].isReviewsLoading;
+export const getAddReviewModalStatus = (state: State): boolean => state[NameSpace.Products].isAddReviewOpened;

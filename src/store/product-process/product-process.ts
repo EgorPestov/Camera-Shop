@@ -19,6 +19,7 @@ export type ProductsProcessType = {
   isSimilarProductsLoading: boolean;
   reviews: ReviewType[];
   isReviewsLoading: boolean;
+  isAddReviewOpened: boolean;
 }
 
 export const initialState: ProductsProcessType = {
@@ -37,6 +38,7 @@ export const initialState: ProductsProcessType = {
   isSimilarProductsLoading: false,
   reviews: [],
   isReviewsLoading: false,
+  isAddReviewOpened: false,
 };
 
 export const productsProcessSlice = createSlice({
@@ -94,6 +96,9 @@ export const productsProcessSlice = createSlice({
     },
     setReviewsLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isReviewsLoading = action.payload;
+    },
+    setAddReviewModalStatus: (state, action: PayloadAction<boolean>) => {
+      state.isAddReviewOpened = action.payload;
     }
   },
 });
@@ -101,4 +106,4 @@ export const productsProcessSlice = createSlice({
 export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId,
   setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setError, sortProducts, setSortingDirection,
   setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
-  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus } = productsProcessSlice.actions;
+  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setAddReviewModalStatus } = productsProcessSlice.actions;
