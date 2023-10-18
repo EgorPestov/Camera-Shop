@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch
 import { setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../../store/product-process/product-process';
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { NewReviewType, ErrorsDataType } from '../../../types';
-import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME, StarsNames } from '../../../const';
+import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ANIMATION_DELAY_TIME, StarsNames } from '../../../const';
 import { MouseEvent } from 'react';
 import { postReview } from '../../../store/api-actions';
 
@@ -110,7 +110,7 @@ export const ModalAddReview = () => {
       if (isAddReviewOpened && nameInputRef.current) {
         nameInputRef.current.focus();
       }
-    }, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME);
+    }, MODAL_ANIMATION_DELAY_TIME);
   }, [isAddReviewOpened]);
 
   const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -142,14 +142,7 @@ export const ModalAddReview = () => {
   };
 
   return (
-    <div
-      className={`modal ${isAddReviewOpened ? 'is-active' : ''}`}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') {
-          handleClose();
-        }
-      }}
-    >
+    <div className={`modal ${isAddReviewOpened ? 'is-active' : ''}`} >
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={handleClose} />
         <div className="modal__content">

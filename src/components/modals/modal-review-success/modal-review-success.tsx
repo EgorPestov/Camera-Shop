@@ -2,11 +2,22 @@ import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
 import { setReviewSuccessModalStatus } from '../../../store/product-process/product-process';
 import { getReviewSuccessModalStatus } from '../../../store/product-process/selectors';
+import { useRef, useEffect } from 'react';
+import { MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 
 export const ModalReviewSuccess = () => {
   const dispatch = useAppDispatch();
   const isReviewSuccessModalOpen = useAppSelector(getReviewSuccessModalStatus);
   const handleClose = () => dispatch(setReviewSuccessModalStatus(false));
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isReviewSuccessModalOpen && buttonRef.current) {
+        buttonRef.current.focus();
+      }
+    }, MODAL_ANIMATION_DELAY_TIME);
+  }, [isReviewSuccessModalOpen]);
 
   return (
     <div className={`modal ${isReviewSuccessModalOpen ? 'is-active' : ''} modal--narrow`}>
@@ -22,6 +33,7 @@ export const ModalReviewSuccess = () => {
               className="btn btn--purple modal__btn modal__btn--fit-width"
               type="button"
               onClick={handleClose}
+              ref={buttonRef}
             >
               Вернуться к покупкам
             </button>

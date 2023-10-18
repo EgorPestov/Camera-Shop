@@ -1,14 +1,25 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
 import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen } from '../../../store/product-process/product-process';
-import { getCurrentProduct } from '../../../store/product-process/selectors';
-import { CameraNames } from '../../../const';
+import { getCurrentProduct, getModalAddItemStatus } from '../../../store/product-process/selectors';
+import { CameraNames, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 import { formatPrice } from '../../../utils';
+import { useRef, useEffect } from 'react';
 
 
 export const ModalAddItem = () => {
   const dispatch = useAppDispatch();
   const product = useAppSelector(getCurrentProduct);
+  const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isModalAddItemOpen && buttonRef.current) {
+        buttonRef.current.focus();
+      }
+    }, MODAL_ANIMATION_DELAY_TIME);
+  }, [isModalAddItemOpen]);
 
   if (product !== undefined) {
     return (
@@ -52,6 +63,7 @@ export const ModalAddItem = () => {
               <button
                 className="btn btn--purple modal__btn modal__btn--fit-width"
                 type="button"
+                ref={buttonRef}
                 onClick={() => {
                   dispatch(setIsModalAddItemOpen(false));
                   dispatch(setIsModalAddItemSuccessOpen(true));

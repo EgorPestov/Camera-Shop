@@ -6,6 +6,7 @@ import { NotFound } from '../../pages/404/404';
 import { Basket } from '../../pages/basket/basket';
 import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
+import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../store/product-process/product-process';
 import { fetchProducts } from '../../store/api-actions';
 import { useEffect } from 'react';
 
@@ -23,6 +24,17 @@ export const App = () => {
       isMounted = false;
     };
   }, [dispatch]);
+
+  const handleEscapeKey = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      dispatch(setIsModalAddItemOpen(false));
+      dispatch(setIsModalAddItemSuccessOpen(false));
+      dispatch(setAddReviewModalStatus(false));
+      dispatch(setReviewSuccessModalStatus(false));
+    }
+  };
+
+  document.addEventListener('keydown', handleEscapeKey);
 
 
   return (
