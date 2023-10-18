@@ -1,16 +1,62 @@
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { getAddReviewModalStatus } from '../../../store/product-process/selectors';
+import { getAddReviewModalStatus, getCurrentId } from '../../../store/product-process/selectors';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { setAddReviewModalStatus } from '../../../store/product-process/product-process';
+import { useState, ChangeEvent, useRef, useEffect } from 'react';
+import { NewReviewType } from '../../../types';
+import { MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME } from '../../../const';
 
 export const ModalAddReview = () => {
   const isAddReviewOpened = useAppSelector(getAddReviewModalStatus);
   const dispatch = useAppDispatch();
+  const currentId = useAppSelector(getCurrentId);
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [reviewData, setReviewData] = useState<NewReviewType>({
+    cameraId: currentId,
+    userName: '',
+    advantage: '',
+    disadvantage: '',
+    review: '',
+    rating: 0,
+  });
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isAddReviewOpened && nameInputRef.current) {
+        nameInputRef.current.focus();
+      }
+    }, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME);
+  }, [isAddReviewOpened]);
+
+  const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setReviewData({ ...reviewData, userName: evt.target.value });
+  };
+
+  const handleAdvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setReviewData({ ...reviewData, advantage: evt.target.value });
+  };
+
+  const handleDisadvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setReviewData({ ...reviewData, disadvantage: evt.target.value });
+  };
+
+  const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
+    setReviewData({ ...reviewData, review: evt.target.value });
+  };
 
   return (
-    <div className={`modal ${isAddReviewOpened ? 'is-active' : ''}`}>
+    <div
+      className={`modal ${isAddReviewOpened ? 'is-active' : ''}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          dispatch(setAddReviewModalStatus(false));
+        }
+      }}
+    >
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div className="modal__overlay" onClick={() => dispatch(setAddReviewModalStatus(false))} />
         <div className="modal__content">
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">
@@ -105,7 +151,11 @@ export const ModalAddReview = () => {
                       type="text"
                       name="user-name"
                       placeholder="Введите ваше имя"
+                      value={reviewData.userName}
+                      onChange={handleNameChange}
                       required
+                      ref={nameInputRef}
+
                     />
                   </label>
                   <p className="custom-input__error">Нужно указать имя</p>
@@ -122,6 +172,8 @@ export const ModalAddReview = () => {
                       type="text"
                       name="user-plus"
                       placeholder="Основные преимущества товара"
+                      value={reviewData.advantage}
+                      onChange={handleAdvantageChange}
                       required
                     />
                   </label>
@@ -139,6 +191,8 @@ export const ModalAddReview = () => {
                       type="text"
                       name="user-minus"
                       placeholder="Главные недостатки товара"
+                      value={reviewData.disadvantage}
+                      onChange={handleDisadvantageChange}
                       required
                     />
                   </label>
@@ -156,7 +210,8 @@ export const ModalAddReview = () => {
                       name="user-comment"
                       minLength={5}
                       placeholder="Поделитесь своим опытом покупки"
-                      defaultValue={''}
+                      value={reviewData.review}
+                      onChange={handleReviewChange}
                     />
                   </label>
                   <div className="custom-textarea__error">

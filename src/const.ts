@@ -10,6 +10,8 @@ export const SHOWABLE_REVIEWS_COUNT = 3;
 
 export const SIMILAR_CARDS_SLIDER_DELAY_TIME = 100;
 
+export const MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME = 200;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',
