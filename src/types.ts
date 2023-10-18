@@ -34,3 +34,11 @@ export type NewReviewType = {
   review: string;
   rating: number;
 };
+
+export type ErrorsDataType = {
+  userName: boolean;
+  advantage: boolean;
+  disadvantage: boolean;
+  review: boolean;
+  rating: boolean;
+};

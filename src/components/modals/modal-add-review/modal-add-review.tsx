@@ -3,8 +3,9 @@ import { getAddReviewModalStatus, getCurrentId } from '../../../store/product-pr
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { setAddReviewModalStatus } from '../../../store/product-process/product-process';
 import { useState, ChangeEvent, useRef, useEffect } from 'react';
-import { NewReviewType } from '../../../types';
-import { MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME } from '../../../const';
+import { NewReviewType, ErrorsDataType } from '../../../types';
+import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME } from '../../../const';
+import { MouseEvent } from 'react';
 
 export const ModalAddReview = () => {
   const isAddReviewOpened = useAppSelector(getAddReviewModalStatus);
@@ -21,6 +22,88 @@ export const ModalAddReview = () => {
     rating: 0,
   });
 
+  const [errorsData, setErrorsData] = useState({
+    userName: false,
+    advantage: false,
+    disadvantage: false,
+    review: false,
+    rating: false,
+  });
+
+  const handleClose = () => {
+    dispatch(setAddReviewModalStatus(false));
+    setErrorsData({
+      userName: false,
+      advantage: false,
+      disadvantage: false,
+      review: false,
+      rating: false,
+    });
+    setReviewData({
+      cameraId: currentId,
+      userName: '',
+      advantage: '',
+      disadvantage: '',
+      review: '',
+      rating: 0,
+    });
+  };
+
+  const handleSubmit = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    const updateErrorsData = (newErrorsData: ErrorsDataType) => {
+      setErrorsData(newErrorsData);
+
+      if (
+        !newErrorsData.userName &&
+        !newErrorsData.advantage &&
+        !newErrorsData.disadvantage &&
+        !newErrorsData.review &&
+        !newErrorsData.rating
+      ) {
+        console.log('УСПЕХ'); // здесь фетч
+        console.log(newErrorsData);
+      } else {
+        console.log('НЕУДАЧА');
+        console.log(newErrorsData);
+      }
+    };
+
+    const newErrorsData = { ...errorsData };
+
+    if (reviewData.userName.length < MIN_TEXT_LENGTH || reviewData.userName.length > MAX_TEXT_LENGTH) {
+      newErrorsData.userName = true;
+    } else {
+      newErrorsData.userName = false;
+    }
+
+    if (reviewData.advantage.length < MIN_TEXT_LENGTH || reviewData.advantage.length > MAX_TEXT_LENGTH) {
+      newErrorsData.advantage = true;
+    } else {
+      newErrorsData.advantage = false;
+    }
+
+    if (reviewData.disadvantage.length < MIN_TEXT_LENGTH || reviewData.disadvantage.length > MAX_TEXT_LENGTH) {
+      newErrorsData.disadvantage = true;
+    } else {
+      newErrorsData.disadvantage = false;
+    }
+
+    if (reviewData.review.length < MIN_TEXT_LENGTH || reviewData.review.length > MAX_TEXT_LENGTH) {
+      newErrorsData.review = true;
+    } else {
+      newErrorsData.review = false;
+    }
+
+    if (reviewData.rating === 0) {
+      newErrorsData.rating = true;
+    } else {
+      newErrorsData.rating = false;
+    }
+
+    updateErrorsData(newErrorsData);
+  };
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -30,20 +113,36 @@ export const ModalAddReview = () => {
     }, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME);
   }, [isAddReviewOpened]);
 
+  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setReviewData({ ...reviewData, rating: evt.target.value });
+  };
+
   const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setReviewData({ ...reviewData, userName: evt.target.value });
+    if (evt.target.value.length >= MIN_TEXT_LENGTH) {
+      setErrorsData({ ...errorsData, userName: false });
+    }
   };
 
   const handleAdvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setReviewData({ ...reviewData, advantage: evt.target.value });
+    if (evt.target.value.length >= MIN_TEXT_LENGTH) {
+      setErrorsData({ ...errorsData, advantage: false });
+    }
   };
 
   const handleDisadvantageChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setReviewData({ ...reviewData, disadvantage: evt.target.value });
+    if (evt.target.value.length >= MIN_TEXT_LENGTH) {
+      setErrorsData({ ...errorsData, disadvantage: false });
+    }
   };
 
   const handleReviewChange = (evt: ChangeEvent<HTMLTextAreaElement>) => {
     setReviewData({ ...reviewData, review: evt.target.value });
+    if (evt.target.value.length >= MIN_TEXT_LENGTH) {
+      setErrorsData({ ...errorsData, review: false });
+    }
   };
 
   return (
@@ -51,18 +150,18 @@ export const ModalAddReview = () => {
       className={`modal ${isAddReviewOpened ? 'is-active' : ''}`}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
-          dispatch(setAddReviewModalStatus(false));
+          handleClose();
         }
       }}
     >
       <div className="modal__wrapper">
-        <div className="modal__overlay" onClick={() => dispatch(setAddReviewModalStatus(false))} />
+        <div className="modal__overlay" onClick={handleClose} />
         <div className="modal__content">
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">
             <form method="post">
               <div className="form-review__rate">
-                <fieldset className="rate form-review__item">
+                <fieldset className={`rate form-review__item ${errorsData.rating ? 'is-invalid' : ''}`}>
                   <legend className="rate__caption">
                     Рейтинг
                     <svg width={9} height={9} aria-hidden="true">
@@ -139,7 +238,7 @@ export const ModalAddReview = () => {
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
                 </fieldset>
-                <div className="custom-input form-review__item">
+                <div className={`custom-input form-review__item ${errorsData.userName ? 'is-invalid' : ''}`}>
                   <label>
                     <span className="custom-input__label">
                       Ваше имя
@@ -153,14 +252,13 @@ export const ModalAddReview = () => {
                       placeholder="Введите ваше имя"
                       value={reviewData.userName}
                       onChange={handleNameChange}
-                      required
                       ref={nameInputRef}
 
                     />
                   </label>
                   <p className="custom-input__error">Нужно указать имя</p>
                 </div>
-                <div className="custom-input form-review__item">
+                <div className={`custom-input form-review__item ${errorsData.advantage ? 'is-invalid' : ''}`}>
                   <label>
                     <span className="custom-input__label">
                       Достоинства
@@ -174,12 +272,11 @@ export const ModalAddReview = () => {
                       placeholder="Основные преимущества товара"
                       value={reviewData.advantage}
                       onChange={handleAdvantageChange}
-                      required
                     />
                   </label>
                   <p className="custom-input__error">Нужно указать достоинства</p>
                 </div>
-                <div className="custom-input form-review__item">
+                <div className={`custom-input form-review__item ${errorsData.disadvantage ? 'is-invalid' : ''}`}>
                   <label>
                     <span className="custom-input__label">
                       Недостатки
@@ -193,12 +290,11 @@ export const ModalAddReview = () => {
                       placeholder="Главные недостатки товара"
                       value={reviewData.disadvantage}
                       onChange={handleDisadvantageChange}
-                      required
                     />
                   </label>
                   <p className="custom-input__error">Нужно указать недостатки</p>
                 </div>
-                <div className="custom-textarea form-review__item">
+                <div className={`custom-textarea form-review__item ${errorsData.review ? 'is-invalid' : ''}`}>
                   <label>
                     <span className="custom-textarea__label">
                       Комментарий
@@ -219,12 +315,12 @@ export const ModalAddReview = () => {
                   </div>
                 </div>
               </div>
-              <button className="btn btn--purple form-review__btn" type="submit">
+              <button className="btn btn--purple form-review__btn" type="submit" onClick={handleSubmit}>
                 Отправить отзыв
               </button>
             </form>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setAddReviewModalStatus(false))}>
+          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleClose}>
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg>

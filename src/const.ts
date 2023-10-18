@@ -12,6 +12,10 @@ export const SIMILAR_CARDS_SLIDER_DELAY_TIME = 100;
 
 export const MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME = 200;
 
+export const MIN_TEXT_LENGTH = 2;
+
+export const MAX_TEXT_LENGTH = 160;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',
