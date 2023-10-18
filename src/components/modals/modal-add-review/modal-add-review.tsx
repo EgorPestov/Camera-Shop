@@ -1,11 +1,13 @@
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
 import { getAddReviewModalStatus, getCurrentId } from '../../../store/product-process/selectors';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
-import { setAddReviewModalStatus } from '../../../store/product-process/product-process';
-import { useState, ChangeEvent, useRef, useEffect } from 'react';
+import { setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../../store/product-process/product-process';
+import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { NewReviewType, ErrorsDataType } from '../../../types';
-import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME } from '../../../const';
+import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME, StarsNames } from '../../../const';
 import { MouseEvent } from 'react';
+import { postReview } from '../../../store/api-actions';
+
 
 export const ModalAddReview = () => {
   const isAddReviewOpened = useAppSelector(getAddReviewModalStatus);
@@ -61,11 +63,9 @@ export const ModalAddReview = () => {
         !newErrorsData.review &&
         !newErrorsData.rating
       ) {
-        console.log('УСПЕХ'); // здесь фетч
-        console.log(newErrorsData);
-      } else {
-        console.log('НЕУДАЧА');
-        console.log(newErrorsData);
+        dispatch(postReview(reviewData));
+        handleClose();
+        dispatch(setReviewSuccessModalStatus(true));
       }
     };
 
@@ -112,10 +112,6 @@ export const ModalAddReview = () => {
       }
     }, MODAL_ADD_REVIEW_ANIMATION_DELAY_TIME);
   }, [isAddReviewOpened]);
-
-  const handleRatingChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setReviewData({ ...reviewData, rating: evt.target.value });
-  };
 
   const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setReviewData({ ...reviewData, userName: evt.target.value });
@@ -170,69 +166,30 @@ export const ModalAddReview = () => {
                   </legend>
                   <div className="rate__bar">
                     <div className="rate__group">
-                      <input
-                        className="visually-hidden"
-                        id="star-5"
-                        name="rate"
-                        type="radio"
-                        defaultValue={5}
-                      />
-                      <label
-                        className="rate__label"
-                        htmlFor="star-5"
-                        title="Отлично"
-                      />
-                      <input
-                        className="visually-hidden"
-                        id="star-4"
-                        name="rate"
-                        type="radio"
-                        defaultValue={4}
-                      />
-                      <label
-                        className="rate__label"
-                        htmlFor="star-4"
-                        title="Хорошо"
-                      />
-                      <input
-                        className="visually-hidden"
-                        id="star-3"
-                        name="rate"
-                        type="radio"
-                        defaultValue={3}
-                      />
-                      <label
-                        className="rate__label"
-                        htmlFor="star-3"
-                        title="Нормально"
-                      />
-                      <input
-                        className="visually-hidden"
-                        id="star-2"
-                        name="rate"
-                        type="radio"
-                        defaultValue={2}
-                      />
-                      <label
-                        className="rate__label"
-                        htmlFor="star-2"
-                        title="Плохо"
-                      />
-                      <input
-                        className="visually-hidden"
-                        id="star-1"
-                        name="rate"
-                        type="radio"
-                        defaultValue={1}
-                      />
-                      <label
-                        className="rate__label"
-                        htmlFor="star-1"
-                        title="Ужасно"
-                      />
+                      {Array.from({ length: 5 }, (_, index) => (
+                        <React.Fragment key={index}>
+                          <input
+                            className="visually-hidden"
+                            id={`star-${index + 1}`}
+                            name="rate"
+                            type="radio"
+                            defaultValue={index + 1}
+                            onChange={() => {
+                              setReviewData({ ...reviewData, rating: index + 1 });
+                              setErrorsData({ ...errorsData, rating: false });
+                            }}
+                            checked={index + 1 === reviewData.rating}
+                          />
+                          <label
+                            className="rate__label"
+                            htmlFor={`star-${index + 1}`}
+                            title={StarsNames[index + 1]}
+                          />
+                        </React.Fragment>
+                      )).reverse()}
                     </div>
                     <div className="rate__progress">
-                      <span className="rate__stars">0</span> <span>/</span>
+                      <span className="rate__stars">{reviewData.rating}</span> <span>/ </span>
                       <span className="rate__all-stars">5</span>
                     </div>
                   </div>
@@ -253,7 +210,6 @@ export const ModalAddReview = () => {
                       value={reviewData.userName}
                       onChange={handleNameChange}
                       ref={nameInputRef}
-
                     />
                   </label>
                   <p className="custom-input__error">Нужно указать имя</p>

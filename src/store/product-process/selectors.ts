@@ -19,3 +19,4 @@ export const getCurrentId = (state: State): number => state[NameSpace.Products].
 export const getReviews = (state: State): ReviewType[] => state[NameSpace.Products].reviews;
 export const getReviewsLoadStatus = (state: State): boolean => state[NameSpace.Products].isReviewsLoading;
 export const getAddReviewModalStatus = (state: State): boolean => state[NameSpace.Products].isAddReviewOpened;
+export const getReviewSuccessModalStatus = (state: State): boolean => state[NameSpace.Products].isReviewSuccessModalOpened;

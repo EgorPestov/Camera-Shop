@@ -2,11 +2,13 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch } from '../hooks/use-app-dispatch/use-app-dispatch';
 import { State } from '../hooks/use-app-selector/use-app-selector';
-import { ProductType, ReviewType } from '../types';
+import { NewReviewType, ProductType, ReviewType } from '../types';
 import { APIRoute } from '../const';
 // import { toast } from 'react-toastify';
-import { setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts,
-  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus } from './product-process/product-process';
+import {
+  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts,
+  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus
+} from './product-process/product-process';
 
 type thunkObjType = {
   dispatch: AppDispatch;
@@ -65,3 +67,18 @@ export const fetchReviews = createAsyncThunk<void, { id: number }, thunkObjType>
     }
   }
 );
+
+export const postReview = createAsyncThunk<void, NewReviewType, thunkObjType>(
+  'PRODUCTS/postReview',
+  async (reviewData, { dispatch, extra: api }) => {
+    try {
+      dispatch(setProductsLoadStatus(true));
+      await api.post<NewReviewType>(APIRoute.Reviews, reviewData);
+    } catch {
+      throw new Error;
+    } finally {
+      dispatch(setProductsLoadStatus(false));
+    }
+  }
+);
+
