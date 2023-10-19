@@ -20,3 +20,5 @@ export const getReviews = (state: State): ReviewType[] => state[NameSpace.Produc
 export const getReviewsLoadStatus = (state: State): boolean => state[NameSpace.Products].isReviewsLoading;
 export const getAddReviewModalStatus = (state: State): boolean => state[NameSpace.Products].isAddReviewOpened;
 export const getReviewSuccessModalStatus = (state: State): boolean => state[NameSpace.Products].isReviewSuccessModalOpened;
+export const getBuyingId = (state: State): number => state[NameSpace.Products].buyingId;
+export const getBuyingModalProduct = (state: State): ProductType | undefined => state[NameSpace.Products].products.find((product) => product.id === state[NameSpace.Products].buyingId);

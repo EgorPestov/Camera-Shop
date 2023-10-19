@@ -4,9 +4,8 @@ import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { SimilarProducts } from '../../components/similar-products/similar-products';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { getCurrentProduct, getProductsLoadStatus, getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus } from '../../store/product-process/selectors';
-import { setIsModalAddItemOpen } from '../../store/product-process/product-process';
-import { setCurrentId } from '../../store/product-process/product-process';
+import { getCurrentProduct, getProductsLoadStatus, getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/product-process/selectors';
+import { setIsModalAddItemOpen, setCurrentId } from '../../store/product-process/product-process';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { AppRoute } from '../../const';
@@ -23,7 +22,6 @@ export const Item = () => {
   const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
-  const isModalAddReviewOpen = useAppSelector(getAddReviewModalStatus);
 
   const location = useLocation();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
@@ -50,17 +48,11 @@ export const Item = () => {
   const product = useAppSelector(getCurrentProduct);
   const isProductsLoading = useAppSelector(getProductsLoadStatus);
 
-  if (isModalAddReviewOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = 'auto';
-  }
-
   if (isProductsLoading) {
     return (<LoadingScreen />);
   } else if (product !== undefined && currentId !== undefined) {
     return (
-      <div className="wrapper" style={{ overflow: isModalAddReviewOpen ? 'hidden' : 'auto' }} >
+      <div className="wrapper" >
         <Helmet>
           <title>{product.name}</title>
         </Helmet>

@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
 import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen } from '../../../store/product-process/product-process';
-import { getCurrentProduct, getModalAddItemStatus } from '../../../store/product-process/selectors';
+import { getBuyingModalProduct, getModalAddItemStatus } from '../../../store/product-process/selectors';
 import { CameraNames, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 import { formatPrice } from '../../../utils';
 import { useRef, useEffect } from 'react';
@@ -9,7 +9,7 @@ import { useRef, useEffect } from 'react';
 
 export const ModalAddItem = () => {
   const dispatch = useAppDispatch();
-  const product = useAppSelector(getCurrentProduct);
+  const product = useAppSelector(getBuyingModalProduct);
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 

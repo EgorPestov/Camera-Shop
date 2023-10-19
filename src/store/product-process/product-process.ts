@@ -21,6 +21,7 @@ export type ProductsProcessType = {
   isReviewsLoading: boolean;
   isAddReviewOpened: boolean;
   isReviewSuccessModalOpened: boolean;
+  buyingId: number;
 }
 
 export const initialState: ProductsProcessType = {
@@ -41,6 +42,7 @@ export const initialState: ProductsProcessType = {
   isReviewsLoading: false,
   isAddReviewOpened: false,
   isReviewSuccessModalOpened: false,
+  buyingId: 0,
 };
 
 export const productsProcessSlice = createSlice({
@@ -104,11 +106,14 @@ export const productsProcessSlice = createSlice({
     },
     setReviewSuccessModalStatus: (state, action: PayloadAction<boolean>) => {
       state.isReviewSuccessModalOpened = action.payload;
-    }
+    },
+    setBuyingId: (state, action: PayloadAction<number>) => {
+      state.buyingId = action.payload;
+    },
   },
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId,
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId,
   setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setError, sortProducts, setSortingDirection,
   setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts, setReviewSuccessModalStatus,
   setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setAddReviewModalStatus } = productsProcessSlice.actions;

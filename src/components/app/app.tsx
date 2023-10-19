@@ -9,6 +9,9 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../store/product-process/product-process';
 import { fetchProducts } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
+import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus } from '../../store/product-process/selectors';
+
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -35,6 +38,17 @@ export const App = () => {
   };
 
   document.addEventListener('keydown', handleEscapeKey);
+
+  const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
+  const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
+  const isModalAddReviewOpen = useAppSelector(getAddReviewModalStatus);
+  const isModalAddReviewSuccessOpen = useAppSelector(getReviewSuccessModalStatus);
+
+  if (isModalAddItemOpen || isModalAddItemSuccessOpen || isModalAddReviewOpen || isModalAddReviewSuccessOpen) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
 
 
   return (
