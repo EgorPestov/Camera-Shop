@@ -22,7 +22,7 @@ export const ModalReviewSuccess = () => {
   return (
     <div className={`modal ${isReviewSuccessModalOpen ? 'is-active' : ''} modal--narrow`}>
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div className="modal__overlay" onClick={handleClose} />
         <div className="modal__content">
           <p className="title title--h4">Спасибо за отзыв</p>
           <svg className="modal__icon" width={80} height={78} aria-hidden="true">

@@ -25,7 +25,7 @@ export const ModalAddItem = () => {
     return (
       <div className="modal is-active">
         <div className="modal__wrapper">
-          <div className="modal__overlay" />
+          <div className="modal__overlay" onClick={() => dispatch(setIsModalAddItemOpen(false))} />
           <div className="modal__content">
             <p className="title title--h4">Добавить товар в корзину</p>
             <div className="basket-item basket-item--short">
