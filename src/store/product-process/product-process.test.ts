@@ -147,20 +147,6 @@ describe('Products Process Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should set products load status', () => {
-
-    const action = productsProcessSlice.actions.setProductsLoadStatus(false);
-
-    const result = productsProcessSlice.reducer(initialState, action);
-
-    const expectedState = {
-      ...initialState,
-      isProductsLoading: false,
-    };
-
-    expect(result).toEqual(expectedState);
-  });
-
   it('should set buying ID', () => {
     const action = productsProcessSlice.actions.setBuyingId(42);
 
@@ -169,6 +155,60 @@ describe('Products Process Slice', () => {
     const expectedState = {
       ...initialState,
       buyingId: 42,
+    };
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should set similar products', () => {
+    const action = productsProcessSlice.actions.setSimilarProducts(mockProducts);
+
+    const result = productsProcessSlice.reducer(initialState, action);
+
+    const expectedState = {
+      ...initialState,
+      similarProducts: mockProducts,
+    };
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should set similar products load status', () => {
+
+    const action = productsProcessSlice.actions.setSimilarProductsLoadStatus(true);
+
+    const result = productsProcessSlice.reducer(initialState, action);
+
+    const expectedState = {
+      ...initialState,
+      isSimilarProductsLoading: true,
+    };
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should set reviews', () => {
+    const action = productsProcessSlice.actions.setReviews(mockReviews);
+
+    const result = productsProcessSlice.reducer(initialState, action);
+
+    const expectedState = {
+      ...initialState,
+      reviews: mockReviews,
+    };
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should set reviews load status', () => {
+
+    const action = productsProcessSlice.actions.setReviewsLoadStatus(true);
+
+    const result = productsProcessSlice.reducer(initialState, action);
+
+    const expectedState = {
+      ...initialState,
+      isReviewsLoading: true,
     };
 
     expect(result).toEqual(expectedState);

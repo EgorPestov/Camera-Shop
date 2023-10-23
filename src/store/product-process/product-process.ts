@@ -13,11 +13,12 @@ export type ProductsProcessType = {
   currentPage: number;
   showableProducts: ProductType[];
   currentId: number;
+  buyingId: number;
   similarProducts: ProductType[];
   isSimilarProductsLoading: boolean;
   reviews: ReviewType[];
   isReviewsLoading: boolean;
-  buyingId: number;
+
 }
 
 export const initialState: ProductsProcessType = {
@@ -30,11 +31,11 @@ export const initialState: ProductsProcessType = {
   currentPage: 1,
   showableProducts: [],
   currentId: 0,
+  buyingId: 0,
   similarProducts: [],
   isSimilarProductsLoading: false,
   reviews: [],
   isReviewsLoading: false,
-  buyingId: 0,
 };
 
 export const productsProcessSlice = createSlice({
@@ -68,6 +69,9 @@ export const productsProcessSlice = createSlice({
     setCurrentId: (state, action: PayloadAction<number>) => {
       state.currentId = action.payload;
     },
+    setBuyingId: (state, action: PayloadAction<number>) => {
+      state.buyingId = action.payload;
+    },
     setSimilarProducts: (state, action: PayloadAction<ProductType[]>) => {
       state.similarProducts = action.payload;
     },
@@ -79,9 +83,6 @@ export const productsProcessSlice = createSlice({
     },
     setReviewsLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isReviewsLoading = action.payload;
-    },
-    setBuyingId: (state, action: PayloadAction<number>) => {
-      state.buyingId = action.payload;
     },
     sortProducts: (state) => {
       if (state.sortingType === 'price' && state.sortingDirection === 'top') {
