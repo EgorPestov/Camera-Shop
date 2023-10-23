@@ -2,7 +2,7 @@ import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector
 import { getCurrentId } from '../../../store/product-process/selectors';
 import { getAddReviewModalStatus } from '../../../store/modals-process/selectors';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
-import { setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../../store/modals-process/modals-process';
+import { setModalAddReviewStatus, setModalAddReviewSuccessStatus } from '../../../store/modals-process/modals-process';
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { NewReviewType, ErrorsDataType } from '../../../types';
 import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ANIMATION_DELAY_TIME, StarsNames } from '../../../const';
@@ -34,7 +34,7 @@ export const ModalAddReview = () => {
   });
 
   const handleClose = () => {
-    dispatch(setAddReviewModalStatus(false));
+    dispatch(setModalAddReviewStatus(false));
     setErrorsData({
       userName: false,
       advantage: false,
@@ -66,7 +66,7 @@ export const ModalAddReview = () => {
       ) {
         dispatch(postReview(reviewData));
         handleClose();
-        dispatch(setReviewSuccessModalStatus(true));
+        dispatch(setModalAddReviewSuccessStatus(true));
       }
     };
 

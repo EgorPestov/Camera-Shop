@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setReviewSuccessModalStatus } from '../../../store/modals-process/modals-process';
+import { setModalAddReviewSuccessStatus } from '../../../store/modals-process/modals-process';
 import { getReviewSuccessModalStatus } from '../../../store/modals-process/selectors';
 import { useRef, useEffect } from 'react';
 import { MODAL_ANIMATION_DELAY_TIME } from '../../../const';
@@ -8,7 +8,7 @@ import { MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 export const ModalReviewSuccess = () => {
   const dispatch = useAppDispatch();
   const isReviewSuccessModalOpen = useAppSelector(getReviewSuccessModalStatus);
-  const handleClose = () => dispatch(setReviewSuccessModalStatus(false));
+  const handleClose = () => dispatch(setModalAddReviewSuccessStatus(false));
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {

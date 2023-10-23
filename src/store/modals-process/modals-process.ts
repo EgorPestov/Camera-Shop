@@ -4,15 +4,15 @@ import { NameSpace } from '../../const';
 export type ModalsProcessType = {
   isModalAddItemOpen: boolean;
   isModalAddItemSuccessOpen: boolean;
-  isAddReviewOpen: boolean;
-  isReviewSuccessModalOpen: boolean;
+  isModalAddReviewOpen: boolean;
+  isModalAddReviewSuccessOpen: boolean;
 }
 
 export const initialState: ModalsProcessType = {
   isModalAddItemOpen: false,
   isModalAddItemSuccessOpen: false,
-  isAddReviewOpen: false,
-  isReviewSuccessModalOpen: false,
+  isModalAddReviewOpen: false,
+  isModalAddReviewSuccessOpen: false,
 };
 
 export const modalsProcessSlice = createSlice({
@@ -25,13 +25,13 @@ export const modalsProcessSlice = createSlice({
     setModalAddItemSuccessStatus: (state, action: PayloadAction<boolean>) => {
       state.isModalAddItemSuccessOpen = action.payload;
     },
-    setAddReviewModalStatus: (state, action: PayloadAction<boolean>) => {
-      state.isAddReviewOpen = action.payload;
+    setModalAddReviewStatus: (state, action: PayloadAction<boolean>) => {
+      state.isModalAddReviewOpen = action.payload;
     },
-    setReviewSuccessModalStatus: (state, action: PayloadAction<boolean>) => {
-      state.isReviewSuccessModalOpen = action.payload;
+    setModalAddReviewSuccessStatus: (state, action: PayloadAction<boolean>) => {
+      state.isModalAddReviewSuccessOpen = action.payload;
     },
   },
 });
 
-export const { setAddReviewModalStatus, setModalAddItemStatus, setModalAddItemSuccessStatus, setReviewSuccessModalStatus } = modalsProcessSlice.actions;
+export const { setModalAddReviewStatus, setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewSuccessStatus } = modalsProcessSlice.actions;
