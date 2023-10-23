@@ -1,7 +1,8 @@
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { getAddReviewModalStatus, getCurrentId } from '../../../store/product-process/selectors';
+import { getCurrentId } from '../../../store/product-process/selectors';
+import { getAddReviewModalStatus } from '../../../store/modals-process/selectors';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
-import { setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../../store/product-process/product-process';
+import { setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../../store/modals-process/modals-process';
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { NewReviewType, ErrorsDataType } from '../../../types';
 import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ANIMATION_DELAY_TIME, StarsNames } from '../../../const';

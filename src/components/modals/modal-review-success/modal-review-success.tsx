@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setReviewSuccessModalStatus } from '../../../store/product-process/product-process';
-import { getReviewSuccessModalStatus } from '../../../store/product-process/selectors';
+import { setReviewSuccessModalStatus } from '../../../store/modals-process/modals-process';
+import { getReviewSuccessModalStatus } from '../../../store/modals-process/selectors';
 import { useRef, useEffect } from 'react';
 import { MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 

@@ -11,7 +11,7 @@ import { Banner } from '../../components/banner/banner';
 import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-item';
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/product-process/selectors';
+import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/modals-process/selectors';
 import { useEffect } from 'react';
 
 export const Catalog = () => {

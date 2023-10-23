@@ -1,8 +1,8 @@
 import { AppRoute, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { getModalAddItemSuccessStatus } from '../../../store/product-process/selectors';
-import { setModalAddItemSuccessStatus } from '../../../store/product-process/product-process';
+import { getModalAddItemSuccessStatus } from '../../../store/modals-process/selectors';
+import { setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
 

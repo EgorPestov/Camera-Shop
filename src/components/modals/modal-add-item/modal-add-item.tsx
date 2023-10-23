@@ -1,7 +1,8 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setModalAddItemStatus, setModalAddItemSuccessStatus } from '../../../store/product-process/product-process';
-import { getBuyingModalProduct, getModalAddItemStatus } from '../../../store/product-process/selectors';
+import { setModalAddItemStatus, setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
+import { getBuyingModalProduct } from '../../../store/product-process/selectors';
+import { getModalAddItemStatus } from '../../../store/modals-process/selectors';
 import { CameraNames, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 import { formatPrice } from '../../../utils';
 import { useRef, useEffect } from 'react';

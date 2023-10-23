@@ -6,11 +6,11 @@ import { NotFound } from '../../pages/404/404';
 import { Basket } from '../../pages/basket/basket';
 import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setModalAddItemStatus, setModalAddItemSuccessStatus, setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../store/product-process/product-process';
+import { setModalAddItemStatus, setModalAddItemSuccessStatus, setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../store/modals-process/modals-process';
 import { fetchProducts } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus } from '../../store/product-process/selectors';
+import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus } from '../../store/modals-process/selectors';
 
 
 export const App = () => {

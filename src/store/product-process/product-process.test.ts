@@ -2,7 +2,6 @@ import { initialState, productsProcessSlice, ProductsProcessType } from './produ
 import { mockProducts } from '../../mocks/mock-products';
 import { mockReviews } from '../../mocks/mock-reviews';
 
-
 describe('Products Process Slice', () => {
   it('should return initial state with empty action', () => {
     const emptyAction = { type: '' };
@@ -143,20 +142,6 @@ describe('Products Process Slice', () => {
     const expectedState = {
       ...initialState,
       currentId: 42,
-    };
-
-    expect(result).toEqual(expectedState);
-  });
-
-  it('should set modal add item status', () => {
-
-    const action = productsProcessSlice.actions.setModalAddItemStatus(true);
-
-    const result = productsProcessSlice.reducer(initialState, action);
-
-    const expectedState = {
-      ...initialState,
-      isModalAddItemOpen: true,
     };
 
     expect(result).toEqual(expectedState);

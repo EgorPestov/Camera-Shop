@@ -27,6 +27,8 @@ export type AppRouteType = typeof AppRoute;
 
 export const NameSpace = {
   Products: 'PRODUCTS',
+  Reviews: 'REVIEWS',
+  Modals: 'MODALS'
 } as const;
 
 export const APIRoute = {
