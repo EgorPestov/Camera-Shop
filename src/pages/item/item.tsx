@@ -5,7 +5,7 @@ import { SimilarProducts } from '../../components/similar-products/similar-produ
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { getCurrentProduct, getProductsLoadStatus, getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/product-process/selectors';
-import { setIsModalAddItemOpen, setCurrentId } from '../../store/product-process/product-process';
+import { setModalAddItemStatus, setCurrentId, setBuyingId } from '../../store/product-process/product-process';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
 import { AppRoute } from '../../const';
@@ -120,7 +120,11 @@ export const Item = () => {
                     <p className="product__price">
                       <span className="visually-hidden">Цена:</span>73 450 ₽
                     </p>
-                    <button className="btn btn--purple" type="button" onClick={() => dispatch(setIsModalAddItemOpen(true))}>
+                    <button className="btn btn--purple" type="button" onClick={() => {
+                      dispatch(setBuyingId(Number(currentId)));
+                      dispatch(setModalAddItemStatus(true));
+                    }}
+                    >
                       <svg width={24} height={16} aria-hidden="true">
                         <use xlinkHref="#icon-add-basket" />
                       </svg>
