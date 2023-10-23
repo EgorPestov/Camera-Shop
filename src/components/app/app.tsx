@@ -6,7 +6,7 @@ import { NotFound } from '../../pages/404/404';
 import { Basket } from '../../pages/basket/basket';
 import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../store/product-process/product-process';
+import { setModalAddItemStatus, setModalAddItemSuccessStatus, setAddReviewModalStatus, setReviewSuccessModalStatus } from '../../store/product-process/product-process';
 import { fetchProducts } from '../../store/api-actions';
 import { useEffect } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
@@ -30,8 +30,8 @@ export const App = () => {
 
   const handleEscapeKey = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      dispatch(setIsModalAddItemOpen(false));
-      dispatch(setIsModalAddItemSuccessOpen(false));
+      dispatch(setModalAddItemStatus(false));
+      dispatch(setModalAddItemSuccessStatus(false));
       dispatch(setAddReviewModalStatus(false));
       dispatch(setReviewSuccessModalStatus(false));
     }

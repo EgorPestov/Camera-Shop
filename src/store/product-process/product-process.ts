@@ -19,8 +19,8 @@ export type ProductsProcessType = {
   isSimilarProductsLoading: boolean;
   reviews: ReviewType[];
   isReviewsLoading: boolean;
-  isAddReviewOpened: boolean;
-  isReviewSuccessModalOpened: boolean;
+  isAddReviewOpen: boolean;
+  isReviewSuccessModalOpen: boolean;
   buyingId: number;
 }
 
@@ -40,8 +40,8 @@ export const initialState: ProductsProcessType = {
   isSimilarProductsLoading: false,
   reviews: [],
   isReviewsLoading: false,
-  isAddReviewOpened: false,
-  isReviewSuccessModalOpened: false,
+  isAddReviewOpen: false,
+  isReviewSuccessModalOpen: false,
   buyingId: 0,
 };
 
@@ -67,13 +67,6 @@ export const productsProcessSlice = createSlice({
     setSortingDirection: (state, action: PayloadAction<'top' | 'down'>) => {
       state.sortingDirection = action.payload;
     },
-    sortProducts: (state) => {
-      if (state.sortingType === 'price' && state.sortingDirection === 'top') {
-        state.products = state.products.sort((a, b) => a.price - b.price);
-      } else if (state.sortingType === 'price' && state.sortingDirection === 'down') {
-        state.products = state.products.sort((a, b) => b.price - a.price);
-      }
-    },
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
     },
@@ -83,10 +76,10 @@ export const productsProcessSlice = createSlice({
     setCurrentId: (state, action: PayloadAction<number>) => {
       state.currentId = action.payload;
     },
-    setIsModalAddItemOpen: (state, action: PayloadAction<boolean>) => {
+    setModalAddItemStatus: (state, action: PayloadAction<boolean>) => {
       state.isModalAddItemOpen = action.payload;
     },
-    setIsModalAddItemSuccessOpen: (state, action: PayloadAction<boolean>) => {
+    setModalAddItemSuccessStatus: (state, action: PayloadAction<boolean>) => {
       state.isModalAddItemSuccessOpen = action.payload;
     },
     setSimilarProducts: (state, action: PayloadAction<ProductType[]>) => {
@@ -102,18 +95,25 @@ export const productsProcessSlice = createSlice({
       state.isReviewsLoading = action.payload;
     },
     setAddReviewModalStatus: (state, action: PayloadAction<boolean>) => {
-      state.isAddReviewOpened = action.payload;
+      state.isAddReviewOpen = action.payload;
     },
     setReviewSuccessModalStatus: (state, action: PayloadAction<boolean>) => {
-      state.isReviewSuccessModalOpened = action.payload;
+      state.isReviewSuccessModalOpen = action.payload;
     },
     setBuyingId: (state, action: PayloadAction<number>) => {
       state.buyingId = action.payload;
+    },
+    sortProducts: (state) => {
+      if (state.sortingType === 'price' && state.sortingDirection === 'top') {
+        state.products = [...state.products].sort((a, b) => a.price - b.price);
+      } else if (state.sortingType === 'price' && state.sortingDirection === 'down') {
+        state.products = [...state.products].sort((a, b) => b.price - a.price);
+      }
     },
   },
 });
 
 export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId,
-  setIsModalAddItemOpen, setIsModalAddItemSuccessOpen, setError, sortProducts, setSortingDirection,
+  setModalAddItemStatus, setModalAddItemSuccessStatus, setError, sortProducts, setSortingDirection,
   setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts, setReviewSuccessModalStatus,
   setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setAddReviewModalStatus } = productsProcessSlice.actions;

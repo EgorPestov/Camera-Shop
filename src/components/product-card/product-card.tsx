@@ -3,7 +3,7 @@ import { formatPrice } from '../../utils';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setIsModalAddItemOpen, setBuyingId, setCurrentId } from '../../store/product-process/product-process';
+import { setModalAddItemStatus, setBuyingId, setCurrentId } from '../../store/product-process/product-process';
 
 export const ProductCard = ({ product, isActive = false }: { product: ProductType; isActive?: boolean }) => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export const ProductCard = ({ product, isActive = false }: { product: ProductTyp
 
   const handleBuyClick = () => {
     dispatch(setBuyingId(id));
-    dispatch(setIsModalAddItemOpen(true));
+    dispatch(setModalAddItemStatus(true));
   };
 
   return (

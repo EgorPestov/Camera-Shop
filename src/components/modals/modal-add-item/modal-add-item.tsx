@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setIsModalAddItemOpen, setIsModalAddItemSuccessOpen } from '../../../store/product-process/product-process';
+import { setModalAddItemStatus, setModalAddItemSuccessStatus } from '../../../store/product-process/product-process';
 import { getBuyingModalProduct, getModalAddItemStatus } from '../../../store/product-process/selectors';
 import { CameraNames, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 import { formatPrice } from '../../../utils';
@@ -25,7 +25,7 @@ export const ModalAddItem = () => {
     return (
       <div className="modal is-active">
         <div className="modal__wrapper">
-          <div className="modal__overlay" onClick={() => dispatch(setIsModalAddItemOpen(false))} />
+          <div className="modal__overlay" onClick={() => dispatch(setModalAddItemStatus(false))} />
           <div className="modal__content">
             <p className="title title--h4">Добавить товар в корзину</p>
             <div className="basket-item basket-item--short">
@@ -65,8 +65,8 @@ export const ModalAddItem = () => {
                 type="button"
                 ref={buttonRef}
                 onClick={() => {
-                  dispatch(setIsModalAddItemOpen(false));
-                  dispatch(setIsModalAddItemSuccessOpen(true));
+                  dispatch(setModalAddItemStatus(false));
+                  dispatch(setModalAddItemSuccessStatus(true));
                 }}
               >
                 <svg width={24} height={16} aria-hidden="true">
@@ -75,7 +75,7 @@ export const ModalAddItem = () => {
                 Добавить в корзину
               </button>
             </div>
-            <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setIsModalAddItemOpen(false))}>
+            <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setModalAddItemStatus(false))}>
               <svg width={10} height={10} aria-hidden="true">
                 <use xlinkHref="#icon-close" />
               </svg>
