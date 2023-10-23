@@ -24,14 +24,14 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       const { data } = await api.get<ProductType[]>(APIRoute.Products);
       dispatch(setProducts(data));
       dispatch(setBackupProducts(data));
+      dispatch(sortProducts());
+      dispatch(setShowableProducts());
       dispatch(setError(false));
     } catch {
       dispatch(setError(true));
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
-      dispatch(sortProducts());
-      dispatch(setShowableProducts());
     }
   }
 );
