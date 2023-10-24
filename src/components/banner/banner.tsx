@@ -39,7 +39,7 @@ export const Banner = () => {
   }, [swiperInitialized]);
 
   return (
-    <div className='swiper'>
+    <div className='swiper' data-testid="banner">
       <div className="swiper-button-prev" />
       <div className='swiper-wrapper'>
         {BannerInfo.map((banner) => (

@@ -24,7 +24,7 @@ export const ModalAddItem = () => {
 
   if (product !== undefined) {
     return (
-      <div className="modal is-active">
+      <div className="modal is-active" data-testid="modal-add-item">
         <div className="modal__wrapper">
           <div className="modal__overlay" onClick={() => dispatch(setModalAddItemStatus(false))} />
           <div className="modal__content">

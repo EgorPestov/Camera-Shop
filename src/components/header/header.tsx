@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 export const Header = () => (
-  <header className="header" id="header">
+  <header className="header" id="header" data-testid="header">
     <div className="container">
       <Link
         className="header__logo"

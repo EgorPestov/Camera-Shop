@@ -20,7 +20,7 @@ export const ModalReviewSuccess = () => {
   }, [isReviewSuccessModalOpen]);
 
   return (
-    <div className={`modal ${isReviewSuccessModalOpen ? 'is-active' : ''} modal--narrow`}>
+    <div className={`modal ${isReviewSuccessModalOpen ? 'is-active' : ''} modal--narrow`} data-testid="modal-add-review-success">
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={handleClose} />
         <div className="modal__content">

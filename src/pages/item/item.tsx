@@ -17,7 +17,7 @@ import { Reviews } from '../../components/reviews/reviews';
 import { Helmet } from 'react-helmet-async';
 import { redirectToRoute } from '../../store/actions';
 import { ModalAddReview } from '../../components/modals/modal-add-review/modal-add-review';
-import { ModalReviewSuccess } from '../../components/modals/modal-review-success/modal-review-success';
+import { ModalReviewSuccess } from '../../components/modals/modal-add-review-success/modal-add-review-success';
 
 export const Item = () => {
   const currentId = useParams().id;

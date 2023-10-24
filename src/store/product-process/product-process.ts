@@ -18,7 +18,6 @@ export type ProductsProcessType = {
   isSimilarProductsLoading: boolean;
   reviews: ReviewType[];
   isReviewsLoading: boolean;
-
 }
 
 export const initialState: ProductsProcessType = {

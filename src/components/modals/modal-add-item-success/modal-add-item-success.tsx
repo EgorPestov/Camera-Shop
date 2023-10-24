@@ -20,7 +20,7 @@ export const ModalAddItemSuccess = () => {
   }, [isModalAddItemSuccessOpen]);
 
   return (
-    <div className="modal is-active modal--narrow">
+    <div className="modal is-active modal--narrow" data-testid="modal-add-item-success">
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={() => dispatch(setModalAddItemSuccessStatus(false))} />
         <div className="modal__content">

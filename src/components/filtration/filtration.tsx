@@ -1,5 +1,5 @@
 export const Filtration = () => (
-  <div className="catalog__aside">
+  <div className="catalog__aside" data-testid="filtration">
     <div className="catalog-filter">
       <form action="#">
         <h2 className="visually-hidden">Фильтр</h2>

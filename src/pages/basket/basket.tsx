@@ -11,7 +11,7 @@ export const Basket = () => {
   }, []);
 
   return (
-    <div className='wrapper'>
+    <div className='wrapper' data-testid="basket">
       <Helmet>
         <title>{'Корзина'}</title>
       </Helmet>

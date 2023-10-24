@@ -143,7 +143,7 @@ export const ModalAddReview = () => {
   };
 
   return (
-    <div className={`modal ${isAddReviewOpened ? 'is-active' : ''}`} >
+    <div className={`modal ${isAddReviewOpened ? 'is-active' : ''}`} data-testid="modal-add-review">
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={handleClose} />
         <div className="modal__content">
