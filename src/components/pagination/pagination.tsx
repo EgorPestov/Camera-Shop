@@ -25,7 +25,6 @@ export const Pagination = () => {
     currentPage = 1;
   }
 
-
   const pagesCount = Math.ceil(productsLength / SHOWABLE_CARDS_PER_PAGE_COUNT);
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
@@ -50,7 +49,7 @@ export const Pagination = () => {
 
   if (productsLength > SHOWABLE_CARDS_PER_PAGE_COUNT) {
     return (
-      <div className="pagination">
+      <div className="pagination" data-testid="pagination">
         <ul className="pagination__list">
           <li className="pagination__item">
             <Link

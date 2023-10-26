@@ -54,7 +54,7 @@ export const SimilarProducts = () => {
     return (<LoadingScreen />);
   } else if (similarProducts.length > 0) {
     return (
-      <section className="product-similar">
+      <section className="product-similar" data-testid="similar-products">
         <div className="container">
           <h2 className="title title--h3">Похожие товары</h2>
           <div className="product-similar__slider">

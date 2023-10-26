@@ -23,7 +23,7 @@ export const Catalog = () => {
   }, []);
 
   return (
-    <div className="wrapper">
+    <div className="wrapper" data-testid="catalog">
       <Helmet>
         <title>Фотошоп</title>
       </Helmet>

@@ -26,7 +26,7 @@ export const ProductCard = ({ product, isActive = false }: { product: ProductTyp
   };
 
   return (
-    <div className={`product-card ${isActive ? 'is-active' : ''} `}>
+    <div className={`product-card ${isActive ? 'is-active' : ''} `} data-testid="product-card">
       <div className="product-card__img">
         <picture>
           <source

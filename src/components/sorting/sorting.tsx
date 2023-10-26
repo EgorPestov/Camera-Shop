@@ -18,7 +18,7 @@ export const Sorting = () => {
   };
 
   return (
-    <div className="catalog-sort">
+    <div className="catalog-sort" data-testid="sorting">
       <form action="#">
         <div className="catalog-sort__inner">
           <p className="title title--h5">Сортировать:</p>

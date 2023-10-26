@@ -29,7 +29,6 @@ export const Item = () => {
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   let currentOption = searchParams.get('tab');
 
-
   if (!currentOption) {
     currentOption = 'dscrptn';
   }
@@ -54,7 +53,7 @@ export const Item = () => {
     return (<LoadingScreen />);
   } else if (product !== undefined && currentId !== undefined) {
     return (
-      <div className="wrapper" >
+      <div className="wrapper" data-testid="item">
         <Helmet>
           <title>{product.name}</title>
         </Helmet>

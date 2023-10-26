@@ -11,7 +11,7 @@ export const ProductList = () => {
     return <LoadingScreen />;
   } else {
     return (
-      <div className="cards catalog__cards">
+      <div className="cards catalog__cards" data-testid="product-list">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
