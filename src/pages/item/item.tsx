@@ -94,11 +94,11 @@ export const Item = () => {
                     <picture>
                       <source
                         type="image/webp"
-                        srcSet={`/markup/${product.previewImgWebp}, /markup/${product.previewImgWebp2x} 2x`}
+                        srcSet={`${product.previewImgWebp}, ${product.previewImgWebp2x} 2x`}
                       />
                       <img
-                        src={`/markup/${product.previewImg}`}
-                        srcSet={`/markup/${product.previewImg2x} 2x`}
+                        src={`${product.previewImg}`}
+                        srcSet={`${product.previewImg2x} 2x`}
                         width={560}
                         height={480}
                         alt={product.name}

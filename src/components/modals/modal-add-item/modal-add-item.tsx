@@ -34,11 +34,11 @@ export const ModalAddItem = () => {
                 <picture>
                   <source
                     type="image/webp"
-                    srcSet={`/markup/${product.previewImgWebp}, /markup/${product.previewImgWebp2x} 2x`}
+                    srcSet={`${product.previewImgWebp}, ${product.previewImgWebp2x} 2x`}
                   />
                   <img
-                    src={`/markup/${product.previewImg}`}
-                    srcSet={`/markup/${product.previewImgWebp2x} 2x`}
+                    src={`${product.previewImg}`}
+                    srcSet={`${product.previewImgWebp2x} 2x`}
                     width={140}
                     height={120}
                     alt={product.name}
