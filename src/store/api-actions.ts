@@ -4,7 +4,7 @@ import { AppDispatch } from '../hooks/use-app-dispatch/use-app-dispatch';
 import { State } from '../hooks/use-app-selector/use-app-selector';
 import { NewReviewType, ProductType, ReviewType } from '../types';
 import { APIRoute } from '../const';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import {
   setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts,
   setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus
@@ -29,6 +29,7 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       dispatch(setError(false));
     } catch {
       dispatch(setError(true));
+      toast.error('Ошибка загрузки товаров, пожалуйста, попробуйте еще раз');
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
@@ -45,6 +46,7 @@ export const fetchSimilarProducts = createAsyncThunk<void, { id: number }, thunk
       const { data } = await api.get<ProductType[]>(url);
       dispatch(setSimilarProducts(data));
     } catch {
+      toast.error('Ошибка загрузки похожих товаров, пожалуйста, попробуйте еще раз');
       throw new Error;
     } finally {
       dispatch(setSimilarProductsLoadStatus(false));
@@ -61,6 +63,7 @@ export const fetchReviews = createAsyncThunk<void, { id: number }, thunkObjType>
       const { data } = await api.get<ReviewType[]>(url);
       dispatch(setReviews(data));
     } catch {
+      toast.error('Ошибка загрузки отзывов, пожалуйста, попробуйте еще раз');
       throw new Error;
     } finally {
       dispatch(setReviewsLoadStatus(false));
@@ -75,6 +78,7 @@ export const postReview = createAsyncThunk<void, NewReviewType, thunkObjType>(
       dispatch(setProductsLoadStatus(true));
       await api.post<NewReviewType>(APIRoute.Reviews, reviewData);
     } catch {
+      toast.error('Ошибка отправки отзыва, пожалуйста, попробуйте еще раз');
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
