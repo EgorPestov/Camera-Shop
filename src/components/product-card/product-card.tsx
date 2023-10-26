@@ -31,11 +31,11 @@ export const ProductCard = ({ product, isActive = false }: { product: ProductTyp
         <picture>
           <source
             type="image/webp"
-            srcSet={`/markup/${previewImgWebp}, /markup/${previewImgWebp2x} 2x`}
+            srcSet={`../../markup/${previewImgWebp}, ../../markup/${previewImgWebp2x} 2x`}
           />
           <img
             src={previewImg}
-            srcSet={`/markup/${previewImg2x} 2x`}
+            srcSet={`../../markup/${previewImg2x} 2x`}
             width={280}
             height={240}
             alt={name}
