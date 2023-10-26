@@ -86,4 +86,5 @@ export const ModalAddItem = () => {
       </div>
     );
   }
+  return null;
 };

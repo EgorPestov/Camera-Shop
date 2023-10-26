@@ -90,4 +90,5 @@ export const SimilarProducts = () => {
       </section>
     );
   }
+  return null;
 };

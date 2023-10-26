@@ -122,4 +122,5 @@ export const Reviews = () => {
       </section>
     );
   }
+  return null;
 };
