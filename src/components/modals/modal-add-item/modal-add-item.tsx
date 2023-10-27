@@ -3,7 +3,7 @@ import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector
 import { setModalAddItemStatus, setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
 import { getBuyingModalProduct } from '../../../store/product-process/selectors';
 import { getModalAddItemStatus } from '../../../store/modals-process/selectors';
-import { CameraNames, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
+import { CameraNames } from '../../../const';
 import { formatPrice } from '../../../utils';
 import { useRef, useEffect } from 'react';
 
@@ -15,11 +15,9 @@ export const ModalAddItem = () => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isModalAddItemOpen && buttonRef.current) {
-        buttonRef.current.focus();
-      }
-    }, MODAL_ANIMATION_DELAY_TIME);
+    if (isModalAddItemOpen && buttonRef.current) {
+      buttonRef.current.focus();
+    }
   }, [isModalAddItemOpen]);
 
   if (product !== undefined) {

@@ -10,8 +10,6 @@ export const SHOWABLE_REVIEWS_COUNT = 3;
 
 export const SIMILAR_CARDS_SLIDER_DELAY_TIME = 100;
 
-export const MODAL_ANIMATION_DELAY_TIME = 200;
-
 export const MIN_TEXT_LENGTH = 2;
 
 export const MAX_TEXT_LENGTH = 160;

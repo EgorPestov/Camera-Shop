@@ -1,4 +1,4 @@
-import { AppRoute, MODAL_ANIMATION_DELAY_TIME } from '../../../const';
+import { AppRoute } from '../../../const';
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
 import { getModalAddItemSuccessStatus } from '../../../store/modals-process/selectors';
@@ -12,11 +12,9 @@ export const ModalAddItemSuccess = () => {
   const linkRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isModalAddItemSuccessOpen && linkRef.current) {
-        linkRef.current.focus();
-      }
-    }, MODAL_ANIMATION_DELAY_TIME);
+    if (isModalAddItemSuccessOpen && linkRef.current) {
+      linkRef.current.focus();
+    }
   }, [isModalAddItemSuccessOpen]);
 
   return (

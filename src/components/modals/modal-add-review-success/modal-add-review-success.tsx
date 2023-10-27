@@ -3,7 +3,6 @@ import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector
 import { setModalAddReviewSuccessStatus } from '../../../store/modals-process/modals-process';
 import { getReviewSuccessModalStatus } from '../../../store/modals-process/selectors';
 import { useRef, useEffect } from 'react';
-import { MODAL_ANIMATION_DELAY_TIME } from '../../../const';
 
 export const ModalReviewSuccess = () => {
   const dispatch = useAppDispatch();
@@ -12,11 +11,9 @@ export const ModalReviewSuccess = () => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isReviewSuccessModalOpen && buttonRef.current) {
-        buttonRef.current.focus();
-      }
-    }, MODAL_ANIMATION_DELAY_TIME);
+    if (isReviewSuccessModalOpen && buttonRef.current) {
+      buttonRef.current.focus();
+    }
   }, [isReviewSuccessModalOpen]);
 
   return (

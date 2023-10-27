@@ -5,7 +5,7 @@ import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch
 import { setModalAddReviewStatus, setModalAddReviewSuccessStatus } from '../../../store/modals-process/modals-process';
 import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { NewReviewType, ErrorsDataType } from '../../../types';
-import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, MODAL_ANIMATION_DELAY_TIME, StarsNames } from '../../../const';
+import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, StarsNames } from '../../../const';
 import { MouseEvent } from 'react';
 import { postReview } from '../../../store/api-actions';
 
@@ -107,11 +107,9 @@ export const ModalAddReview = () => {
 
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isAddReviewOpened && nameInputRef.current) {
-        nameInputRef.current.focus();
-      }
-    }, MODAL_ANIMATION_DELAY_TIME);
+    if (isAddReviewOpened && nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
   }, [isAddReviewOpened]);
 
   const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
