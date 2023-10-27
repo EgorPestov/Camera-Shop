@@ -1,17 +1,16 @@
-import Swiper from 'swiper/bundle';
-import { Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 import { BANNER_SHOW_TIME, BannerInfo } from '../../const';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getProducts } from '../../store/product-process/selectors';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
-import { useState, useEffect } from 'react';
 
 export const Banner = () => {
   const products = useAppSelector(getProducts);
-  const [swiperInitialized, setSwiperInitialized] = useState(false);
 
   const findIdByName = (name: string) => {
     if (products) {
@@ -19,31 +18,36 @@ export const Banner = () => {
     }
   };
 
-  useEffect(() => {
-    if (!swiperInitialized) {
-      new Swiper('.swiper', {
-        modules: [Navigation],
-        direction: 'horizontal',
-        loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        autoplay: {
-          delay: BANNER_SHOW_TIME,
-          disableOnInteraction: false,
-        },
-      });
-      setSwiperInitialized(true);
-    }
-  }, [swiperInitialized]);
-
   return (
-    <div className='swiper' data-testid="banner">
+    <Swiper
+      direction='horizontal'
+      loop
+      navigation={{
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }}
+      pagination={{
+        el: '.swiper-pagination',
+        clickable: true,
+      }}
+      autoplay={{
+        delay: BANNER_SHOW_TIME,
+        disableOnInteraction: false,
+      }}
+      modules={[Navigation, Pagination]}
+      style={{
+        '--swiper-pagination-color': '#7575E2',
+        '--swiper-pagination-bullet-inactive-color': '#F4F4FC',
+        '--swiper-pagination-bullet-inactive-opacity': '1',
+        '--swiper-pagination-bullet-size': '16px',
+        '--swiper-pagination-bullet-horizontal-gap': '6px',
+        '--swiper-pagination-bottom': '22px',
+      } as React.CSSProperties}
+    >
       <div className="swiper-button-prev" />
       <div className='swiper-wrapper'>
         {BannerInfo.map((banner) => (
-          <div key={banner.name} className="banner swiper-slide">
+          <SwiperSlide key={banner.name} className="banner swiper-slide">
             <picture>
               <source
                 type="image/webp"
@@ -69,10 +73,18 @@ export const Banner = () => {
                 Подробнее
               </Link>
             </p>
-          </div>
+          </SwiperSlide>
         ))}
       </div>
       <div className="swiper-button-next" />
-    </div>
+      <div
+        className="swiper-pagination"
+        style={{
+          textAlign: 'right',
+          paddingRight: '40px',
+        }}
+      >
+      </div>
+    </Swiper>
   );
 };
