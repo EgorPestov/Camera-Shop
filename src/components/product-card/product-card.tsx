@@ -6,7 +6,12 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setBuyingId, setCurrentId } from '../../store/product-process/product-process';
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
 
-export const ProductCard = ({ product, isActive = false }: { product: ProductType; isActive?: boolean }) => {
+interface ProductCardProps {
+  product: ProductType;
+  isActive?: boolean;
+}
+
+export const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const {
     id,
