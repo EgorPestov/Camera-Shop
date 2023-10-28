@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
+import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -34,7 +34,7 @@ export const Banner = () => {
         delay: BANNER_SHOW_TIME,
         disableOnInteraction: false,
       }}
-      modules={[Navigation, Pagination]}
+      modules={[Navigation, Pagination, Autoplay]}
       style={{
         '--swiper-pagination-color': '#7575E2',
         '--swiper-pagination-bullet-inactive-color': '#F4F4FC',
