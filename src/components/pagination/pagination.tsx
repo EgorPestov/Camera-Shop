@@ -9,21 +9,26 @@ import { useEffect, useState } from 'react';
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
-  const [currentBlock, setCurrentBlock] = useState(1);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  let currentPage = Number(searchParams.get('page'));
+  const [currPage, setCurrPage] = useState(Number(searchParams.get('page')));
+  const [currentBlock, setCurrentBlock] = useState(1);
+
   const productsLength = useAppSelector(getProducts).length;
 
-
   useEffect(() => {
-    dispatch(setCurrentPage(currentPage));
+    if (!currPage || currPage < 1) {
+      setCurrPage(1);
+    }
+    dispatch(setCurrentPage(currPage));
     dispatch(setShowableProducts());
-  }, [dispatch, currentPage]);
+  }, [dispatch, currPage]);
 
-  if (!currentPage) {
-    currentPage = 1;
-  }
+  const calculateNewStates = (increment: number) => {
+    const newCurrPage = currPage + increment;
+    const newCurrentBlock = Math.ceil(newCurrPage / SHOWABLE_PAGES_COUNT);
+    return { newCurrPage, newCurrentBlock };
+  };
 
   const pagesCount = Math.ceil(productsLength / SHOWABLE_CARDS_PER_PAGE_COUNT);
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
@@ -33,10 +38,11 @@ export const Pagination = () => {
       return (
         <li key={index} className="pagination__item">
           <Link
-            className={`pagination__link ${currentPage === index + 1 ? 'pagination__link--active' : ''}`}
+            className={`pagination__link ${currPage === index + 1 ? 'pagination__link--active' : ''}`}
             to={`${AppRoute.Root}?page=${index + 1}`}
             onClick={() => {
               dispatch(setShowableProducts());
+              setCurrPage(index + 1);
               setCurrentBlock(Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT));
             }}
           >
@@ -56,8 +62,10 @@ export const Pagination = () => {
               className={`pagination__link pagination__link--text ${currentBlock === 1 ? 'visually-hidden' : ''}`}
               to={`${AppRoute.Root}?page=${(currentBlock - 1) * SHOWABLE_PAGES_COUNT}`}
               onClick={() => {
+                const { newCurrPage, newCurrentBlock } = calculateNewStates(-1);
                 dispatch(setShowableProducts());
-                setCurrentBlock(currentBlock - 1);
+                setCurrPage(newCurrPage);
+                setCurrentBlock(newCurrentBlock);
               }}
             >
               Назад
@@ -69,8 +77,10 @@ export const Pagination = () => {
               className={`pagination__link pagination__link--text ${currentBlock === blocksCount ? 'visually-hidden' : ''}`}
               to={`${AppRoute.Root}?page=${currentBlock * SHOWABLE_PAGES_COUNT + 1}`}
               onClick={() => {
+                const { newCurrPage, newCurrentBlock } = calculateNewStates(1);
                 dispatch(setShowableProducts());
-                setCurrentBlock(currentBlock + 1);
+                setCurrPage(newCurrPage);
+                setCurrentBlock(newCurrentBlock);
               }}
             >
               Далее
