@@ -57,8 +57,8 @@ export const BannerInfo = [
   },
   {
     name: 'Look 54',
-    src: 'promo-look-54.jpg',
-    srcSet: 'promo-look-54.jpg 2x',
+    src: 'img/content/promo-look-54.jpg',
+    srcSet: 'img/content/promo-look-54.jpg 2x',
     srcSetWebp: 'img/content/promo-look-54.webp, promo-look-54@2x.webp 2x',
     description: 'Профессиональная камера от известного производителя',
   }
