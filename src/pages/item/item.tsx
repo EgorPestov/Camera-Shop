@@ -49,6 +49,13 @@ export const Item = () => {
   const product = useAppSelector(getCurrentProduct);
   const isProductsLoading = useAppSelector(getProductsLoadStatus);
 
+  const onButtonClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   if (isProductsLoading) {
     return (<LoadingScreen />);
   } else if (product !== undefined && currentId !== undefined) {
@@ -196,11 +203,11 @@ export const Item = () => {
           {isModalAddItemOpen ? (<ModalAddItem />) : ''}
           {isModalAddItemSuccessOpen ? (<ModalAddItemSuccess />) : ''}
         </main>
-        <a className="up-btn" href="#header">
+        <button className="up-btn" onClick={onButtonClick}>
           <svg width={12} height={18} aria-hidden="true">
             <use xlinkHref="#icon-arrow2" />
           </svg>
-        </a>
+        </button>
         <ModalAddReview />
         <ModalReviewSuccess />
         <Footer />
