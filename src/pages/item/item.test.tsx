@@ -22,6 +22,8 @@ describe('Page: Item', () => {
         isSimilarProductsLoading: false,
         reviews: mockReviews,
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       },
       MODALS: {
         isModalAddItemOpen: false,
