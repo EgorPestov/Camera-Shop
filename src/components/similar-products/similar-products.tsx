@@ -14,15 +14,18 @@ export const SimilarProducts = () => {
   const isSimilarProductsLoading = useAppSelector(getSimilarProductsLoadStatus);
   const similarProducts = useAppSelector(getSimilarProducts);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPrevDisabled, setIsPrevDisabled] = useState(true);
+  const [isNextDisabled, setIsNextDisabled] = useState(false);
 
   const handleNextClick = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation();
     if (currentIndex + SHOWABLE_SIMILAR_CARDS_COUNT < similarProducts.length) {
       setTimeout(() => {
-        setCurrentIndex(currentIndex + SHOWABLE_SIMILAR_CARDS_COUNT);
+        const newIndex = currentIndex + SHOWABLE_SIMILAR_CARDS_COUNT;
+        setCurrentIndex(newIndex);
+        setIsPrevDisabled(false);
+        setIsNextDisabled(newIndex + SHOWABLE_SIMILAR_CARDS_COUNT >= similarProducts.length);
       }, SIMILAR_CARDS_SLIDER_DELAY_TIME);
-    } else {
-      setCurrentIndex(0);
     }
   };
 
@@ -30,10 +33,11 @@ export const SimilarProducts = () => {
     evt.stopPropagation();
     if (currentIndex - SHOWABLE_SIMILAR_CARDS_COUNT >= 0) {
       setTimeout(() => {
-        setCurrentIndex(currentIndex - SHOWABLE_SIMILAR_CARDS_COUNT);
+        const newIndex = currentIndex - SHOWABLE_SIMILAR_CARDS_COUNT;
+        setCurrentIndex(newIndex);
+        setIsNextDisabled(false);
+        setIsPrevDisabled(newIndex <= 0);
       }, SIMILAR_CARDS_SLIDER_DELAY_TIME);
-    } else {
-      setCurrentIndex(Math.max(0, similarProducts.length - SHOWABLE_SIMILAR_CARDS_COUNT));
     }
   };
 
@@ -70,6 +74,7 @@ export const SimilarProducts = () => {
               type="button"
               aria-label="Предыдущий слайд"
               onClick={handlePrevClick}
+              disabled={isPrevDisabled}
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />
@@ -80,6 +85,7 @@ export const SimilarProducts = () => {
               type="button"
               aria-label="Следующий слайд"
               onClick={handleNextClick}
+              disabled={isNextDisabled}
             >
               <svg width={7} height={12} aria-hidden="true">
                 <use xlinkHref="#icon-arrow" />
