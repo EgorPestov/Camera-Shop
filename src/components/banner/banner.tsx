@@ -21,6 +21,7 @@ export const Banner = () => {
   return (
     <Swiper
       direction='horizontal'
+      data-testid='banner'
       loop
       pagination={{
         el: '.swiper-pagination',

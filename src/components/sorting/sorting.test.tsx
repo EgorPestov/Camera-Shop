@@ -21,6 +21,8 @@ describe('Component: Sorting', () => {
         isSimilarProductsLoading: false,
         reviews: [],
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       }
     });
 

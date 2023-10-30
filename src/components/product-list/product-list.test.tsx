@@ -21,6 +21,8 @@ describe('Component: Product List', () => {
         isSimilarProductsLoading: false,
         reviews: [],
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       }
     });
 

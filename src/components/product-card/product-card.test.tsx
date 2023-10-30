@@ -24,6 +24,8 @@ describe('Component: Product Card', () => {
         isSimilarProductsLoading: false,
         reviews: [],
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       }
     });
 

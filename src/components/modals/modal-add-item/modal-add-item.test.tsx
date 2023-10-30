@@ -21,6 +21,8 @@ describe('Component: Modal Add Item', () => {
         isSimilarProductsLoading: false,
         reviews: [],
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       },
       MODALS: {
         isModalAddItemOpen: true,

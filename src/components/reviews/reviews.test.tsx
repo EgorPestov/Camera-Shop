@@ -22,6 +22,8 @@ describe('Component: Reviews', () => {
         isSimilarProductsLoading: false,
         reviews: mockReviews,
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       }
     });
 

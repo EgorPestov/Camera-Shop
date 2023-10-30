@@ -22,6 +22,8 @@ describe('Component: Modal Add Review', () => {
         isSimilarProductsLoading: false,
         reviews: mockReviews,
         isReviewsLoading: false,
+        product: null,
+        isProductLoading: false,
       },
       MODALS: {
         isModalAddItemOpen: false,
