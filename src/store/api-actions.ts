@@ -6,7 +6,7 @@ import { NewReviewType, ProductType, ReviewType } from '../types';
 import { APIRoute } from '../const';
 import { toast } from 'react-toastify';
 import {
-  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts,
+  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts, setProduct, setProductLoadStatus,
   setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus
 } from './product-process/product-process';
 
@@ -33,6 +33,23 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
+    }
+  }
+);
+
+export const fetchProduct = createAsyncThunk<void, { id: number }, thunkObjType>(
+  'PRODUCTS/fetchProduct',
+  async ({ id }, { dispatch, extra: api }) => {
+    try {
+      dispatch(setProductLoadStatus(true));
+      const url = `${APIRoute.Products}/${id}`;
+      const { data } = await api.get<ProductType>(url);
+      dispatch(setProduct(data));
+    } catch {
+      toast.error('Ошибка загрузки товара, пожалуйста, попробуйте еще раз');
+      throw new Error;
+    } finally {
+      dispatch(setProductLoadStatus(false));
     }
   }
 );

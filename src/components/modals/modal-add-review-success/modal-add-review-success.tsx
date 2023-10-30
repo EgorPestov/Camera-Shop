@@ -7,7 +7,6 @@ import { useRef, useEffect } from 'react';
 export const ModalReviewSuccess = () => {
   const dispatch = useAppDispatch();
   const isReviewSuccessModalOpen = useAppSelector(getReviewSuccessModalStatus);
-  const handleClose = () => dispatch(setModalAddReviewSuccessStatus(false));
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -15,6 +14,10 @@ export const ModalReviewSuccess = () => {
       buttonRef.current.focus();
     }
   }, [isReviewSuccessModalOpen]);
+
+  const handleClose = () => {
+    dispatch(setModalAddReviewSuccessStatus(false));
+  };
 
   return (
     <div className={`modal ${isReviewSuccessModalOpen ? 'is-active' : ''} modal--narrow`} data-testid="modal-add-review-success">

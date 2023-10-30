@@ -7,7 +7,7 @@ import React, { useState, ChangeEvent, useRef, useEffect } from 'react';
 import { NewReviewType, ErrorsDataType } from '../../../types';
 import { MAX_TEXT_LENGTH, MIN_TEXT_LENGTH, StarsNames } from '../../../const';
 import { MouseEvent } from 'react';
-import { postReview } from '../../../store/api-actions';
+import { fetchProduct, postReview } from '../../../store/api-actions';
 
 
 export const ModalAddReview = () => {
@@ -54,7 +54,7 @@ export const ModalAddReview = () => {
 
   const handleSubmit = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    const updateErrorsData = (newErrorsData: ErrorsDataType) => {
+    const updateErrorsData = async (newErrorsData: ErrorsDataType) => {
       setErrorsData(newErrorsData);
 
       if (
@@ -64,7 +64,8 @@ export const ModalAddReview = () => {
         !newErrorsData.review &&
         !newErrorsData.rating
       ) {
-        dispatch(postReview(reviewData));
+        await dispatch(postReview(reviewData));
+        await dispatch(fetchProduct({ id: currentId }));
         handleClose();
         dispatch(setModalAddReviewSuccessStatus(true));
       }

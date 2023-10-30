@@ -18,6 +18,8 @@ export type ProductsProcessType = {
   isSimilarProductsLoading: boolean;
   reviews: ReviewType[];
   isReviewsLoading: boolean;
+  product: ProductType | null;
+  isProductLoading: boolean;
 }
 
 export const initialState: ProductsProcessType = {
@@ -35,6 +37,8 @@ export const initialState: ProductsProcessType = {
   isSimilarProductsLoading: false,
   reviews: [],
   isReviewsLoading: false,
+  product: null,
+  isProductLoading: false,
 };
 
 export const productsProcessSlice = createSlice({
@@ -83,6 +87,12 @@ export const productsProcessSlice = createSlice({
     setReviewsLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isReviewsLoading = action.payload;
     },
+    setProduct: (state, action: PayloadAction<ProductType | null>) => {
+      state.product = action.payload;
+    },
+    setProductLoadStatus: (state, action: PayloadAction<boolean>) => {
+      state.isProductLoading = action.payload;
+    },
     sortProducts: (state) => {
       if (state.sortingType === 'price' && state.sortingDirection === 'top') {
         state.products = [...state.products].sort((a, b) => a.price - b.price);
@@ -95,4 +105,4 @@ export const productsProcessSlice = createSlice({
 
 export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId,
   setError, sortProducts, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
-  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus } = productsProcessSlice.actions;
+  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setProduct, setProductLoadStatus } = productsProcessSlice.actions;

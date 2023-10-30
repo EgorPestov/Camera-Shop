@@ -4,7 +4,7 @@ import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { SimilarProducts } from '../../components/similar-products/similar-products';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { getCurrentProduct, getProductsLoadStatus } from '../../store/product-process/selectors';
+import { getProduct, getProductLoadStatus } from '../../store/product-process/selectors';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/modals-process/selectors';
 import { setCurrentId, setBuyingId } from '../../store/product-process/product-process';
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
@@ -18,16 +18,29 @@ import { Helmet } from 'react-helmet-async';
 import { redirectToRoute } from '../../store/actions';
 import { ModalAddReview } from '../../components/modals/modal-add-review/modal-add-review';
 import { ModalReviewSuccess } from '../../components/modals/modal-add-review-success/modal-add-review-success';
+import { fetchProduct } from '../../store/api-actions';
 
 export const Item = () => {
   const currentId = useParams().id;
   const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
-
+  const id = Number(currentId);
   const location = useLocation();
   const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   let currentOption = searchParams.get('tab');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      dispatch(fetchProduct({id}));
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch, id]);
 
   if (!currentOption) {
     currentOption = 'dscrptn';
@@ -35,7 +48,7 @@ export const Item = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(setCurrentId(Number(currentId)));
+    dispatch(setCurrentId(id));
 
     const baseUrl = location.pathname;
 
@@ -44,10 +57,10 @@ export const Item = () => {
       const newUrl = `${baseUrl}?${searchParams.toString()}`;
       history.replaceState(null, '', newUrl);
     }
-  }, [dispatch, currentId, location, searchParams]);
+  }, [dispatch, location, searchParams, id]);
 
-  const product = useAppSelector(getCurrentProduct);
-  const isProductsLoading = useAppSelector(getProductsLoadStatus);
+  const product = useAppSelector(getProduct);
+  const isProductLoading = useAppSelector(getProductLoadStatus);
 
   const onButtonClick = () => {
     window.scrollTo({
@@ -56,7 +69,7 @@ export const Item = () => {
     });
   };
 
-  if (isProductsLoading) {
+  if (isProductLoading || product === null) {
     return (<LoadingScreen />);
   } else if (product !== undefined && currentId !== undefined) {
     return (
@@ -122,7 +135,8 @@ export const Item = () => {
                       ))}
                       <p className="visually-hidden">Рейтинг: 4</p>
                       <p className="rate__count">
-                        <span className="visually-hidden">Всего оценок:</span>12
+                        <span className="visually-hidden">Всего оценок:</span>
+                        {product.reviewCount}
                       </p>
                     </div>
                     <p className="product__price">

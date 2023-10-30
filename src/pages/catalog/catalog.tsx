@@ -13,14 +13,18 @@ import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-succ
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/modals-process/selectors';
 import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
+import { fetchProducts } from '../../store/api-actions';
 
 export const Catalog = () => {
+  const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   return (
     <div className="wrapper" data-testid="catalog">
