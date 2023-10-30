@@ -1,5 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -22,10 +22,6 @@ export const Banner = () => {
     <Swiper
       direction='horizontal'
       loop
-      navigation={{
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      }}
       pagination={{
         el: '.swiper-pagination',
         clickable: true,
@@ -34,7 +30,7 @@ export const Banner = () => {
         delay: BANNER_SHOW_TIME,
         disableOnInteraction: false,
       }}
-      modules={[Navigation, Pagination, Autoplay]}
+      modules={[Pagination, Autoplay]}
       style={{
         '--swiper-pagination-color': '#7575E2',
         '--swiper-pagination-bullet-inactive-color': '#F4F4FC',
@@ -44,7 +40,6 @@ export const Banner = () => {
         '--swiper-pagination-bottom': '22px',
       } as React.CSSProperties}
     >
-      <div className="swiper-button-prev" />
       <div className='swiper-wrapper'>
         {BannerInfo.map((banner) => (
           <SwiperSlide key={banner.name} className="banner swiper-slide">
@@ -76,7 +71,6 @@ export const Banner = () => {
           </SwiperSlide>
         ))}
       </div>
-      <div className="swiper-button-next" />
       <div
         className="swiper-pagination"
         style={{
