@@ -6,32 +6,33 @@ import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setShowableProducts, setCurrentPage } from '../../store/product-process/product-process';
 import { useEffect, useState } from 'react';
+import { redirectToRoute } from '../../store/actions';
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const [currPage, setCurrPage] = useState(Number(searchParams.get('page')));
+  const [currPage, setCurrPage] = useState(Number(searchParams.get('page')) || 1);
   const [currentBlock, setCurrentBlock] = useState(1);
 
   const productsLength = useAppSelector(getProducts).length;
+  const pagesCount = Math.ceil(productsLength / SHOWABLE_CARDS_PER_PAGE_COUNT);
+  const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
   useEffect(() => {
-    if (!currPage || currPage < 1) {
-      setCurrPage(1);
+    if (currPage > 5 || currPage < 1) {
+      dispatch(redirectToRoute(AppRoute.NotFound));
     }
     dispatch(setCurrentPage(currPage));
+    setCurrentBlock(Math.ceil(currPage / SHOWABLE_PAGES_COUNT));
     dispatch(setShowableProducts());
-  }, [dispatch, currPage]);
+  }, [dispatch, currPage, pagesCount]);
 
   const calculateNewStates = (increment: number) => {
     const newCurrPage = currPage + increment;
     const newCurrentBlock = Math.ceil(newCurrPage / SHOWABLE_PAGES_COUNT);
     return { newCurrPage, newCurrentBlock };
   };
-
-  const pagesCount = Math.ceil(productsLength / SHOWABLE_CARDS_PER_PAGE_COUNT);
-  const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
   const numberButtons = Array.from({ length: 5 }, (_, index) => {
     if (Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT) === currentBlock) {

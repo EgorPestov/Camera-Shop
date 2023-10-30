@@ -10,7 +10,7 @@ import { setCurrentId, setBuyingId } from '../../store/product-process/product-p
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
-import { AppRoute } from '../../const';
+import { AppRoute, PRODUCTS_COUNT } from '../../const';
 import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-item';
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { Reviews } from '../../components/reviews/reviews';
@@ -31,10 +31,17 @@ export const Item = () => {
   let currentOption = searchParams.get('tab');
 
   useEffect(() => {
+    if (isNaN(Number(id)) || id < 1 || id > PRODUCTS_COUNT || currentOption !== 'dscrptn' && currentOption !== 'spec') {
+      dispatch(redirectToRoute(AppRoute.NotFound));
+    }
+
+  }, [id, dispatch, currentOption]);
+
+  useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      dispatch(fetchProduct({id}));
+      dispatch(fetchProduct({ id }));
     }
 
     return () => {
