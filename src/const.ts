@@ -8,7 +8,7 @@ export const SHOWABLE_SIMILAR_CARDS_COUNT = 3;
 
 export const SHOWABLE_REVIEWS_COUNT = 3;
 
-export const SIMILAR_CARDS_SLIDER_DELAY_TIME = 100;
+export const SIMILAR_CARDS_SLIDER_DELAY_TIME = 300;
 
 export const MIN_TEXT_LENGTH = 2;
 
