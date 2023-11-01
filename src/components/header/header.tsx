@@ -12,6 +12,7 @@ export const Header = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(getProducts);
   const [isListOpened, setIsListOpened] = useState(false);
+  const [isListEmpty, setIsListEmpty] = useState(false);
   const [foundProducts, setFoundProducts] = useState<ProductType[]>([]);
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -23,12 +24,17 @@ export const Header = () => {
     );
 
     setFoundProducts(filteredProducts);
+    if (filteredProducts.length === 0) {
+      setIsListEmpty(true);
+    } else {
+      setIsListEmpty(false);
+    }
+
     if (searchValue.length >= MIN_SEARCH_LENGTH) {
       setIsListOpened(true);
     } else {
       setIsListOpened(false);
     }
-
   };
 
   const handleResetClick = () => {
@@ -95,19 +101,26 @@ export const Header = () => {
               />
             </label>
             <ul className="form-search__select-list scroller">
-              {foundProducts.map((product) => (
+              {isListEmpty ?
                 <li
                   className="form-search__select-item"
-                  tabIndex={0}
-                  key={product.id}
-                  onClick={() => {
-                    dispatch(setCurrentId(product.id));
-                    dispatch(redirectToRoute(`${AppRoute.Item}/${product.id}`));
-                  }}
+                  style={{ pointerEvents: 'none' }}
                 >
-                  {product.name}
-                </li>
-              ))}
+                  Ничего не найдено
+                </li> :
+                foundProducts.map((product) => (
+                  <li
+                    className="form-search__select-item"
+                    tabIndex={0}
+                    key={product.id}
+                    onClick={() => {
+                      dispatch(setCurrentId(product.id));
+                      dispatch(redirectToRoute(`${AppRoute.Item}/${product.id}?tab=dscrptn`));
+                    }}
+                  >
+                    {product.name}
+                  </li>
+                ))}
             </ul>
           </form>
           <button
