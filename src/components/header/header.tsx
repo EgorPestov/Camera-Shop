@@ -161,7 +161,6 @@ export const Header = () => {
                     }}
                     onFocus={() => setFocusedIndex(index)}
                     ref={(element) => (refList.current[index] = element)}
-
                   >
                     {product.name}
                   </li>
@@ -172,6 +171,11 @@ export const Header = () => {
             className="form-search__reset"
             type="reset"
             onClick={handleResetClick}
+            onBlur={() => {
+              if (searchRef.current) {
+                searchRef.current.focus();
+              }
+            }}
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
