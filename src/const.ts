@@ -16,6 +16,8 @@ export const MAX_TEXT_LENGTH = 160;
 
 export const PRODUCTS_COUNT = 40;
 
+export const MIN_SEARCH_LENGTH = 3;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',
