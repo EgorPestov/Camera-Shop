@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AppRoute, MIN_SEARCH_LENGTH } from '../../const';
-import { ChangeEvent, useState, useRef } from 'react';
+import { ChangeEvent, useEffect, KeyboardEvent, useState, useRef } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getProducts } from '../../store/product-process/selectors';
 import { ProductType } from '../../types';
@@ -13,8 +13,11 @@ export const Header = () => {
   const products = useAppSelector(getProducts);
   const [isListOpened, setIsListOpened] = useState(false);
   const [isListEmpty, setIsListEmpty] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [foundProducts, setFoundProducts] = useState<ProductType[]>([]);
+
   const searchRef = useRef<HTMLInputElement>(null);
+  const refList = useRef<Array<HTMLLIElement | null>>([]);
 
   const handleSearchChange = (evt: ChangeEvent<HTMLInputElement>) => {
     evt.preventDefault();
@@ -26,6 +29,7 @@ export const Header = () => {
     setFoundProducts(filteredProducts);
     if (filteredProducts.length === 0) {
       setIsListEmpty(true);
+      setFocusedIndex(-1);
     } else {
       setIsListEmpty(false);
     }
@@ -43,6 +47,44 @@ export const Header = () => {
       searchRef.current.value = '';
     }
   };
+
+  const handleKeyDown = (evt: KeyboardEvent<HTMLFormElement>) => {
+    if (evt.key === 'ArrowDown') {
+      evt.preventDefault();
+      setFocusedIndex((prevIndex) =>
+        prevIndex < foundProducts.length - 1 ? prevIndex + 1 : prevIndex
+      );
+    } else if (evt.key === 'ArrowUp') {
+      evt.preventDefault();
+      if (focusedIndex === 0) {
+        if (searchRef.current) {
+          searchRef.current.focus();
+        }
+        setFocusedIndex(-1);
+      } else {
+        setFocusedIndex((prevIndex) =>
+          prevIndex > 0 ? prevIndex - 1 : prevIndex
+        );
+      }
+    } else if (evt.key === 'Enter' && focusedIndex !== -1) {
+      evt.preventDefault();
+      const selectedProduct = foundProducts[focusedIndex];
+      dispatch(setCurrentId(selectedProduct.id));
+      dispatch(
+        redirectToRoute(`${AppRoute.Item}/${selectedProduct.id}?tab=dscrptn`)
+      );
+    }
+
+  };
+
+  useEffect(() => {
+    if (focusedIndex !== -1 && refList.current[focusedIndex]) {
+      const element = refList.current[focusedIndex];
+      if (element) {
+        element.focus();
+      }
+    }
+  }, [focusedIndex]);
 
   return (
     <header className="header" id="header" data-testid="header">
@@ -81,7 +123,7 @@ export const Header = () => {
           </ul>
         </nav>
         <div className={`form-search ${isListOpened ? 'list-opened' : ''}`}>
-          <form>
+          <form onKeyDown={handleKeyDown}>
             <label>
               <svg
                 className="form-search__icon"
@@ -108,7 +150,7 @@ export const Header = () => {
                 >
                   Ничего не найдено
                 </li> :
-                foundProducts.map((product) => (
+                foundProducts.map((product, index) => (
                   <li
                     className="form-search__select-item"
                     tabIndex={0}
@@ -117,6 +159,9 @@ export const Header = () => {
                       dispatch(setCurrentId(product.id));
                       dispatch(redirectToRoute(`${AppRoute.Item}/${product.id}?tab=dscrptn`));
                     }}
+                    onFocus={() => setFocusedIndex(index)}
+                    ref={(element) => (refList.current[index] = element)}
+
                   >
                     {product.name}
                   </li>
