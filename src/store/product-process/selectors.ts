@@ -6,8 +6,8 @@ export const getProducts = (state: State): ProductType[] => state[NameSpace.Prod
 export const getBackupProducts = (state: State): ProductType[] => state[NameSpace.Products].backupProducts;
 export const getProductsLoadStatus = (state: State): boolean => state[NameSpace.Products].isProductsLoading;
 export const hasError = (state: State): boolean => state[NameSpace.Products].hasError;
-export const getSortingType = (state: State): 'price' | 'popularity' => state[NameSpace.Products].sortingType;
-export const getSortingDirection = (state: State): 'top' | 'down' => state[NameSpace.Products].sortingDirection;
+export const getSortingType = (state: State): 'price' | 'popularity' | null => state[NameSpace.Products].sortingType;
+export const getSortingDirection = (state: State): 'top' | 'down' | null => state[NameSpace.Products].sortingDirection;
 export const getShowableProducts = (state: State): ProductType[] => state[NameSpace.Products].showableProducts;
 export const getCurrentPage = (state: State): number => state[NameSpace.Products].currentPage;
 export const getSimilarProducts = (state: State): ProductType[] => state[NameSpace.Products].similarProducts;

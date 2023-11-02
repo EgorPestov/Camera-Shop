@@ -6,8 +6,8 @@ import { NewReviewType, ProductType, ReviewType } from '../types';
 import { APIRoute } from '../const';
 import { toast } from 'react-toastify';
 import {
-  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts, setProduct, setProductLoadStatus,
-  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus
+  setProducts, setBackupProducts, setProductsLoadStatus, setError, setProduct, setProductLoadStatus,
+  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, sortProducts
 } from './product-process/product-process';
 
 type thunkObjType = {

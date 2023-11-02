@@ -1,21 +1,126 @@
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setSortingType, setSortingDirection, sortProducts, setShowableProducts } from '../../store/product-process/product-process';
-
+import { useState, useEffect, useCallback } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
+import { getSortingType, getSortingDirection } from '../../store/product-process/selectors';
+import { redirectToRoute } from '../../store/actions';
+import { AppRoute } from '../../const';
 
 export const Sorting = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const sortingType = useAppSelector(getSortingType);
+  const sortingDirection = useAppSelector(getSortingDirection);
 
-  const handleTypeClick = (item: 'price' | 'popularity') => {
+  const [isPriceChecked, setIsPriceChecked] = useState(false);
+  const [isPopularityChecked, setIsPopularityChecked] = useState(false);
+  const [isTopChecked, setIsTopChecked] = useState(false);
+  const [isDownChecked, setIsDownChecked] = useState(false);
+
+  const updateURL = useCallback((type: 'price' | 'popularity', direction: 'top' | 'down') => {
+    const currentQueryParams = new URLSearchParams(location.search);
+    currentQueryParams.set('type', type);
+    currentQueryParams.set('direction', direction);
+
+    navigate({
+      pathname: location.pathname,
+      search: currentQueryParams.toString()
+    });
+  }, [location.search, location.pathname, navigate]);
+
+
+  const handleTypeChange = (item: 'price' | 'popularity') => {
+    let direction: 'down' | 'top' = isDownChecked ? 'down' : 'top';
+    if (isTopChecked === false && isDownChecked === false) {
+      setIsDownChecked(true);
+      dispatch(setSortingDirection('down'));
+      direction = 'down';
+    }
+
+    if (item === 'price') {
+      setIsPriceChecked((prevValue) => (!prevValue));
+      setIsPopularityChecked(false);
+    } else {
+      setIsPopularityChecked((prevValue) => (!prevValue));
+      setIsPriceChecked(false);
+    }
     dispatch(setSortingType(item));
     dispatch(sortProducts());
     dispatch(setShowableProducts());
+    updateURL(item, direction);
   };
 
-  const handleDirectionClick = (item: 'top' | 'down') => {
+  const handleDirectionChange = (item: 'top' | 'down') => {
+    let type: 'price' | 'popularity' = isPriceChecked ? 'price' : 'popularity';
+    if (isPriceChecked === false && isPopularityChecked === false) {
+      setIsPriceChecked(true);
+      dispatch(setSortingType('price'));
+      type = 'price';
+    }
+
+    if (item === 'top') {
+      setIsTopChecked((prevValue) => (!prevValue));
+      setIsDownChecked(false);
+    } else {
+      setIsDownChecked((prevValue) => (!prevValue));
+      setIsTopChecked(false);
+    }
     dispatch(setSortingDirection(item));
     dispatch(sortProducts());
     dispatch(setShowableProducts());
+    updateURL(type, item);
   };
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    let type = queryParams.get('type');
+    let direction = queryParams.get('direction');
+
+    if (!type && sortingType) {
+      type = sortingType;
+    }
+
+    if (!direction && sortingDirection) {
+      direction = sortingDirection;
+    }
+
+    if (type) {
+      if (type === 'price') {
+        setIsPriceChecked(true);
+        setIsPopularityChecked(false);
+        dispatch(setSortingType('price'));
+      } else if (type === 'popularity') {
+        setIsPopularityChecked(true);
+        setIsPriceChecked(false);
+        dispatch(setSortingType('popularity'));
+      } else {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+        return;
+      }
+    }
+
+    if (direction) {
+      if (direction === 'top') {
+        setIsTopChecked(true);
+        setIsDownChecked(false);
+        dispatch(setSortingDirection('top'));
+      } else if (direction === 'down') {
+        setIsDownChecked(true);
+        setIsTopChecked(false);
+        dispatch(setSortingDirection('down'));
+      } else {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+        return;
+      }
+    }
+
+    if (type && direction) {
+      updateURL(type as 'price' | 'popularity', direction as 'top' | 'down');
+    }
+  }, [location.search, dispatch, sortingType, sortingDirection, updateURL]);
+
 
   return (
     <div className="catalog-sort" data-testid="sorting">
@@ -28,8 +133,8 @@ export const Sorting = () => {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                defaultChecked
-                onClick={() => handleTypeClick('price')}
+                checked={isPriceChecked}
+                onChange={() => handleTypeChange('price')}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -38,7 +143,8 @@ export const Sorting = () => {
                 type="radio"
                 id="sortPopular"
                 name="sort"
-                onClick={() => handleTypeClick('popularity')}
+                checked={isPopularityChecked}
+                onChange={() => handleTypeChange('popularity')}
               />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
@@ -49,9 +155,9 @@ export const Sorting = () => {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                defaultChecked
+                checked={isTopChecked}
                 aria-label="По возрастанию"
-                onClick={() => handleDirectionClick('top')}
+                onChange={() => handleDirectionChange('top')}
               />
               <label htmlFor="up">
                 <svg width={16} height={14} aria-hidden="true">
@@ -64,8 +170,9 @@ export const Sorting = () => {
                 type="radio"
                 id="down"
                 name="sort-icon"
+                checked={isDownChecked}
                 aria-label="По убыванию"
-                onClick={() => handleDirectionClick('down')}
+                onChange={() => handleDirectionChange('down')}
               />
               <label htmlFor="down">
                 <svg width={16} height={14} aria-hidden="true">

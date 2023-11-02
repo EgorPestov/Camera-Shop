@@ -8,8 +8,8 @@ export type ProductsProcessType = {
   backupProducts: ProductType[];
   isProductsLoading: boolean;
   hasError: boolean;
-  sortingType: 'price' | 'popularity';
-  sortingDirection: 'top' | 'down';
+  sortingType: 'price' | 'popularity' | null;
+  sortingDirection: 'top' | 'down' | null;
   currentPage: number;
   showableProducts: ProductType[];
   currentId: number;
@@ -27,8 +27,8 @@ export const initialState: ProductsProcessType = {
   backupProducts: [],
   isProductsLoading: true,
   hasError: false,
-  sortingType: 'price',
-  sortingDirection: 'top',
+  sortingType: null,
+  sortingDirection: null,
   currentPage: 1,
   showableProducts: [],
   currentId: 0,
@@ -98,6 +98,10 @@ export const productsProcessSlice = createSlice({
         state.products = [...state.products].sort((a, b) => a.price - b.price);
       } else if (state.sortingType === 'price' && state.sortingDirection === 'down') {
         state.products = [...state.products].sort((a, b) => b.price - a.price);
+      } else if (state.sortingType === 'popularity' && state.sortingDirection === 'top') {
+        state.products = [...state.products].sort((a, b) => a.rating - b.rating);
+      } else if (state.sortingType === 'popularity' && state.sortingDirection === 'down') {
+        state.products = [...state.products].sort((a, b) => b.rating - a.rating);
       }
     },
   },
