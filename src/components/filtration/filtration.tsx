@@ -14,9 +14,15 @@ export const Filtration = () => {
 
   const handleCategoryChange = (category: 'Фотоаппарат' | 'Видеокамера') => (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilterCatefory(event.target.checked ? category : null));
+
+    if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
+      dispatch(setFilterType(null));
+    }
+
     dispatch(sortAndFilterProducts());
     dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
+
 
   const handleTypeChange = (type: 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная') => (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilterType(event.target.checked ? type : null));
