@@ -10,7 +10,7 @@ import { State } from '../hooks/use-app-selector/use-app-selector';
 import { fetchProducts, fetchSimilarProducts, fetchReviews, postReview } from './api-actions';
 import { APIRoute } from '../const';
 import {
-  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortProducts,
+  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortAndFilterProducts,
   setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus
 } from './product-process/product-process';
 
@@ -41,7 +41,7 @@ describe('Async actions', () => {
         setProductsLoadStatus.type,
         setProducts.type,
         setBackupProducts.type,
-        sortProducts.type,
+        sortAndFilterProducts.type,
         setShowableProducts.type,
         setError.type,
         setProductsLoadStatus.type,

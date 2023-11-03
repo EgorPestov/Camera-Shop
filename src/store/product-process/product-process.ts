@@ -20,6 +20,9 @@ export type ProductsProcessType = {
   isReviewsLoading: boolean;
   product: ProductType | null;
   isProductLoading: boolean;
+  filterCategory: 'Фотоаппарат' | 'Видеокамера' | null;
+  filterType: 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null;
+  filterLevel: 'Нулевой' | 'Любительский' | 'Профессиональный' | null;
 }
 
 export const initialState: ProductsProcessType = {
@@ -39,6 +42,9 @@ export const initialState: ProductsProcessType = {
   isReviewsLoading: false,
   product: null,
   isProductLoading: false,
+  filterCategory: null,
+  filterType: null,
+  filterLevel: null,
 };
 
 export const productsProcessSlice = createSlice({
@@ -93,7 +99,19 @@ export const productsProcessSlice = createSlice({
     setProductLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isProductLoading = action.payload;
     },
-    sortProducts: (state) => {
+    sortAndFilterProducts: (state) => {
+      state.products = [...state.backupProducts];
+
+      if (state.filterCategory) {
+        state.products = state.products.filter((product) => product.category === state.filterCategory);
+      }
+      if (state.filterType) {
+        state.products = state.products.filter((product) => product.type === state.filterType);
+      }
+      if (state.filterLevel) {
+        state.products = state.products.filter((product) => product.level === state.filterLevel);
+      }
+
       if (state.sortingType === 'price' && state.sortingDirection === 'top') {
         state.products = [...state.products].sort((a, b) => a.price - b.price);
       } else if (state.sortingType === 'price' && state.sortingDirection === 'down') {
@@ -104,9 +122,18 @@ export const productsProcessSlice = createSlice({
         state.products = [...state.products].sort((a, b) => b.rating - a.rating);
       }
     },
+    setFilterCatefory: (state, action: PayloadAction<'Фотоаппарат' | 'Видеокамера' | null>) => {
+      state.filterCategory = action.payload;
+    },
+    setFilterType: (state, action: PayloadAction<'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null>) => {
+      state.filterType = action.payload;
+    },
+    setFilterLevel: (state, action: PayloadAction<'Нулевой' | 'Любительский' | 'Профессиональный' | null>) => {
+      state.filterLevel = action.payload;
+    },
   },
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId,
-  setError, sortProducts, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
-  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setProduct, setProductLoadStatus } = productsProcessSlice.actions;
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId, setFilterCatefory, setFilterType, setFilterLevel,
+  setError, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
+  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setProduct, setProductLoadStatus, sortAndFilterProducts } = productsProcessSlice.actions;

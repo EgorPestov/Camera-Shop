@@ -7,7 +7,7 @@ import { APIRoute } from '../const';
 import { toast } from 'react-toastify';
 import {
   setProducts, setBackupProducts, setProductsLoadStatus, setError, setProduct, setProductLoadStatus,
-  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, sortProducts
+  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, sortAndFilterProducts
 } from './product-process/product-process';
 
 type thunkObjType = {
@@ -24,7 +24,7 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       const { data } = await api.get<ProductType[]>(APIRoute.Products);
       dispatch(setProducts(data));
       dispatch(setBackupProducts(data));
-      dispatch(sortProducts());
+      dispatch(sortAndFilterProducts());
       dispatch(setShowableProducts());
       dispatch(setError(false));
     } catch {

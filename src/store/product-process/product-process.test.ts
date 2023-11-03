@@ -220,7 +220,7 @@ describe('Products Process Slice', () => {
       products: mockProducts,
     };
 
-    const action = productsProcessSlice.actions.sortProducts();
+    const action = productsProcessSlice.actions.sortAndFilterProducts();
 
     const result = productsProcessSlice.reducer(startState, action);
 

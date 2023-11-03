@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setSortingType, setSortingDirection, sortProducts, setShowableProducts } from '../../store/product-process/product-process';
+import { setSortingType, setSortingDirection, sortAndFilterProducts, setShowableProducts } from '../../store/product-process/product-process';
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
@@ -47,7 +47,7 @@ export const Sorting = () => {
       setIsPriceChecked(false);
     }
     dispatch(setSortingType(item));
-    dispatch(sortProducts());
+    dispatch(sortAndFilterProducts());
     dispatch(setShowableProducts());
     updateURL(item, direction);
   };
@@ -68,7 +68,7 @@ export const Sorting = () => {
       setIsTopChecked(false);
     }
     dispatch(setSortingDirection(item));
-    dispatch(sortProducts());
+    dispatch(sortAndFilterProducts());
     dispatch(setShowableProducts());
     updateURL(type, item);
   };
