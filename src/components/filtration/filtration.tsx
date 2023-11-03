@@ -2,7 +2,7 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { sortAndFilterProducts, setFilterCatefory, setFilterLevel, setFilterType } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getFilterCategory, getFilterType, getFilterLevel } from '../../store/product-process/selectors';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute } from '../../const';
 
@@ -23,7 +23,6 @@ export const Filtration = () => {
     dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
 
-
   const handleTypeChange = (type: 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная') => (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilterType(event.target.checked ? type : null));
     dispatch(sortAndFilterProducts());
@@ -35,6 +34,34 @@ export const Filtration = () => {
     dispatch(sortAndFilterProducts());
     dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
+
+  useEffect(() => {
+    const updateUrlParams = () => {
+      const params = new URLSearchParams(window.location.search);
+
+      if (selectedCategory) {
+        params.set('category', selectedCategory.toLowerCase());
+      } else {
+        params.delete('category');
+      }
+
+      if (selectedType) {
+        params.set('type', selectedType.toLowerCase());
+      } else {
+        params.delete('type');
+      }
+
+      if (selectedLevel) {
+        params.set('level', selectedLevel.toLowerCase());
+      } else {
+        params.delete('level');
+      }
+
+      window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+    };
+
+    updateUrlParams();
+  }, [selectedCategory, selectedType, selectedLevel]);
 
   return (
     <div className="catalog__aside" data-testid="filtration">
