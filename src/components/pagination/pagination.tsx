@@ -21,16 +21,17 @@ export const Pagination = () => {
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
   useEffect(() => {
-    console.log(pagesCount);
     const newPage = Number(searchParams.get('page')) || 1;
-    if (newPage > 5 || newPage < 1) {
-      dispatch(redirectToRoute(AppRoute.NotFound));
+    if (productsLength > 0) {
+      if (newPage > 5 || newPage < 1) {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      }
     }
     setCurrPage(newPage);
     setCurrentBlock(Math.ceil(newPage / SHOWABLE_PAGES_COUNT));
     dispatch(setCurrentPage(newPage));
     dispatch(setShowableProducts());
-  }, [dispatch, location.search, pagesCount, searchParams]);
+  }, [dispatch, location.search, pagesCount, searchParams, productsLength]);
 
   const calculateNewStates = (increment: number) => {
     const newCurrPage = currPage + increment;

@@ -121,6 +121,8 @@ export const productsProcessSlice = createSlice({
       } else if (state.sortingType === 'popularity' && state.sortingDirection === 'down') {
         state.products = [...state.products].sort((a, b) => b.rating - a.rating);
       }
+
+      state.showableProducts = state.products.slice((state.currentPage - 1) * SHOWABLE_CARDS_PER_PAGE_COUNT, state.currentPage * SHOWABLE_CARDS_PER_PAGE_COUNT);
     },
     setFilterCatefory: (state, action: PayloadAction<'Фотоаппарат' | 'Видеокамера' | null>) => {
       state.filterCategory = action.payload;
