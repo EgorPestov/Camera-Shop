@@ -5,13 +5,14 @@ import { Link, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setShowableProducts, setCurrentPage } from '../../store/product-process/product-process';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { redirectToRoute } from '../../store/actions';
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+
+  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
   const [currPage, setCurrPage] = useState(Number(searchParams.get('page')) || 1);
   const [currentBlock, setCurrentBlock] = useState(1);
 
@@ -20,13 +21,16 @@ export const Pagination = () => {
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
   useEffect(() => {
-    if (currPage > 5 || currPage < 1) {
+    console.log(pagesCount);
+    const newPage = Number(searchParams.get('page')) || 1;
+    if (newPage > 5 || newPage < 1) {
       dispatch(redirectToRoute(AppRoute.NotFound));
     }
-    dispatch(setCurrentPage(currPage));
-    setCurrentBlock(Math.ceil(currPage / SHOWABLE_PAGES_COUNT));
+    setCurrPage(newPage);
+    setCurrentBlock(Math.ceil(newPage / SHOWABLE_PAGES_COUNT));
+    dispatch(setCurrentPage(newPage));
     dispatch(setShowableProducts());
-  }, [dispatch, currPage, pagesCount]);
+  }, [dispatch, location.search, pagesCount, searchParams]);
 
   const calculateNewStates = (increment: number) => {
     const newCurrPage = currPage + increment;
@@ -34,7 +38,7 @@ export const Pagination = () => {
     return { newCurrPage, newCurrentBlock };
   };
 
-  const numberButtons = Array.from({ length: 5 }, (_, index) => {
+  const numberButtons = Array.from({ length: pagesCount }, (_, index) => {
     if (Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT) === currentBlock) {
       return (
         <li key={index} className="pagination__item">
