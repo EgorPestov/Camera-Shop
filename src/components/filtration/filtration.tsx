@@ -109,6 +109,7 @@ export const Filtration = () => {
                   name="film"
                   onChange={handleTypeChange('Плёночная')}
                   checked={selectedType === 'Плёночная'}
+                  disabled={selectedCategory === 'Видеокамера'}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -123,6 +124,7 @@ export const Filtration = () => {
                   name="snapshot"
                   onChange={handleTypeChange('Моментальная')}
                   checked={selectedType === 'Моментальная'}
+                  disabled={selectedCategory === 'Видеокамера'}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
@@ -191,6 +193,12 @@ export const Filtration = () => {
           <button
             className="btn catalog-filter__reset-btn"
             type="reset"
+            onClick={() => {
+              dispatch(setFilterCatefory(null));
+              dispatch(setFilterType(null));
+              dispatch(setFilterLevel(null));
+              dispatch(sortAndFilterProducts());
+            }}
           >
             Сбросить фильтры
           </button>
