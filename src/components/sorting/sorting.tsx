@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setSortingType, setSortingDirection, sortAndFilterProducts, setShowableProducts } from '../../store/product-process/product-process';
+import { setSortingType, setSortingDirection, sortAndFilterProducts } from '../../store/product-process/product-process';
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
@@ -48,7 +48,6 @@ export const Sorting = () => {
     }
     dispatch(setSortingType(item));
     dispatch(sortAndFilterProducts());
-    dispatch(setShowableProducts());
     updateURL(item, direction);
   };
 
@@ -69,7 +68,6 @@ export const Sorting = () => {
     }
     dispatch(setSortingDirection(item));
     dispatch(sortAndFilterProducts());
-    dispatch(setShowableProducts());
     updateURL(type, item);
   };
 

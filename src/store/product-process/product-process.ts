@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductType, ReviewType } from '../../types';
 import { NameSpace } from '../../const';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from '../../const';
+import { FilterCategory, FilterLevel, FilterType } from '../../types';
 
 export type ProductsProcessType = {
   products: ProductType[];
@@ -20,9 +21,9 @@ export type ProductsProcessType = {
   isReviewsLoading: boolean;
   product: ProductType | null;
   isProductLoading: boolean;
-  filterCategory: 'Фотоаппарат' | 'Видеокамера' | null;
-  filterType: 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null;
-  filterLevel: 'Нулевой' | 'Любительский' | 'Профессиональный' | null;
+  filterCategory: FilterCategory;
+  filterType: FilterType;
+  filterLevel: FilterLevel;
 }
 
 export const initialState: ProductsProcessType = {
@@ -124,18 +125,18 @@ export const productsProcessSlice = createSlice({
 
       state.showableProducts = state.products.slice((state.currentPage - 1) * SHOWABLE_CARDS_PER_PAGE_COUNT, state.currentPage * SHOWABLE_CARDS_PER_PAGE_COUNT);
     },
-    setFilterCatefory: (state, action: PayloadAction<'Фотоаппарат' | 'Видеокамера' | null>) => {
+    setFilterCategory: (state, action: PayloadAction<FilterCategory>) => {
       state.filterCategory = action.payload;
     },
-    setFilterType: (state, action: PayloadAction<'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null>) => {
+    setFilterType: (state, action: PayloadAction<FilterType>) => {
       state.filterType = action.payload;
     },
-    setFilterLevel: (state, action: PayloadAction<'Нулевой' | 'Любительский' | 'Профессиональный' | null>) => {
+    setFilterLevel: (state, action: PayloadAction<FilterLevel>) => {
       state.filterLevel = action.payload;
     },
   },
 });
 
-export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId, setFilterCatefory, setFilterType, setFilterLevel,
+export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId, setFilterCategory, setFilterType, setFilterLevel,
   setError, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
   setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setProduct, setProductLoadStatus, sortAndFilterProducts } = productsProcessSlice.actions;

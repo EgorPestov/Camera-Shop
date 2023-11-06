@@ -1,12 +1,13 @@
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { sortAndFilterProducts, setFilterCatefory, setFilterLevel, setFilterType } from '../../store/product-process/product-process';
+import { sortAndFilterProducts, setFilterCategory, setFilterLevel, setFilterType } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getFilterCategory, getFilterType, getFilterLevel } from '../../store/product-process/selectors';
-import { ChangeEvent, useEffect, useMemo } from 'react';
+import { ChangeEvent, useEffect, useCallback } from 'react';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute } from '../../const';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { formatString } from '../../utils';
+import { FilterCategory, FilterLevel, FilterType } from '../../types';
 
 export const Filtration = () => {
   const dispatch = useAppDispatch();
@@ -14,89 +15,95 @@ export const Filtration = () => {
   const selectedType = useAppSelector(getFilterType);
   const selectedLevel = useAppSelector(getFilterLevel);
   const location = useLocation();
-  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const navigate = useNavigate();
 
+  const updateURL = useCallback((
+    category: FilterCategory,
+    cameratype: FilterType,
+    level: FilterLevel) => {
+    const params = new URLSearchParams(location.search);
+    if (category) {
+      params.set('category', category);
+    } else {
+      params.delete('category');
+    }
+    if (cameratype) {
+      params.set('cameratype', cameratype);
+    } else {
+      params.delete('cameratype');
+    }
+    if (level) {
+      params.set('level', level);
+    } else {
+      params.delete('level');
+    }
 
-  const handleCategoryChange = (category: 'Фотоаппарат' | 'Видеокамера') => (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilterCatefory(event.target.checked ? category : null));
+    navigate({
+      pathname: location.pathname,
+      search: params.toString()
+    });
+  }, [location.search, location.pathname, navigate]);
+
+  const handleCategoryChange = (category: NonNullable<FilterCategory>) => (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setFilterCategory(event.target.checked ? category : null));
 
     if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
       dispatch(setFilterType(null));
     }
-
+    updateURL(selectedCategory, selectedType, selectedLevel);
     dispatch(sortAndFilterProducts());
-    dispatch(redirectToRoute(`${AppRoute.Root}?page=1`)); // вот здесь сложные ссылки со всеми параметрами если они есть
+    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`)); // вот здесь сложные ссылки со всеми параметрами если они есть
   };
 
-  const handleTypeChange = (type: 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная') => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTypeChange = (type: NonNullable<FilterType>) => (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilterType(event.target.checked ? type : null));
+    updateURL(selectedCategory, selectedType, selectedLevel);
     dispatch(sortAndFilterProducts());
-    dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
+    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
 
-  const handleLevelChange = (level: 'Нулевой' | 'Любительский' | 'Профессиональный') => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleLevelChange = (level: NonNullable<FilterLevel>) => (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilterLevel(event.target.checked ? level : null));
+    updateURL(selectedCategory, selectedType, selectedLevel);
     dispatch(sortAndFilterProducts());
-    dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
+    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
 
   useEffect(() => {
-    const updateUrlParams = () => {
-      const params = new URLSearchParams(window.location.search);
-
-      if (selectedCategory) {
-        params.set('category', selectedCategory.toLowerCase());
-      } else {
-        params.delete('category');
-      }
-
-      if (selectedType) {
-        params.set('cameratype', selectedType.toLowerCase());
-      } else {
-        params.delete('cameratype');
-      }
-
-      if (selectedLevel) {
-        params.set('level', selectedLevel.toLowerCase());
-      } else {
-        params.delete('level');
-      }
-
-      window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
-    };
-
-    updateUrlParams();
-  }, [selectedCategory, selectedType, selectedLevel]);
-
-  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
     const category = searchParams.get('category');
     const type = searchParams.get('cameratype');
     const level = searchParams.get('level');
 
     if (category) {
-      console.log(category);
-      if (category !== 'фотоаппарат' && category !== 'видеокамера') {
+      if (category !== 'Фотоаппарат' && category !== 'Видеокамера') {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
-      dispatch(setFilterCatefory(formatString(category)));
+      dispatch(setFilterCategory(category));
+      updateURL(category, type, level);
     }
     if (type) {
-      if (type !== 'цифровая' && type !== 'плёночная' && type !== 'моментальная' && type !== 'коллекционная') {
+      if (type !== 'Цифровая' && type !== 'Плёночная' && type !== 'Моментальная' && type !== 'Коллекционная') {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
-      dispatch(setFilterType(formatString(type)));
+      dispatch(setFilterType(type));
+      updateURL(category, type, level);
     }
     if (level) {
-      if (level !== 'нулевой' && level !== 'любительский' && level !== 'профессиональный') {
+      if (level !== 'Нулевой' && level !== 'Любительский' && level !== 'Профессиональный') {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
-      dispatch(setFilterLevel(formatString(level)));
+      dispatch(setFilterLevel(level));
+      updateURL(category, type, level);
     }
 
 
-    // dispatch(setFilterCatefory(category));
-    // dispatch(setShowableProducts());
-  }, [dispatch, location.search, searchParams]);
+  }, [dispatch, location.search, updateURL]);
+
+  useEffect(() => {
+    updateURL(selectedCategory, selectedType, selectedLevel);
+    dispatch(sortAndFilterProducts());
+  }, [selectedCategory, selectedType, selectedLevel, updateURL, dispatch]);
 
   return (
     <div className="catalog__aside" data-testid="filtration">
@@ -262,7 +269,7 @@ export const Filtration = () => {
             className="btn catalog-filter__reset-btn"
             type="reset"
             onClick={() => {
-              dispatch(setFilterCatefory(null));
+              dispatch(setFilterCategory(null));
               dispatch(setFilterType(null));
               dispatch(setFilterLevel(null));
               dispatch(sortAndFilterProducts());
