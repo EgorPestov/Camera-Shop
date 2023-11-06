@@ -43,6 +43,15 @@ export const Filtration = () => {
     });
   }, [location.search, location.pathname, navigate]);
 
+  const resetPage = () => {
+    const params = new URLSearchParams(location.search);
+    params.set('page', '1');
+    navigate({
+      pathname: location.pathname,
+      search: params.toString()
+    });
+  };
+
   const handleCategoryChange = (category: NonNullable<FilterCategory>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newCategory = event.target.checked ? category : null;
     dispatch(setFilterCategory(newCategory));
@@ -50,9 +59,9 @@ export const Filtration = () => {
     if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
       dispatch(setFilterType(null));
     }
-    updateURL(newCategory, selectedType, selectedLevel);
+    updateURL(newCategory, newCategory === 'Видеокамера' ? null : selectedType, selectedLevel);
     dispatch(sortAndFilterProducts());
-    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`)); // вот здесь нужно работать с параметром page и устанавливать его на 1
+    resetPage();
   };
 
   const handleTypeChange = (type: NonNullable<FilterType>) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +69,7 @@ export const Filtration = () => {
     dispatch(setFilterType(newType));
     updateURL(selectedCategory, newType, selectedLevel);
     dispatch(sortAndFilterProducts());
-    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
+    resetPage();
   };
 
   const handleLevelChange = (level: NonNullable<FilterLevel>) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,35 +77,35 @@ export const Filtration = () => {
     dispatch(setFilterLevel(newLevel));
     updateURL(selectedCategory, selectedType, newLevel);
     dispatch(sortAndFilterProducts());
-    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
+    resetPage();
   };
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const category = searchParams.get('category');
-    const type = searchParams.get('cameratype');
-    const level = searchParams.get('level');
+    const category = searchParams.get('category') as FilterCategory;
+    const type = searchParams.get('cameratype') as FilterType;
+    const level = searchParams.get('level') as FilterLevel;
 
     if (category) {
-      if (category !== 'Фотоаппарат' && category !== 'Видеокамера') {
+      if (category === 'Фотоаппарат' || category === 'Видеокамера') {
+        dispatch(setFilterCategory(category));
+      } else {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
-      dispatch(setFilterCategory(category));
-
     }
     if (type) {
-      if (type !== 'Цифровая' && type !== 'Плёночная' && type !== 'Моментальная' && type !== 'Коллекционная') {
+      if (type === 'Цифровая' || type === 'Плёночная' || type === 'Моментальная' || type === 'Коллекционная') {
+        dispatch(setFilterType(type));
+      } else {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
-      dispatch(setFilterType(type));
-
     }
     if (level) {
-      if (level !== 'Нулевой' && level !== 'Любительский' && level !== 'Профессиональный') {
+      if (level === 'Нулевой' || level === 'Любительский' || level === 'Профессиональный') {
+        dispatch(setFilterLevel(level));
+      } else {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
-      dispatch(setFilterLevel(level));
-
     }
 
     updateURL(category, type, level);

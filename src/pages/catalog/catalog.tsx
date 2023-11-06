@@ -15,11 +15,13 @@ import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { fetchProducts } from '../../store/api-actions';
+import { getShowableProducts } from '../../store/product-process/selectors';
 
 export const Catalog = () => {
   const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
+  const showableProducts = useAppSelector(getShowableProducts);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -62,6 +64,7 @@ export const Catalog = () => {
                 <div className="catalog__content">
                   <Sorting />
                   <ProductList />
+                  {showableProducts.length === 0 ? (<h1>Ничего не найдено</h1>) : ''}
                   <Pagination />
                 </div>
               </div>
