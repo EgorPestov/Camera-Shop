@@ -21,34 +21,23 @@ export const Pagination = () => {
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
   useEffect(() => {
-    const page = Number(searchParams.get('page'));
+    const pageParam = searchParams.get('page');
+    const page = pageParam !== null ? Number(pageParam) : 1;
 
+    const isValidPageNumber = !isNaN(page) && page >= 1 && page <= pagesCount;
 
-    const isValidPageNumber = !isNaN(page) && page >= 1 && page <= 5;
-
-    if (productsLength > 0 && isValidPageNumber) {
-      setCurrPage(page);
-      setCurrentBlock(Math.ceil(page / SHOWABLE_PAGES_COUNT));
-      dispatch(setCurrentPage(page));
-      dispatch(setShowableProducts());
+    if (productsLength > 0) {
+      if (!isValidPageNumber) {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      } else {
+        setCurrPage(page);
+        setCurrentBlock(Math.ceil(page / SHOWABLE_PAGES_COUNT));
+        dispatch(setCurrentPage(page));
+        dispatch(setShowableProducts());
+      }
     }
+  }, [dispatch, searchParams, productsLength, pagesCount]);
 
-  }, [dispatch, location.search, pagesCount, searchParams, productsLength]);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-
-    let page = params.get('page');
-    if (page === null) {
-      page = '1';
-    }
-
-    const numberPage = Number(page);
-
-    if (isNaN(numberPage) || numberPage < 1 || numberPage > 5) { // вот здесь должно быть не 5, а pagesCount, pagesCount далеко не сразу высчитывается, вот как быть
-      dispatch(redirectToRoute(AppRoute.NotFound));
-    }
-  }, [dispatch, location]);
 
   const calculateNewStates = (increment: number) => {
     const newCurrPage = currPage + increment;
