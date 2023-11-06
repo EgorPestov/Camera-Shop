@@ -39,13 +39,22 @@ export const Pagination = () => {
     return { newCurrPage, newCurrentBlock };
   };
 
+  const createSearchString = (newPage: number) => {
+    const params = new URLSearchParams(location.search);
+    params.set('page', newPage.toString());
+    return params.toString();
+  };
+
   const numberButtons = Array.from({ length: pagesCount }, (_, index) => {
     if (Math.ceil((index + 1) / SHOWABLE_PAGES_COUNT) === currentBlock) {
       return (
         <li key={index} className="pagination__item">
           <Link
             className={`pagination__link ${currPage === index + 1 ? 'pagination__link--active' : ''}`}
-            to={`${AppRoute.Root}?page=${index + 1}`}
+            to={{
+              pathname: AppRoute.Root,
+              search: `?${createSearchString(index + 1)}`
+            }}
             onClick={() => {
               dispatch(setShowableProducts());
               setCurrPage(index + 1);
@@ -57,6 +66,7 @@ export const Pagination = () => {
         </li>
       );
     }
+    return null;
   });
 
   if (productsLength > SHOWABLE_CARDS_PER_PAGE_COUNT) {
@@ -66,7 +76,10 @@ export const Pagination = () => {
           <li className="pagination__item">
             <Link
               className={`pagination__link pagination__link--text ${currentBlock === 1 ? 'visually-hidden' : ''}`}
-              to={`${AppRoute.Root}?page=${(currentBlock - 1) * SHOWABLE_PAGES_COUNT}`}
+              to={{
+                pathname: AppRoute.Root,
+                search: `?${createSearchString((currentBlock - 1) * SHOWABLE_PAGES_COUNT)}`
+              }}
               onClick={() => {
                 const { newCurrPage, newCurrentBlock } = calculateNewStates(-1);
                 dispatch(setShowableProducts());
@@ -81,7 +94,10 @@ export const Pagination = () => {
           <li className="pagination__item">
             <Link
               className={`pagination__link pagination__link--text ${currentBlock === blocksCount ? 'visually-hidden' : ''}`}
-              to={`${AppRoute.Root}?page=${currentBlock * SHOWABLE_PAGES_COUNT + 1}`}
+              to={{
+                pathname: AppRoute.Root,
+                search: `?${createSearchString(currentBlock * SHOWABLE_PAGES_COUNT + 1)}`
+              }}
               onClick={() => {
                 const { newCurrPage, newCurrentBlock } = calculateNewStates(1);
                 dispatch(setShowableProducts());
@@ -96,6 +112,5 @@ export const Pagination = () => {
       </div>
     );
   }
-
   return null;
 };
