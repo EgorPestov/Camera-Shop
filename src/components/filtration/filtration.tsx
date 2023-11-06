@@ -2,15 +2,20 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { sortAndFilterProducts, setFilterCatefory, setFilterLevel, setFilterType } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getFilterCategory, getFilterType, getFilterLevel } from '../../store/product-process/selectors';
-import { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect, useMemo } from 'react';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute } from '../../const';
+import { useLocation } from 'react-router-dom';
+import { formatString } from '../../utils';
 
 export const Filtration = () => {
   const dispatch = useAppDispatch();
   const selectedCategory = useAppSelector(getFilterCategory);
   const selectedType = useAppSelector(getFilterType);
   const selectedLevel = useAppSelector(getFilterLevel);
+  const location = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+
 
   const handleCategoryChange = (category: 'Фотоаппарат' | 'Видеокамера') => (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(setFilterCatefory(event.target.checked ? category : null));
@@ -20,7 +25,7 @@ export const Filtration = () => {
     }
 
     dispatch(sortAndFilterProducts());
-    dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
+    dispatch(redirectToRoute(`${AppRoute.Root}?page=1`)); // вот здесь сложные ссылки со всеми параметрами если они есть
   };
 
   const handleTypeChange = (type: 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная') => (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,9 +51,9 @@ export const Filtration = () => {
       }
 
       if (selectedType) {
-        params.set('type', selectedType.toLowerCase());
+        params.set('cameratype', selectedType.toLowerCase());
       } else {
-        params.delete('type');
+        params.delete('cameratype');
       }
 
       if (selectedLevel) {
@@ -62,6 +67,36 @@ export const Filtration = () => {
 
     updateUrlParams();
   }, [selectedCategory, selectedType, selectedLevel]);
+
+  useEffect(() => {
+    const category = searchParams.get('category');
+    const type = searchParams.get('cameratype');
+    const level = searchParams.get('level');
+
+    if (category) {
+      console.log(category);
+      if (category !== 'фотоаппарат' && category !== 'видеокамера') {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      }
+      dispatch(setFilterCatefory(formatString(category)));
+    }
+    if (type) {
+      if (type !== 'цифровая' && type !== 'плёночная' && type !== 'моментальная' && type !== 'коллекционная') {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      }
+      dispatch(setFilterType(formatString(type)));
+    }
+    if (level) {
+      if (level !== 'нулевой' && level !== 'любительский' && level !== 'профессиональный') {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      }
+      dispatch(setFilterLevel(formatString(level)));
+    }
+
+
+    // dispatch(setFilterCatefory(category));
+    // dispatch(setShowableProducts());
+  }, [dispatch, location.search, searchParams]);
 
   return (
     <div className="catalog__aside" data-testid="filtration">
