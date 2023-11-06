@@ -21,17 +21,34 @@ export const Pagination = () => {
   const blocksCount = Math.ceil(pagesCount / SHOWABLE_PAGES_COUNT);
 
   useEffect(() => {
-    const newPage = Number(searchParams.get('page')) || 1;
-    if (productsLength > 0) {
-      if (newPage > 5 || newPage < 1) {
-        dispatch(redirectToRoute(AppRoute.NotFound));
-      }
+    const page = Number(searchParams.get('page'));
+
+
+    const isValidPageNumber = !isNaN(page) && page >= 1 && page <= 5;
+
+    if (productsLength > 0 && isValidPageNumber) {
+      setCurrPage(page);
+      setCurrentBlock(Math.ceil(page / SHOWABLE_PAGES_COUNT));
+      dispatch(setCurrentPage(page));
+      dispatch(setShowableProducts());
     }
-    setCurrPage(newPage);
-    setCurrentBlock(Math.ceil(newPage / SHOWABLE_PAGES_COUNT));
-    dispatch(setCurrentPage(newPage));
-    dispatch(setShowableProducts());
+
   }, [dispatch, location.search, pagesCount, searchParams, productsLength]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
+    let page = params.get('page');
+    if (page === null) {
+      page = '1';
+    }
+
+    const numberPage = Number(page);
+
+    if (isNaN(numberPage) || numberPage < 1 || numberPage > 5) { // вот здесь должно быть не 5, а pagesCount, pagesCount далеко не сразу высчитывается, вот как быть
+      dispatch(redirectToRoute(AppRoute.NotFound));
+    }
+  }, [dispatch, location]);
 
   const calculateNewStates = (increment: number) => {
     const newCurrPage = currPage + increment;

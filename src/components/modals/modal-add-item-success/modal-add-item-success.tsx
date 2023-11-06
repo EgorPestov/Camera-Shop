@@ -5,6 +5,7 @@ import { getModalAddItemSuccessStatus } from '../../../store/modals-process/sele
 import { setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { setFilterCategory, setFilterLevel, setFilterType, setSortingDirection, setSortingType } from '../../../store/product-process/product-process';
 
 export const ModalAddItemSuccess = () => {
   const dispatch = useAppDispatch();
@@ -27,10 +28,26 @@ export const ModalAddItemSuccess = () => {
             <use xlinkHref="#icon-success" />
           </svg>
           <div className="modal__buttons">
-            <Link className="btn btn--transparent modal__btn" to={AppRoute.Root} onClick={() => dispatch(setModalAddItemSuccessStatus(false))} ref={linkRef}>
+            <Link
+              className="btn btn--transparent modal__btn"
+              to={AppRoute.Root}
+              onClick={() => {
+                dispatch(setModalAddItemSuccessStatus(false));
+                dispatch(setFilterCategory(null));
+                dispatch(setFilterType(null));
+                dispatch(setFilterLevel(null));
+                dispatch(setSortingDirection(null));
+                dispatch(setSortingType(null));
+              }}
+              ref={linkRef}
+            >
               Продолжить покупки
             </Link>
-            <Link className="btn btn--purple modal__btn modal__btn--fit-width" onClick={() => dispatch(setModalAddItemSuccessStatus(false))} to={AppRoute.Basket}> {/* тут наверное редирект в корзину или изменить на Link?*/}
+            <Link
+              className="btn btn--purple modal__btn modal__btn--fit-width"
+              onClick={() => dispatch(setModalAddItemSuccessStatus(false))}
+              to={AppRoute.Basket}
+            >
               Перейти в корзину
             </Link>
           </div>

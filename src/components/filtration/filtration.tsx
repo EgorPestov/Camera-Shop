@@ -57,7 +57,7 @@ export const Filtration = () => {
     if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
       dispatch(setFilterType(null));
     }
-    updateURL(newCategory, newCategory === 'Видеокамера' ? null : selectedType, selectedLevel, true);
+    updateURL(newCategory, newCategory === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная') ? null : selectedType, selectedLevel, true);
     dispatch(sortAndFilterProducts());
   };
 
@@ -84,22 +84,28 @@ export const Filtration = () => {
     if (category) {
       if (category === 'Фотоаппарат' || category === 'Видеокамера') {
         dispatch(setFilterCategory(category));
-      } else {
-        dispatch(redirectToRoute(AppRoute.NotFound));
+      } else if (category !== null) {
+        setTimeout(() => {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }, 0);
       }
     }
     if (type) {
       if (type === 'Цифровая' || type === 'Плёночная' || type === 'Моментальная' || type === 'Коллекционная') {
         dispatch(setFilterType(type));
-      } else {
-        dispatch(redirectToRoute(AppRoute.NotFound));
+      } else if (type !== null) {
+        setTimeout(() => {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }, 0);
       }
     }
     if (level) {
       if (level === 'Нулевой' || level === 'Любительский' || level === 'Профессиональный') {
         dispatch(setFilterLevel(level));
-      } else {
-        dispatch(redirectToRoute(AppRoute.NotFound));
+      } else if (level !== null) {
+        setTimeout(() => {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }, 0);
       }
     }
 
