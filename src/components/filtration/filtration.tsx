@@ -16,41 +16,39 @@ export const Filtration = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const updateURL = useCallback((
-    category: FilterCategory,
-    cameratype: FilterType,
-    level: FilterLevel) => {
-    const params = new URLSearchParams(location.search);
-    if (category) {
-      params.set('category', category);
-    } else {
-      params.delete('category');
-    }
-    if (cameratype) {
-      params.set('cameratype', cameratype);
-    } else {
-      params.delete('cameratype');
-    }
-    if (level) {
-      params.set('level', level);
-    } else {
-      params.delete('level');
-    }
+  const updateURL = useCallback(
+    (
+      category: FilterCategory,
+      cameratype: FilterType,
+      level: FilterLevel,
+      needUpdate?: boolean,
+    ) => {
+      const params = new URLSearchParams(location.search);
+      if (category) {
+        params.set('category', category);
+      } else {
+        params.delete('category');
+      }
+      if (cameratype) {
+        params.set('cameratype', cameratype);
+      } else {
+        params.delete('cameratype');
+      }
+      if (level) {
+        params.set('level', level);
+      } else {
+        params.delete('level');
+      }
 
-    navigate({
-      pathname: location.pathname,
-      search: params.toString()
-    });
-  }, [location.search, location.pathname, navigate]);
+      if (needUpdate) {
+        params.set('page', '1');
+      }
 
-  const resetPage = () => {
-    const params = new URLSearchParams(location.search);
-    params.set('page', '1');
-    navigate({
-      pathname: location.pathname,
-      search: params.toString()
-    });
-  };
+      navigate({
+        pathname: location.pathname,
+        search: params.toString()
+      });
+    }, [location.search, location.pathname, navigate]);
 
   const handleCategoryChange = (category: NonNullable<FilterCategory>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newCategory = event.target.checked ? category : null;
@@ -59,25 +57,22 @@ export const Filtration = () => {
     if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
       dispatch(setFilterType(null));
     }
-    updateURL(newCategory, newCategory === 'Видеокамера' ? null : selectedType, selectedLevel);
+    updateURL(newCategory, newCategory === 'Видеокамера' ? null : selectedType, selectedLevel, true);
     dispatch(sortAndFilterProducts());
-    resetPage();
   };
 
   const handleTypeChange = (type: NonNullable<FilterType>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newType = event.target.checked ? type : null;
     dispatch(setFilterType(newType));
-    updateURL(selectedCategory, newType, selectedLevel);
+    updateURL(selectedCategory, newType, selectedLevel, true);
     dispatch(sortAndFilterProducts());
-    resetPage();
   };
 
   const handleLevelChange = (level: NonNullable<FilterLevel>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newLevel = event.target.checked ? level : null;
     dispatch(setFilterLevel(newLevel));
-    updateURL(selectedCategory, selectedType, newLevel);
+    updateURL(selectedCategory, selectedType, newLevel, true);
     dispatch(sortAndFilterProducts());
-    resetPage();
   };
 
   useEffect(() => {
