@@ -15,23 +15,16 @@ import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store
 import { useEffect } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { fetchProducts } from '../../store/api-actions';
-import { redirectToRoute } from '../../store/actions';
-import { getCurrentPage } from '../../store/product-process/selectors';
 
 export const Catalog = () => {
   const dispatch = useAppDispatch();
-  const currentPage = useAppSelector(getCurrentPage);
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fetchProducts());
-
-    if (currentPage) {
-      dispatch(redirectToRoute(`${AppRoute.Root}?page=${currentPage}`));
-    }
-  }, [dispatch, currentPage]);
+  }, [dispatch]);
 
   return (
     <div className="wrapper" data-testid="catalog">

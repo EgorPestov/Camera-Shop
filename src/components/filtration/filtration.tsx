@@ -6,7 +6,6 @@ import { ChangeEvent, useEffect, useCallback } from 'react';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute } from '../../const';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { formatString } from '../../utils';
 import { FilterCategory, FilterLevel, FilterType } from '../../types';
 
 export const Filtration = () => {
@@ -45,26 +44,29 @@ export const Filtration = () => {
   }, [location.search, location.pathname, navigate]);
 
   const handleCategoryChange = (category: NonNullable<FilterCategory>) => (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilterCategory(event.target.checked ? category : null));
+    const newCategory = event.target.checked ? category : null;
+    dispatch(setFilterCategory(newCategory));
 
     if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
       dispatch(setFilterType(null));
     }
-    updateURL(selectedCategory, selectedType, selectedLevel);
+    updateURL(newCategory, selectedType, selectedLevel);
     dispatch(sortAndFilterProducts());
-    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`)); // вот здесь сложные ссылки со всеми параметрами если они есть
+    // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`)); // вот здесь нужно работать с параметром page и устанавливать его на 1
   };
 
   const handleTypeChange = (type: NonNullable<FilterType>) => (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilterType(event.target.checked ? type : null));
-    updateURL(selectedCategory, selectedType, selectedLevel);
+    const newType = event.target.checked ? type : null;
+    dispatch(setFilterType(newType));
+    updateURL(selectedCategory, newType, selectedLevel);
     dispatch(sortAndFilterProducts());
     // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
 
   const handleLevelChange = (level: NonNullable<FilterLevel>) => (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilterLevel(event.target.checked ? level : null));
-    updateURL(selectedCategory, selectedType, selectedLevel);
+    const newLevel = event.target.checked ? level : null;
+    dispatch(setFilterLevel(newLevel));
+    updateURL(selectedCategory, selectedType, newLevel);
     dispatch(sortAndFilterProducts());
     // dispatch(redirectToRoute(`${AppRoute.Root}?page=1`));
   };
@@ -80,28 +82,27 @@ export const Filtration = () => {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
       dispatch(setFilterCategory(category));
-      updateURL(category, type, level);
+
     }
     if (type) {
       if (type !== 'Цифровая' && type !== 'Плёночная' && type !== 'Моментальная' && type !== 'Коллекционная') {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
       dispatch(setFilterType(type));
-      updateURL(category, type, level);
+
     }
     if (level) {
       if (level !== 'Нулевой' && level !== 'Любительский' && level !== 'Профессиональный') {
         dispatch(redirectToRoute(AppRoute.NotFound));
       }
       dispatch(setFilterLevel(level));
-      updateURL(category, type, level);
+
     }
 
-
+    updateURL(category, type, level);
   }, [dispatch, location.search, updateURL]);
 
   useEffect(() => {
-    updateURL(selectedCategory, selectedType, selectedLevel);
     dispatch(sortAndFilterProducts());
   }, [selectedCategory, selectedType, selectedLevel, updateURL, dispatch]);
 
@@ -272,6 +273,7 @@ export const Filtration = () => {
               dispatch(setFilterCategory(null));
               dispatch(setFilterType(null));
               dispatch(setFilterLevel(null));
+              updateURL(null, null, null);
               dispatch(sortAndFilterProducts());
             }}
           >

@@ -30,7 +30,6 @@ export const Sorting = () => {
     });
   }, [location.search, location.pathname, navigate]);
 
-
   const handleTypeChange = (item: 'price' | 'popularity') => {
     let direction: 'down' | 'top' = isDownChecked ? 'down' : 'top';
     if (isTopChecked === false && isDownChecked === false) {
