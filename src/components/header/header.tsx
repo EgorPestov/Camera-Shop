@@ -2,15 +2,14 @@ import { Link } from 'react-router-dom';
 import { AppRoute, MIN_SEARCH_LENGTH } from '../../const';
 import { ChangeEvent, useEffect, KeyboardEvent, useState, useRef } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { getProducts, getCurrentPage } from '../../store/product-process/selectors';
+import { getProducts } from '../../store/product-process/selectors';
 import { ProductType } from '../../types';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setCurrentId } from '../../store/product-process/product-process';
+import { setCurrentId, setFilterCategory, setFilterLevel, setFilterType, setSortingDirection, setSortingType } from '../../store/product-process/product-process';
 import { redirectToRoute } from '../../store/actions';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
-  const currentPage = useAppSelector(getCurrentPage);
   const products = useAppSelector(getProducts);
   const [isListOpened, setIsListOpened] = useState(false);
   const [isListEmpty, setIsListEmpty] = useState(false);
@@ -92,7 +91,14 @@ export const Header = () => {
       <div className="container">
         <Link
           className="header__logo"
-          to={`${AppRoute.Root}?page=${currentPage}`}
+          onClick={() => {
+            dispatch(setFilterCategory(null));
+            dispatch(setFilterType(null));
+            dispatch(setFilterLevel(null));
+            dispatch(setSortingDirection(null));
+            dispatch(setSortingType(null));
+          }}
+          to={AppRoute.Root}
           aria-label="Переход на главную"
         >
           <svg width={100} height={36} aria-hidden="true">
@@ -104,7 +110,14 @@ export const Header = () => {
             <li className="main-nav__item">
               <Link
                 className="main-nav__link"
-                to={`${AppRoute.Root}?page=${currentPage}`}
+                onClick={() => {
+                  dispatch(setFilterCategory(null));
+                  dispatch(setFilterType(null));
+                  dispatch(setFilterLevel(null));
+                  dispatch(setSortingDirection(null));
+                  dispatch(setSortingType(null));
+                }}
+                to={AppRoute.Root}
               >
                 Каталог
               </Link>

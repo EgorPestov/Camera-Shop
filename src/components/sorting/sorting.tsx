@@ -130,7 +130,7 @@ export const Sorting = () => {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                checked={isPriceChecked}
+                checked={sortingType === 'price'}
                 onChange={() => handleTypeChange('price')}
               />
               <label htmlFor="sortPrice">по цене</label>
@@ -140,7 +140,7 @@ export const Sorting = () => {
                 type="radio"
                 id="sortPopular"
                 name="sort"
-                checked={isPopularityChecked}
+                checked={sortingType === 'popularity'}
                 onChange={() => handleTypeChange('popularity')}
               />
               <label htmlFor="sortPopular">по популярности</label>
@@ -152,7 +152,7 @@ export const Sorting = () => {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                checked={isTopChecked}
+                checked={sortingDirection === 'top'}
                 aria-label="По возрастанию"
                 onChange={() => handleDirectionChange('top')}
               />
@@ -167,7 +167,7 @@ export const Sorting = () => {
                 type="radio"
                 id="down"
                 name="sort-icon"
-                checked={isDownChecked}
+                checked={sortingDirection === 'down'}
                 aria-label="По убыванию"
                 onChange={() => handleDirectionChange('down')}
               />

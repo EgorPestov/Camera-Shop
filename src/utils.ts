@@ -32,7 +32,3 @@ export const formatDateToHumanType = (inputDate: string): string => {
 
   return `${day} ${month}`;
 };
-
-
-export const formatString = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-

@@ -64,10 +64,10 @@ export const productsProcessSlice = createSlice({
     setError: (state, action: PayloadAction<boolean>) => {
       state.hasError = action.payload;
     },
-    setSortingType: (state, action: PayloadAction<'price' | 'popularity'>) => {
+    setSortingType: (state, action: PayloadAction<'price' | 'popularity' | null>) => {
       state.sortingType = action.payload;
     },
-    setSortingDirection: (state, action: PayloadAction<'top' | 'down'>) => {
+    setSortingDirection: (state, action: PayloadAction<'top' | 'down' | null>) => {
       state.sortingDirection = action.payload;
     },
     setCurrentPage: (state, action: PayloadAction<number>) => {

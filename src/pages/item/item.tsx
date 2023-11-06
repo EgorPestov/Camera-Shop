@@ -6,7 +6,7 @@ import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { getProduct, getProductLoadStatus } from '../../store/product-process/selectors';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/modals-process/selectors';
-import { setCurrentId, setBuyingId } from '../../store/product-process/product-process';
+import { setBuyingId, setCurrentId, setFilterCategory, setFilterLevel, setFilterType, setSortingDirection, setSortingType } from '../../store/product-process/product-process';
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
@@ -91,7 +91,17 @@ export const Item = () => {
               <div className="container">
                 <ul className="breadcrumbs__list">
                   <li className="breadcrumbs__item">
-                    <Link className="breadcrumbs__link" to={AppRoute.Root}>
+                    <Link
+                      className="breadcrumbs__link"
+                      to={AppRoute.Root}
+                      onClick={() => {
+                        dispatch(setFilterCategory(null));
+                        dispatch(setFilterType(null));
+                        dispatch(setFilterLevel(null));
+                        dispatch(setSortingDirection(null));
+                        dispatch(setSortingType(null));
+                      }}
+                    >
                       Главная
                       <svg width={5} height={8} aria-hidden="true">
                         <use xlinkHref="#icon-arrow-mini" />
@@ -99,7 +109,17 @@ export const Item = () => {
                     </Link>
                   </li>
                   <li className="breadcrumbs__item">
-                    <Link className="breadcrumbs__link" to={AppRoute.Root}>
+                    <Link
+                      className="breadcrumbs__link"
+                      to={AppRoute.Root}
+                      onClick={() => {
+                        dispatch(setFilterCategory(null));
+                        dispatch(setFilterType(null));
+                        dispatch(setFilterLevel(null));
+                        dispatch(setSortingDirection(null));
+                        dispatch(setSortingType(null));
+                      }}
+                    >
                       Каталог
                       <svg width={5} height={8} aria-hidden="true">
                         <use xlinkHref="#icon-arrow-mini" />
