@@ -168,6 +168,15 @@ export const productsProcessSlice = createSlice({
       state.showableProducts = filteredProducts.slice(startIndex, endIndex);
       state.products = filteredProducts;
 
+      if (filterCategory || filterType || filterLevel) {
+        if (state.products.length) {
+          state.priceLowest = state.products.reduce((minPrice, product) => minPrice === null || product.price < minPrice ? product.price : minPrice, state.products[0].price);
+          state.priceHighest = state.products.reduce((maxPrice, product) => maxPrice === null || product.price > maxPrice ? product.price : maxPrice, state.products[0].price);
+        } else {
+          state.priceLowest = null;
+          state.priceHighest = null;
+        }
+      }
     },
     setFilterCategory: (state, action: PayloadAction<FilterCategory>) => {
       state.filterCategory = action.payload;
