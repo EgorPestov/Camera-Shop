@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { sortAndFilterProducts, setFilterLowestPrice, setFilterHighestPrice } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
@@ -14,28 +14,35 @@ export const PriceInput = () => {
 
   const handleLowestPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setLowestPrice(value);
-    if (value) {
-      dispatch(setFilterLowestPrice(Number(value)));
+    if (/^\d*$/.test(value)) {
+      setLowestPrice(value);
+      dispatch(setFilterLowestPrice(value ? Number(value) : null));
     } else {
-      dispatch(setFilterLowestPrice(null));
+      setLowestPrice('0');
+      dispatch(setFilterLowestPrice(0));
     }
     dispatch(sortAndFilterProducts());
   };
 
   const handleHighestPriceChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setHighestPrice(value);
-
-    if (value.length >= MIN_SYMBOLS_COUNT_FOR_HIGHPRICE_FILTER) {
-      const numericValue = Number(value);
-      if (!isNaN(numericValue) && numericValue >= 0) {
-        dispatch(setFilterHighestPrice(numericValue));
+    if (/^\d*$/.test(value)) {
+      setHighestPrice(value);
+      if (value && value.length >= MIN_SYMBOLS_COUNT_FOR_HIGHPRICE_FILTER) {
+        dispatch(setFilterHighestPrice(Number(value)));
+      } else if (!value) {
+        dispatch(setFilterHighestPrice(null));
       }
-      dispatch(sortAndFilterProducts());
-    } else if (value === '') {
-      dispatch(setFilterHighestPrice(null));
-      dispatch(sortAndFilterProducts());
+    } else {
+      setHighestPrice('0');
+      dispatch(setFilterHighestPrice(0));
+    }
+    dispatch(sortAndFilterProducts());
+  };
+
+  const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === '-' || event.key === '+') {
+      event.preventDefault();
     }
   };
 
@@ -52,6 +59,7 @@ export const PriceInput = () => {
               placeholder={`${lowestDefaultPrice ? lowestDefaultPrice : ''}`}
               value={lowestPrice}
               onChange={handleLowestPriceChange}
+              onKeyDown={handleInputKeyDown}
             />
           </label>
         </div>
@@ -64,6 +72,7 @@ export const PriceInput = () => {
               placeholder={`${highestDefaultPrice ? highestDefaultPrice : ''}`}
               value={highestPrice}
               onChange={handleHighestPriceChange}
+              onKeyDown={handleInputKeyDown}
             />
           </label>
         </div>
