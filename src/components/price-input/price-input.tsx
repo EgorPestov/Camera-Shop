@@ -17,9 +17,6 @@ export const PriceInput = () => {
     if (/^\d*$/.test(value)) {
       setLowestPrice(value);
       dispatch(setFilterLowestPrice(value ? Number(value) : null));
-    } else {
-      setLowestPrice('0');
-      dispatch(setFilterLowestPrice(0));
     }
     dispatch(sortAndFilterProducts());
   };
@@ -33,11 +30,32 @@ export const PriceInput = () => {
       } else if (!value) {
         dispatch(setFilterHighestPrice(null));
       }
-    } else {
-      setHighestPrice('0');
-      dispatch(setFilterHighestPrice(0));
     }
     dispatch(sortAndFilterProducts());
+  };
+
+  const handleLowestPriceBlur = () => {
+    if (lowestDefaultPrice && lowestPrice && Number(lowestPrice) < lowestDefaultPrice) {
+      setLowestPrice(String(lowestDefaultPrice));
+      dispatch(setFilterLowestPrice(lowestDefaultPrice));
+      dispatch(sortAndFilterProducts());
+    } else if (lowestPrice && highestPrice && Number(lowestPrice) > Number(highestPrice)) {
+      setLowestPrice(highestPrice);
+      dispatch(setFilterLowestPrice(Number(highestPrice)));
+      dispatch(sortAndFilterProducts());
+    }
+  };
+
+  const handleHighestPriceBlur = () => {
+    if (highestDefaultPrice && highestPrice && Number(highestPrice) > highestDefaultPrice) {
+      setHighestPrice(String(highestDefaultPrice));
+      dispatch(setFilterHighestPrice(highestDefaultPrice));
+      dispatch(sortAndFilterProducts());
+    } else if (highestPrice && lowestPrice && Number(highestPrice) < Number(lowestPrice)) {
+      setHighestPrice(lowestPrice);
+      dispatch(setFilterHighestPrice(Number(lowestPrice)));
+      dispatch(sortAndFilterProducts());
+    }
   };
 
   const handleInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -54,12 +72,12 @@ export const PriceInput = () => {
           <label>
             <input
               type="number"
-              min="0"
               name="price"
-              placeholder={`${lowestDefaultPrice ? lowestDefaultPrice : ''}`}
+              placeholder={`${lowestDefaultPrice || ''}`}
               value={lowestPrice}
               onChange={handleLowestPriceChange}
               onKeyDown={handleInputKeyDown}
+              onBlur={handleLowestPriceBlur}
             />
           </label>
         </div>
@@ -67,12 +85,12 @@ export const PriceInput = () => {
           <label>
             <input
               type="number"
-              min="0"
               name="priceUp"
-              placeholder={`${highestDefaultPrice ? highestDefaultPrice : ''}`}
+              placeholder={`${highestDefaultPrice || ''}`}
               value={highestPrice}
               onChange={handleHighestPriceChange}
               onKeyDown={handleInputKeyDown}
+              onBlur={handleHighestPriceBlur}
             />
           </label>
         </div>
@@ -80,3 +98,4 @@ export const PriceInput = () => {
     </fieldset>
   );
 };
+
