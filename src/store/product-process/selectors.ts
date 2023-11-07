@@ -23,3 +23,7 @@ export const getProductLoadStatus = (state: State): boolean => state[NameSpace.P
 export const getFilterCategory = (state: State): FilterCategory => state[NameSpace.Products].filterCategory;
 export const getFilterType = (state: State): FilterType => state[NameSpace.Products].filterType;
 export const getFilterLevel = (state: State): FilterLevel => state[NameSpace.Products].filterLevel;
+export const getFilterLowestPrice = (state: State): number | null => state[NameSpace.Products].filterLowestPrice;
+export const getFilterHighestPrice = (state: State): number | null => state[NameSpace.Products].filterHighestPrice;
+export const getLowestPrice = (state: State): number | null => state[NameSpace.Products].priceLowest;
+export const getHighestPrice = (state: State): number | null => state[NameSpace.Products].priceHighest;

@@ -24,6 +24,10 @@ export type ProductsProcessType = {
   filterCategory: FilterCategory;
   filterType: FilterType;
   filterLevel: FilterLevel;
+  filterLowestPrice: number | null;
+  filterHighestPrice: number | null;
+  priceLowest: number | null;
+  priceHighest: number | null;
 }
 
 export const initialState: ProductsProcessType = {
@@ -46,6 +50,10 @@ export const initialState: ProductsProcessType = {
   filterCategory: null,
   filterType: null,
   filterLevel: null,
+  filterLowestPrice: null,
+  filterHighestPrice: null,
+  priceLowest: null,
+  priceHighest: null,
 };
 
 export const productsProcessSlice = createSlice({
@@ -100,30 +108,66 @@ export const productsProcessSlice = createSlice({
     setProductLoadStatus: (state, action: PayloadAction<boolean>) => {
       state.isProductLoading = action.payload;
     },
+    setLowestPrice: (state) => {
+      if (state.products.length) {
+        const lowestPrice = state.products.reduce((minPrice, product) => minPrice === null || product.price < minPrice ? product.price : minPrice, state.products[0].price);
+        state.priceLowest = lowestPrice;
+      } else {
+        state.priceLowest = null;
+      }
+    },
+    setHighestPrice: (state) => {
+      if (state.products.length) {
+        const highestPrice = state.products.reduce((maxPrice, product) => maxPrice === null || product.price > maxPrice ? product.price : maxPrice, state.products[0].price);
+        state.priceHighest = highestPrice;
+      } else {
+        state.priceHighest = null;
+      }
+    },
     sortAndFilterProducts: (state) => {
-      state.products = [...state.backupProducts];
+      const {
+        backupProducts,
+        filterCategory,
+        filterType,
+        filterLevel,
+        filterLowestPrice,
+        filterHighestPrice,
+        sortingType,
+        sortingDirection,
+        currentPage
+      } = state;
 
-      if (state.filterCategory) {
-        state.products = state.products.filter((product) => product.category === state.filterCategory);
+      let filteredProducts = [...backupProducts];
+
+      if (filterCategory) {
+        filteredProducts = filteredProducts.filter((product) => product.category === filterCategory);
       }
-      if (state.filterType) {
-        state.products = state.products.filter((product) => product.type === state.filterType);
+      if (filterType) {
+        filteredProducts = filteredProducts.filter((product) => product.type === filterType);
       }
-      if (state.filterLevel) {
-        state.products = state.products.filter((product) => product.level === state.filterLevel);
+      if (filterLevel) {
+        filteredProducts = filteredProducts.filter((product) => product.level === filterLevel);
+      }
+      if (filterLowestPrice) {
+        filteredProducts = filteredProducts.filter((product) => product.price >= filterLowestPrice);
+      }
+      if (filterHighestPrice) {
+        filteredProducts = filteredProducts.filter((product) => product.price <= filterHighestPrice);
       }
 
-      if (state.sortingType === 'price' && state.sortingDirection === 'top') {
-        state.products = [...state.products].sort((a, b) => a.price - b.price);
-      } else if (state.sortingType === 'price' && state.sortingDirection === 'down') {
-        state.products = [...state.products].sort((a, b) => b.price - a.price);
-      } else if (state.sortingType === 'popularity' && state.sortingDirection === 'top') {
-        state.products = [...state.products].sort((a, b) => a.rating - b.rating);
-      } else if (state.sortingType === 'popularity' && state.sortingDirection === 'down') {
-        state.products = [...state.products].sort((a, b) => b.rating - a.rating);
+      if (sortingType === 'price') {
+        const directionMultiplier = sortingDirection === 'top' ? 1 : -1;
+        filteredProducts = filteredProducts.sort((a, b) => (a.price - b.price) * directionMultiplier);
+      } else if (sortingType === 'popularity') {
+        const directionMultiplier = sortingDirection === 'top' ? 1 : -1;
+        filteredProducts = filteredProducts.sort((a, b) => (a.rating - b.rating) * directionMultiplier);
       }
 
-      state.showableProducts = state.products.slice((state.currentPage - 1) * SHOWABLE_CARDS_PER_PAGE_COUNT, state.currentPage * SHOWABLE_CARDS_PER_PAGE_COUNT);
+      const startIndex = (currentPage - 1) * SHOWABLE_CARDS_PER_PAGE_COUNT;
+      const endIndex = currentPage * SHOWABLE_CARDS_PER_PAGE_COUNT;
+      state.showableProducts = filteredProducts.slice(startIndex, endIndex);
+      state.products = filteredProducts;
+
     },
     setFilterCategory: (state, action: PayloadAction<FilterCategory>) => {
       state.filterCategory = action.payload;
@@ -134,9 +178,15 @@ export const productsProcessSlice = createSlice({
     setFilterLevel: (state, action: PayloadAction<FilterLevel>) => {
       state.filterLevel = action.payload;
     },
+    setFilterLowestPrice: (state, action: PayloadAction<number | null>) => {
+      state.filterLowestPrice = action.payload;
+    },
+    setFilterHighestPrice: (state, action: PayloadAction<number | null>) => {
+      state.filterHighestPrice = action.payload;
+    },
   },
 });
 
 export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId, setFilterCategory, setFilterType, setFilterLevel,
-  setError, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts,
-  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setProduct, setProductLoadStatus, sortAndFilterProducts } = productsProcessSlice.actions;
+  setError, setSortingDirection, setSortingType, setShowableProducts, setCurrentPage, setSimilarProducts, setFilterHighestPrice, setFilterLowestPrice,
+  setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setProduct, setProductLoadStatus, sortAndFilterProducts, setLowestPrice, setHighestPrice } = productsProcessSlice.actions;

@@ -7,6 +7,7 @@ import { redirectToRoute } from '../../store/actions';
 import { AppRoute } from '../../const';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FilterCategory, FilterLevel, FilterType } from '../../types';
+import { PriceInput } from '../price-input/price-input';
 
 export const Filtration = () => {
   const dispatch = useAppDispatch();
@@ -121,25 +122,7 @@ export const Filtration = () => {
       <div className="catalog-filter">
         <form action="#">
           <h2 className="visually-hidden">Фильтр</h2>
-          <fieldset className="catalog-filter__block">
-            <legend className="title title--h5">Цена, ₽</legend>
-            <div className="catalog-filter__price-range">
-              <div className="custom-input">
-                <label>
-                  <input type="number" name="price" placeholder="от" />
-                </label>
-              </div>
-              <div className="custom-input">
-                <label>
-                  <input
-                    type="number"
-                    name="priceUp"
-                    placeholder="до"
-                  />
-                </label>
-              </div>
-            </div>
-          </fieldset>
+          <PriceInput />
           <fieldset className="catalog-filter__block">
             <legend className="title title--h5">Категория</legend>
             <div className="custom-checkbox catalog-filter__item">

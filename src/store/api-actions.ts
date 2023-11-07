@@ -6,7 +6,7 @@ import { NewReviewType, ProductType, ReviewType } from '../types';
 import { APIRoute } from '../const';
 import { toast } from 'react-toastify';
 import {
-  setProducts, setBackupProducts, setProductsLoadStatus, setError, setProduct, setProductLoadStatus,
+  setProducts, setBackupProducts, setProductsLoadStatus, setError, setProduct, setProductLoadStatus, setLowestPrice, setHighestPrice,
   setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, sortAndFilterProducts
 } from './product-process/product-process';
 
@@ -26,6 +26,8 @@ export const fetchProducts = createAsyncThunk<void, undefined, thunkObjType>(
       dispatch(setBackupProducts(data));
       dispatch(sortAndFilterProducts());
       dispatch(setShowableProducts());
+      dispatch(setLowestPrice());
+      dispatch(setHighestPrice());
       dispatch(setError(false));
     } catch {
       dispatch(setError(true));
@@ -103,3 +105,23 @@ export const postReview = createAsyncThunk<void, NewReviewType, thunkObjType>(
   }
 );
 
+// export const fetchPrices = createAsyncThunk<void, undefined, thunkObjType>(
+//   'PRODUCTS/fetchPrices',
+//   async (_arg, { dispatch, extra: api }) => {
+//     try {
+//       dispatch(setProductsLoadStatus(true));
+//       const { data } = await api.get<ProductType[]>(APIRoute.Products);
+//       dispatch(setProducts(data));
+//       dispatch(setBackupProducts(data));
+//       dispatch(sortAndFilterProducts());
+//       dispatch(setShowableProducts());
+//       dispatch(setError(false));
+//     } catch {
+//       dispatch(setError(true));
+//       toast.error('Ошибка загрузки товаров, пожалуйста, попробуйте еще раз');
+//       throw new Error;
+//     } finally {
+//       dispatch(setProductsLoadStatus(false));
+//     }
+//   }
+// );
