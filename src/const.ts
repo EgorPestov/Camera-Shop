@@ -78,3 +78,16 @@ export const StarsNames: { [key: number]: string } = {
   4: 'Хорошо',
   5: 'Отлично',
 };
+
+export const ValidCatalogParams = [
+  'type',
+  'direction',
+  'level',
+  'page',
+  'cameratype',
+  'category'
+];
+
+export const ValidItemParams = [
+  'tab',
+];

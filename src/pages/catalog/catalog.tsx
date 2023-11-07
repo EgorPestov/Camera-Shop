@@ -2,7 +2,7 @@ import { Header } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute } from '../../const';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Filtration } from '../../components/filtration/filtration';
 import { Sorting } from '../../components/sorting/sorting';
 import { Pagination } from '../../components/pagination/pagination';
@@ -12,22 +12,39 @@ import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-i
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus } from '../../store/modals-process/selectors';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { fetchProducts } from '../../store/api-actions';
 import { getShowableProducts } from '../../store/product-process/selectors';
 import { setFilterCategory, setFilterLevel, setFilterType, setSortingDirection, setSortingType } from '../../store/product-process/product-process';
+import { redirectToRoute } from '../../store/actions';
+import { ValidCatalogParams } from '../../const';
 
 export const Catalog = () => {
   const dispatch = useAppDispatch();
   const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
   const showableProducts = useAppSelector(getShowableProducts);
+  const location = useLocation();
+  const searchParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  useEffect(() => {
+    const hasInvalidParams = Array.from(searchParams.keys()).some(
+      (key) => !ValidCatalogParams.includes(key)
+    );
+
+    if (hasInvalidParams) {
+      setTimeout(() => {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      }, 0);
+    }
+
+  }, [location.search, dispatch, searchParams]);
 
   return (
     <div className="wrapper" data-testid="catalog">

@@ -38,7 +38,6 @@ export const Pagination = () => {
     }
   }, [dispatch, searchParams, productsLength, pagesCount]);
 
-
   const calculateNewStates = (increment: number) => {
     const newCurrPage = currPage + increment;
     const newCurrentBlock = Math.ceil(newCurrPage / SHOWABLE_PAGES_COUNT);
@@ -84,7 +83,7 @@ export const Pagination = () => {
               className={`pagination__link pagination__link--text ${currentBlock === 1 ? 'visually-hidden' : ''}`}
               to={{
                 pathname: AppRoute.Root,
-                search: `?${createSearchString((currentBlock - 1) * SHOWABLE_PAGES_COUNT)}`
+                search: `?${createSearchString(currPage - 1)}`
               }}
               onClick={() => {
                 const { newCurrPage, newCurrentBlock } = calculateNewStates(-1);
@@ -102,7 +101,7 @@ export const Pagination = () => {
               className={`pagination__link pagination__link--text ${currentBlock === blocksCount ? 'visually-hidden' : ''}`}
               to={{
                 pathname: AppRoute.Root,
-                search: `?${createSearchString(currentBlock * SHOWABLE_PAGES_COUNT + 1)}`
+                search: `?${createSearchString(currPage + 1)}`
               }}
               onClick={() => {
                 const { newCurrPage, newCurrentBlock } = calculateNewStates(1);

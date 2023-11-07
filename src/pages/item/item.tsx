@@ -10,7 +10,7 @@ import { setBuyingId, setCurrentId, setFilterCategory, setFilterLevel, setFilter
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
-import { AppRoute, PRODUCTS_COUNT } from '../../const';
+import { AppRoute, PRODUCTS_COUNT, ValidItemParams } from '../../const';
 import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-item';
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { Reviews } from '../../components/reviews/reviews';
@@ -75,6 +75,19 @@ export const Item = () => {
       behavior: 'smooth',
     });
   };
+
+  useEffect(() => {
+    const hasInvalidParams = Array.from(searchParams.keys()).some(
+      (key) => !ValidItemParams.includes(key)
+    );
+
+    if (hasInvalidParams) {
+      setTimeout(() => {
+        dispatch(redirectToRoute(AppRoute.NotFound));
+      }, 0);
+    }
+
+  }, [location.search, dispatch, searchParams]);
 
   if (isProductLoading || product === null) {
     return (<LoadingScreen />);
