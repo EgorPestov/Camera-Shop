@@ -92,7 +92,7 @@ export const Catalog = () => {
                 <div className="catalog__content">
                   <Sorting />
                   <ProductList />
-                  {showableProducts.length === 0 ? (<h1>Ничего не найдено</h1>) : ''}
+                  {showableProducts.length === 0 ? (<h1>По вашему запросу ничего не найдено</h1>) : ''}
                   <Pagination />
                 </div>
               </div>
