@@ -5,6 +5,8 @@ import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getHighestPrice, getLowestPrice } from '../../store/product-process/selectors';
 import { MIN_SYMBOLS_COUNT_FOR_HIGHPRICE_FILTER } from '../../const';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { redirectToRoute } from '../../store/actions';
+import { AppRoute } from '../../const';
 
 export const PriceInput = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +23,12 @@ export const PriceInput = () => {
     const pricehigh = params.get('pricehigh');
 
     if (pricelow) {
+      if (isNaN(Number(pricelow))) {
+        setTimeout(() => {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }, 0);
+        return;
+      }
       setLowestPrice(pricelow);
       dispatch(setFilterLowestPrice(Number(pricelow)));
     } else {
@@ -29,6 +37,12 @@ export const PriceInput = () => {
     }
 
     if (pricehigh) {
+      if (isNaN(Number(pricehigh))) {
+        setTimeout(() => {
+          dispatch(redirectToRoute(AppRoute.NotFound));
+        }, 0);
+        return;
+      }
       setHighestPrice(pricehigh);
       dispatch(setFilterHighestPrice(Number(pricehigh)));
     } else {
