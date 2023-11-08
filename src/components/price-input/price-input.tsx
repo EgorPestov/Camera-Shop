@@ -145,6 +145,7 @@ export const PriceInput = () => {
               onChange={handleLowestPriceChange}
               onKeyDown={handleInputKeyDown}
               onBlur={handleLowestPriceBlur}
+              autoComplete='off'
             />
           </label>
         </div>
@@ -158,6 +159,7 @@ export const PriceInput = () => {
               onChange={handleHighestPriceChange}
               onKeyDown={handleInputKeyDown}
               onBlur={handleHighestPriceBlur}
+              autoComplete='off'
             />
           </label>
         </div>

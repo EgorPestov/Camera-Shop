@@ -7,26 +7,12 @@ import { Basket } from '../../pages/basket/basket';
 import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewStatus, setModalAddReviewSuccessStatus } from '../../store/modals-process/modals-process';
-import { fetchProducts } from '../../store/api-actions';
-import { useEffect } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus } from '../../store/modals-process/selectors';
 
 
 export const App = () => {
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    let isMounted = true;
-
-    if (isMounted) {
-      dispatch(fetchProducts());
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [dispatch]);
 
   const handleEscapeKey = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
@@ -49,7 +35,6 @@ export const App = () => {
   } else {
     document.body.style.overflow = 'auto';
   }
-
 
   return (
     <HelmetProvider>
