@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState, useCallback } from 'react';
+import { ChangeEvent, KeyboardEvent, useState, useCallback, useEffect } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { sortAndFilterProducts, setFilterLowestPrice, setFilterHighestPrice } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
@@ -15,18 +15,44 @@ export const PriceInput = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const pricelow = params.get('pricelow');
+    const pricehigh = params.get('pricehigh');
+
+    if (pricelow) {
+      setLowestPrice(pricelow);
+      dispatch(setFilterLowestPrice(Number(pricelow)));
+    } else {
+      setLowestPrice('');
+      dispatch(setFilterLowestPrice(null));
+    }
+
+    if (pricehigh) {
+      setHighestPrice(pricehigh);
+      dispatch(setFilterHighestPrice(Number(pricehigh)));
+    } else {
+      setHighestPrice('');
+      dispatch(setFilterHighestPrice(null));
+    }
+
+    if (pricelow || pricehigh) {
+      dispatch(sortAndFilterProducts());
+    }
+  }, [dispatch, location.search]);
+
   const updateURL = useCallback((lowest: string, highest: string) => {
     const params = new URLSearchParams(location.search);
 
     if (lowest) {
       params.set('pricelow', lowest);
-    } else {
+    } else if (lowest === '') {
       params.delete('pricelow');
     }
 
     if (highest) {
       params.set('pricehigh', highest);
-    } else {
+    } else if (highest === '') {
       params.delete('pricehigh');
     }
 
@@ -38,6 +64,7 @@ export const PriceInput = () => {
     if (/^\d*$/.test(value)) {
       setLowestPrice(value);
       dispatch(setFilterLowestPrice(value ? Number(value) : null));
+      updateURL(value, highestPrice);
     }
     dispatch(sortAndFilterProducts());
   };
@@ -51,6 +78,7 @@ export const PriceInput = () => {
       } else if (!value) {
         dispatch(setFilterHighestPrice(null));
       }
+      updateURL(lowestPrice, value);
     }
     dispatch(sortAndFilterProducts());
   };
