@@ -87,7 +87,9 @@ export const ValidCatalogParams = [
   'level',
   'page',
   'cameratype',
-  'category'
+  'category',
+  'pricelow',
+  'pricehigh',
 ];
 
 export const ValidItemParams = [
