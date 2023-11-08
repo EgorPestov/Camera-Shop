@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { sortAndFilterProducts, setFilterCategory, setFilterLevel, setFilterType } from '../../store/product-process/product-process';
+import { sortAndFilterProducts, setFilterCategory, setFilterLevel, setFilterType, setFilterLowestPrice, setFilterHighestPrice } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getFilterCategory, getFilterType, getFilterLevel } from '../../store/product-process/selectors';
 import { ChangeEvent, useEffect, useCallback } from 'react';
@@ -116,6 +116,23 @@ export const Filtration = () => {
   useEffect(() => {
     dispatch(sortAndFilterProducts());
   }, [selectedCategory, selectedType, selectedLevel, updateURL, dispatch]);
+
+  const handleResetButtonClick = () => {
+    dispatch(setFilterCategory(null));
+    dispatch(setFilterType(null));
+    dispatch(setFilterLevel(null));
+    dispatch(setFilterLowestPrice(null));
+    dispatch(setFilterHighestPrice(null));
+    updateURL(null, null, null);
+    const params = new URLSearchParams(location.search);
+    params.delete('pricelow');
+    params.delete('pricehigh');
+    dispatch(sortAndFilterProducts());
+    navigate({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
+  };
 
   return (
     <div className="catalog__aside" data-testid="filtration">
@@ -262,13 +279,7 @@ export const Filtration = () => {
           <button
             className="btn catalog-filter__reset-btn"
             type="reset"
-            onClick={() => {
-              dispatch(setFilterCategory(null));
-              dispatch(setFilterType(null));
-              dispatch(setFilterLevel(null));
-              updateURL(null, null, null);
-              dispatch(sortAndFilterProducts());
-            }}
+            onClick={handleResetButtonClick}
           >
             Сбросить фильтры
           </button>
