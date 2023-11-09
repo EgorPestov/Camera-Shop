@@ -23,6 +23,13 @@ describe('Component: Modal Add Item', () => {
         isReviewsLoading: false,
         product: null,
         isProductLoading: false,
+        filterCategory: null,
+        filterType: null,
+        filterLevel: null,
+        filterLowestPrice: null,
+        filterHighestPrice: null,
+        priceLowest: null,
+        priceHighest: null,
       },
       MODALS: {
         isModalAddItemOpen: true,

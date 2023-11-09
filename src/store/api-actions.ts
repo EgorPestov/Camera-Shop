@@ -104,24 +104,3 @@ export const postReview = createAsyncThunk<void, NewReviewType, thunkObjType>(
     }
   }
 );
-
-// export const fetchPrices = createAsyncThunk<void, undefined, thunkObjType>(
-//   'PRODUCTS/fetchPrices',
-//   async (_arg, { dispatch, extra: api }) => {
-//     try {
-//       dispatch(setProductsLoadStatus(true));
-//       const { data } = await api.get<ProductType[]>(APIRoute.Products);
-//       dispatch(setProducts(data));
-//       dispatch(setBackupProducts(data));
-//       dispatch(sortAndFilterProducts());
-//       dispatch(setShowableProducts());
-//       dispatch(setError(false));
-//     } catch {
-//       dispatch(setError(true));
-//       toast.error('Ошибка загрузки товаров, пожалуйста, попробуйте еще раз');
-//       throw new Error;
-//     } finally {
-//       dispatch(setProductsLoadStatus(false));
-//     }
-//   }
-// );

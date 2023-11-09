@@ -24,6 +24,13 @@ describe('Component: Reviews', () => {
         isReviewsLoading: false,
         product: null,
         isProductLoading: false,
+        filterCategory: null,
+        filterType: null,
+        filterLevel: null,
+        filterLowestPrice: null,
+        filterHighestPrice: null,
+        priceLowest: null,
+        priceHighest: null,
       }
     });
 

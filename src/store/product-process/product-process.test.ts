@@ -214,10 +214,31 @@ describe('Products Process Slice', () => {
     expect(result).toEqual(expectedState);
   });
 
-  it('should sort products by price to top', () => {
-    const startState = {
-      ...initialState,
+  it('should sort products by price to top and should set lowest and highest price', () => {
+    const startState: ProductsProcessType = {
       products: mockProducts,
+      backupProducts: mockProducts,
+      isProductsLoading: false,
+      hasError: false,
+      sortingType: 'price',
+      sortingDirection: 'top',
+      currentPage: 1,
+      showableProducts: [],
+      currentId: 0,
+      buyingId: 0,
+      similarProducts: [],
+      isSimilarProductsLoading: false,
+      reviews: [],
+      isReviewsLoading: false,
+      product: null,
+      isProductLoading: false,
+      filterCategory: null,
+      filterType: null,
+      filterLevel: null,
+      filterLowestPrice: null,
+      filterHighestPrice: null,
+      priceLowest: null,
+      priceHighest: null,
     };
 
     const action = productsProcessSlice.actions.sortAndFilterProducts();
@@ -229,6 +250,51 @@ describe('Products Process Slice', () => {
     const expectedState = {
       ...startState,
       products: expectedProducts,
+      showableProducts: expectedProducts.slice(0, 9),
+      priceLowest: 5690,
+      priceHighest: 149990,
+    };
+
+    expect(result).toEqual(expectedState);
+  });
+
+  it('should filter products by category and should set lowest and highest price', () => {
+    const startState: ProductsProcessType = {
+      products: mockProducts,
+      backupProducts: mockProducts,
+      isProductsLoading: false,
+      hasError: false,
+      sortingType: null,
+      sortingDirection: null,
+      currentPage: 1,
+      showableProducts: [],
+      currentId: 0,
+      buyingId: 0,
+      similarProducts: [],
+      isSimilarProductsLoading: false,
+      reviews: [],
+      isReviewsLoading: false,
+      product: null,
+      isProductLoading: false,
+      filterCategory: 'Видеокамера',
+      filterType: null,
+      filterLevel: null,
+      filterLowestPrice: null,
+      filterHighestPrice: null,
+      priceLowest: null,
+      priceHighest: null,
+    };
+
+    const action = productsProcessSlice.actions.sortAndFilterProducts();
+
+    const result = productsProcessSlice.reducer(startState, action);
+
+    const expectedState = {
+      ...startState,
+      products: mockProducts.filter((product) => product.category === 'Видеокамера'),
+      showableProducts: mockProducts.filter((product) => product.category === 'Видеокамера'),
+      priceLowest: 5690,
+      priceHighest: 149990,
     };
 
     expect(result).toEqual(expectedState);

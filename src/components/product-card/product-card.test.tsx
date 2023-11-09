@@ -8,7 +8,7 @@ describe('Component: Product Card', () => {
   const mockProduct = mockProducts[0];
 
   it('should render correctly', () => {
-    const { withStoreComponent } = withStore(<ProductCard key={mockKey} product={mockProduct}/>, {
+    const { withStoreComponent } = withStore(<ProductCard key={mockKey} product={mockProduct} />, {
       PRODUCTS: {
         products: mockProducts,
         backupProducts: [],
@@ -26,6 +26,13 @@ describe('Component: Product Card', () => {
         isReviewsLoading: false,
         product: null,
         isProductLoading: false,
+        filterCategory: null,
+        filterType: null,
+        filterLevel: null,
+        filterLowestPrice: null,
+        filterHighestPrice: null,
+        priceLowest: null,
+        priceHighest: null,
       }
     });
 

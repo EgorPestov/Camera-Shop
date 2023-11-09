@@ -10,8 +10,8 @@ import { State } from '../hooks/use-app-selector/use-app-selector';
 import { fetchProducts, fetchSimilarProducts, fetchReviews, postReview } from './api-actions';
 import { APIRoute } from '../const';
 import {
-  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortAndFilterProducts,
-  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus
+  setProducts, setBackupProducts, setProductsLoadStatus, setError, sortAndFilterProducts, setHighestPrice,
+  setShowableProducts, setSimilarProducts, setSimilarProductsLoadStatus, setReviews, setReviewsLoadStatus, setLowestPrice
 } from './product-process/product-process';
 
 describe('Async actions', () => {
@@ -43,6 +43,8 @@ describe('Async actions', () => {
         setBackupProducts.type,
         sortAndFilterProducts.type,
         setShowableProducts.type,
+        setLowestPrice.type,
+        setHighestPrice.type,
         setError.type,
         setProductsLoadStatus.type,
         fetchProducts.fulfilled.type,

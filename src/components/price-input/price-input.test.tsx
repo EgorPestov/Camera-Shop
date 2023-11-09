@@ -1,15 +1,15 @@
 import { render, screen } from '@testing-library/react';
-import { Filtration } from './filtration';
+import { PriceInput } from './price-input';
 import { withHistory, withStore } from '../../mocks/mock-component';
 import { mockStore } from '../../mocks/mock-store';
 
-describe('Component: Filtration', () => {
+describe('Component: Price Input', () => {
   it('should render correctly', () => {
-    const { withStoreComponent } = withStore(<Filtration />, mockStore());
+    const { withStoreComponent } = withStore(<PriceInput />, mockStore());
 
     const prepComponent = withHistory(withStoreComponent);
     render(prepComponent);
 
-    expect(screen.getByTestId('filtration')).toBeInTheDocument();
+    expect(screen.getByTestId('price-input')).toBeInTheDocument();
   });
 });

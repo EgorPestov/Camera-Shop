@@ -132,7 +132,7 @@ export const PriceInput = () => {
   };
 
   return (
-    <fieldset className="catalog-filter__block">
+    <fieldset className="catalog-filter__block" data-testid="price-input">
       <legend className="title title--h5">Цена, ₽</legend>
       <div className="catalog-filter__price-range">
         <div className="custom-input">

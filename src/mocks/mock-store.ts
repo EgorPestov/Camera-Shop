@@ -6,7 +6,7 @@ export const mockStore = (initialState?: Partial<State>): State => ({
   PRODUCTS: {
     products: mockProducts,
     backupProducts: mockProducts,
-    isProductsLoading: true,
+    isProductsLoading: false,
     hasError: false,
     sortingType: 'price',
     sortingDirection: 'top',
@@ -20,6 +20,13 @@ export const mockStore = (initialState?: Partial<State>): State => ({
     isReviewsLoading: false,
     product: null,
     isProductLoading: false,
+    filterCategory: null,
+    filterType: null,
+    filterLevel: null,
+    filterLowestPrice: null,
+    filterHighestPrice: null,
+    priceLowest: null,
+    priceHighest: null,
   },
   MODALS: {
     isModalAddItemOpen: false,
