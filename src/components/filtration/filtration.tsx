@@ -127,6 +127,9 @@ export const Filtration = () => {
     const params = new URLSearchParams(location.search);
     params.delete('pricelow');
     params.delete('pricehigh');
+    params.delete('category');
+    params.delete('type');
+    params.delete('level');
     dispatch(sortAndFilterProducts());
     navigate({
       pathname: location.pathname,
