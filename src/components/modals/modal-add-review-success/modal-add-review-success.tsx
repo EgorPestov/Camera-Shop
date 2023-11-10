@@ -19,6 +19,12 @@ export const ModalReviewSuccess = () => {
     dispatch(setModalAddReviewSuccessStatus(false));
   };
 
+  const handleCloseBlur = () => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  };
+
   return (
     <div className={`modal ${isReviewSuccessModalOpen ? 'is-active' : ''} modal--narrow`} data-testid="modal-add-review-success">
       <div className="modal__wrapper">
@@ -43,6 +49,7 @@ export const ModalReviewSuccess = () => {
             type="button"
             aria-label="Закрыть попап"
             onClick={handleClose}
+            onBlur={handleCloseBlur}
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

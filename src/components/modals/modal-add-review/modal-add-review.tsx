@@ -15,6 +15,7 @@ export const ModalAddReview = () => {
   const dispatch = useAppDispatch();
   const currentId = useAppSelector(getCurrentId);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const submitRef = useRef<HTMLButtonElement | null>(null);
 
   const [reviewData, setReviewData] = useState<NewReviewType>({
     cameraId: currentId,
@@ -106,12 +107,21 @@ export const ModalAddReview = () => {
     updateErrorsData(newErrorsData);
   };
 
-
   useEffect(() => {
-    if (isAddReviewOpened && nameInputRef.current) {
-      nameInputRef.current.focus();
+    if (isAddReviewOpened) {
+      setTimeout(() => {
+        if (submitRef.current) {
+          submitRef.current.focus();
+        }
+      }, 0);
     }
   }, [isAddReviewOpened]);
+
+  const handleCloseBlur = () => {
+    if (nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+  };
 
   const handleNameChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setReviewData({ ...reviewData, userName: evt.target.value });
@@ -264,12 +274,23 @@ export const ModalAddReview = () => {
                   </div>
                 </div>
               </div>
-              <button className="btn btn--purple form-review__btn" type="submit" onClick={handleSubmit}>
+              <button
+                className="btn btn--purple form-review__btn"
+                type="submit"
+                onClick={handleSubmit}
+                ref={submitRef}
+              >
                 Отправить отзыв
               </button>
             </form>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={handleClose}>
+          <button
+            className="cross-btn"
+            type="button"
+            aria-label="Закрыть попап"
+            onClick={handleClose}
+            onBlur={handleCloseBlur}
+          >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg>
