@@ -9,13 +9,19 @@ import { useRef, useEffect } from 'react';
 export const ModalAddItemSuccess = () => {
   const dispatch = useAppDispatch();
   const isModalAddItemSuccessOpen = useAppSelector(getModalAddItemSuccessStatus);
-  const linkRef = useRef<HTMLButtonElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    if (isModalAddItemSuccessOpen && linkRef.current) {
-      linkRef.current.focus();
+    if (isModalAddItemSuccessOpen && buttonRef.current) {
+      buttonRef.current.focus();
     }
   }, [isModalAddItemSuccessOpen]);
+
+  const handleCloseBlur = () => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  };
 
   return (
     <div className="modal is-active modal--narrow" data-testid="modal-add-item-success">
@@ -32,7 +38,7 @@ export const ModalAddItemSuccess = () => {
               onClick={() => {
                 dispatch(setModalAddItemSuccessStatus(false));
               }}
-              ref={linkRef}
+              ref={buttonRef}
             >
               Продолжить покупки
             </button>
@@ -44,7 +50,13 @@ export const ModalAddItemSuccess = () => {
               Перейти в корзину
             </Link>
           </div>
-          <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setModalAddItemSuccessStatus(false))}>
+          <button
+            className="cross-btn"
+            type="button"
+            aria-label="Закрыть попап"
+            onClick={() => dispatch(setModalAddItemSuccessStatus(false))}
+            onBlur={handleCloseBlur}
+          >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg>
