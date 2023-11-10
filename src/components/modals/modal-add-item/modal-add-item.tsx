@@ -20,6 +20,12 @@ export const ModalAddItem = () => {
     }
   }, [isModalAddItemOpen]);
 
+  const handleCloseBlur = () => {
+    if (buttonRef.current) {
+      buttonRef.current.focus();
+    }
+  };
+
   if (product !== undefined) {
     return (
       <div className="modal is-active" data-testid="modal-add-item">
@@ -74,7 +80,13 @@ export const ModalAddItem = () => {
                 Добавить в корзину
               </button>
             </div>
-            <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={() => dispatch(setModalAddItemStatus(false))}>
+            <button
+              className="cross-btn"
+              type="button"
+              aria-label="Закрыть попап"
+              onClick={() => dispatch(setModalAddItemStatus(false))}
+              onBlur={handleCloseBlur}
+            >
               <svg width={10} height={10} aria-hidden="true">
                 <use xlinkHref="#icon-close" />
               </svg>
