@@ -123,3 +123,8 @@ export const SortDirection = {
   Top: 'top',
   Down: 'down',
 } as const;
+
+export const OptionType = {
+  Description: 'dscrptn',
+  Specs: 'specs',
+} as const;

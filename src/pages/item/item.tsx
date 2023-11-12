@@ -10,7 +10,7 @@ import { setBuyingId, setCurrentId, setFilterCategory, setFilterLevel, setFilter
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { useEffect, useMemo } from 'react';
-import { AppRoute, PRODUCTS_COUNT, ValidItemParams } from '../../const';
+import { AppRoute, PRODUCTS_COUNT, ValidItemParams, OptionType } from '../../const';
 import { ModalAddItem } from '../../components/modals/modal-add-item/modal-add-item';
 import { ModalAddItemSuccess } from '../../components/modals/modal-add-item-success/modal-add-item-success';
 import { Reviews } from '../../components/reviews/reviews';
@@ -31,7 +31,7 @@ export const Item = () => {
   let currentOption = searchParams.get('tab');
 
   useEffect(() => {
-    if (isNaN(Number(id)) || id < 1 || id > PRODUCTS_COUNT || currentOption !== 'dscrptn' && currentOption !== 'spec') {
+    if (isNaN(Number(id)) || id < 1 || id > PRODUCTS_COUNT || currentOption !== OptionType.Description && currentOption !== OptionType.Specs) {
       dispatch(redirectToRoute(AppRoute.NotFound));
     }
 
@@ -50,7 +50,7 @@ export const Item = () => {
   }, [dispatch, id]);
 
   if (!currentOption) {
-    currentOption = 'dscrptn';
+    currentOption = OptionType.Description;
   }
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const Item = () => {
     const baseUrl = location.pathname;
 
     if (!searchParams.has('tab')) {
-      searchParams.append('tab', 'dscrptn');
+      searchParams.append('tab', OptionType.Description);
       const newUrl = `${baseUrl}?${searchParams.toString()}`;
       history.replaceState(null, '', newUrl);
     }
@@ -195,26 +195,26 @@ export const Item = () => {
                     <div className="tabs product__tabs">
                       <div className="tabs__controls product__tabs-controls">
                         <button
-                          className={`tabs__control ${currentOption === 'spec' ? 'is-active' : ''}`}
+                          className={`tabs__control ${currentOption === OptionType.Specs ? 'is-active' : ''}`}
                           type="button"
                           onClick={() => {
-                            dispatch(redirectToRoute(`${AppRoute.Item}/${currentId}?tab=spec`));
+                            dispatch(redirectToRoute(`${AppRoute.Item}/${currentId}?tab=${OptionType.Specs}`));
                           }}
                         >
                           Характеристики
                         </button>
                         <button
-                          className={`tabs__control ${currentOption === 'dscrptn' ? 'is-active' : ''}`}
+                          className={`tabs__control ${currentOption === OptionType.Description ? 'is-active' : ''}`}
                           type="button"
                           onClick={() => {
-                            dispatch(redirectToRoute(`${AppRoute.Item}/${currentId}?tab=dscrptn`));
+                            dispatch(redirectToRoute(`${AppRoute.Item}/${currentId}?tab=${OptionType.Description}`));
                           }}
                         >
                           Описание
                         </button>
                       </div>
                       <div className="tabs__content">
-                        <div className={`tabs__element ${currentOption === 'spec' ? 'is-active' : ''}`}>
+                        <div className={`tabs__element ${currentOption === OptionType.Specs ? 'is-active' : ''}`}>
                           <ul className="product__tabs-list">
                             <li className="item-list">
                               <span className="item-list__title">Артикул: </span>
@@ -234,7 +234,7 @@ export const Item = () => {
                             </li>
                           </ul>
                         </div>
-                        <div className={`tabs__element ${currentOption === 'dscrptn' ? 'is-active' : ''}`}>
+                        <div className={`tabs__element ${currentOption === OptionType.Description ? 'is-active' : ''}`}>
                           <div className="product__tabs-text">
                             <p>
                               {product.description}
