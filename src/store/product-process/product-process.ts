@@ -3,6 +3,7 @@ import { ProductType, ReviewType } from '../../types';
 import { NameSpace } from '../../const';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from '../../const';
 import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
+import { sortAndFilter } from '../../utils';
 
 export type ProductsProcessType = {
   products: ProductType[];
@@ -124,60 +125,7 @@ export const productsProcessSlice = createSlice({
         state.priceHighest = null;
       }
     },
-    sortAndFilterProducts: (state) => {
-      const {
-        backupProducts,
-        filterCategory,
-        filterType,
-        filterLevel,
-        filterLowestPrice,
-        filterHighestPrice,
-        sortingType,
-        sortingDirection,
-        currentPage
-      } = state;
-
-      let filteredProducts = [...backupProducts];
-
-      if (filterCategory) {
-        filteredProducts = filteredProducts.filter((product) => product.category === filterCategory);
-      }
-      if (filterType) {
-        filteredProducts = filteredProducts.filter((product) => product.type === filterType);
-      }
-      if (filterLevel) {
-        filteredProducts = filteredProducts.filter((product) => product.level === filterLevel);
-      }
-      if (filterLowestPrice) {
-        filteredProducts = filteredProducts.filter((product) => product.price >= filterLowestPrice);
-      }
-      if (filterHighestPrice) {
-        filteredProducts = filteredProducts.filter((product) => product.price <= filterHighestPrice);
-      }
-
-      if (sortingType === 'price') {
-        const directionMultiplier = sortingDirection === 'top' ? 1 : -1;
-        filteredProducts = filteredProducts.sort((a, b) => (a.price - b.price) * directionMultiplier);
-      } else if (sortingType === 'popularity') {
-        const directionMultiplier = sortingDirection === 'top' ? 1 : -1;
-        filteredProducts = filteredProducts.sort((a, b) => (a.rating - b.rating) * directionMultiplier);
-      }
-
-      const startIndex = (currentPage - 1) * SHOWABLE_CARDS_PER_PAGE_COUNT;
-      const endIndex = currentPage * SHOWABLE_CARDS_PER_PAGE_COUNT;
-      state.showableProducts = filteredProducts.slice(startIndex, endIndex);
-      state.products = filteredProducts;
-
-      if (filterCategory || filterType || filterLevel || filterCategory === null || filterType === null || filterLevel === null) {
-        if (state.products.length) {
-          state.priceLowest = state.products.reduce((minPrice, product) => minPrice === null || product.price < minPrice ? product.price : minPrice, state.products[0].price);
-          state.priceHighest = state.products.reduce((maxPrice, product) => maxPrice === null || product.price > maxPrice ? product.price : maxPrice, state.products[0].price);
-        } else {
-          state.priceLowest = null;
-          state.priceHighest = null;
-        }
-      }
-    },
+    sortAndFilterProducts: (state) => sortAndFilter(state),
     setFilterCategory: (state, action: PayloadAction<FilterCategoryType>) => {
       state.filterCategory = action.payload;
     },
