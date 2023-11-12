@@ -43,6 +43,9 @@ export type ErrorsDataType = {
   rating: boolean;
 };
 
+export type SortTypeType = 'price' | 'popularity';
+export type SortDirectionType = 'top' | 'down';
+
 export type FilterCategoryType = 'Фотоаппарат' | 'Видеокамера' | null;
 export type FilterTypeType = 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null;
 export type FilterLevelType = 'Нулевой' | 'Любительский' | 'Профессиональный' | null;

@@ -5,7 +5,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getSortingType, getSortingDirection } from '../../store/product-process/selectors';
 import { redirectToRoute } from '../../store/actions';
-import { AppRoute } from '../../const';
+import { AppRoute, SortType, SortDirection } from '../../const';
+import { SortTypeType, SortDirectionType } from '../../types';
 
 export const Sorting = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +20,7 @@ export const Sorting = () => {
   const [isTopChecked, setIsTopChecked] = useState(false);
   const [isDownChecked, setIsDownChecked] = useState(false);
 
-  const updateURL = useCallback((type: 'price' | 'popularity', direction: 'top' | 'down') => {
+  const updateURL = useCallback((type: SortTypeType, direction: SortDirectionType) => {
     const currentQueryParams = new URLSearchParams(location.search);
     currentQueryParams.set('type', type);
     currentQueryParams.set('direction', direction);
@@ -30,15 +31,15 @@ export const Sorting = () => {
     });
   }, [location.search, location.pathname, navigate]);
 
-  const handleTypeChange = (item: 'price' | 'popularity') => {
-    let direction: 'down' | 'top' = isDownChecked ? 'down' : 'top';
+  const handleTypeChange = (item: SortTypeType) => {
+    let direction: SortDirectionType = isDownChecked ? SortDirection.Down : SortDirection.Top;
     if (isTopChecked === false && isDownChecked === false) {
       setIsDownChecked(true);
-      dispatch(setSortingDirection('down'));
-      direction = 'down';
+      dispatch(setSortingDirection(SortDirection.Down));
+      direction = SortDirection.Down;
     }
 
-    if (item === 'price') {
+    if (item === SortType.Price) {
       setIsPriceChecked((prevValue) => (!prevValue));
       setIsPopularityChecked(false);
     } else {
@@ -50,15 +51,15 @@ export const Sorting = () => {
     updateURL(item, direction);
   };
 
-  const handleDirectionChange = (item: 'top' | 'down') => {
-    let type: 'price' | 'popularity' = isPriceChecked ? 'price' : 'popularity';
+  const handleDirectionChange = (item: SortDirectionType) => {
+    let type: SortTypeType = isPriceChecked ? SortType.Price : SortType.Popularity;
     if (isPriceChecked === false && isPopularityChecked === false) {
       setIsPriceChecked(true);
-      dispatch(setSortingType('price'));
-      type = 'price';
+      dispatch(setSortingType(SortType.Price));
+      type = SortType.Price;
     }
 
-    if (item === 'top') {
+    if (item === SortDirection.Top) {
       setIsTopChecked((prevValue) => (!prevValue));
       setIsDownChecked(false);
     } else {
@@ -84,14 +85,14 @@ export const Sorting = () => {
     }
 
     if (type) {
-      if (type === 'price') {
+      if (type === SortType.Price) {
         setIsPriceChecked(true);
         setIsPopularityChecked(false);
-        dispatch(setSortingType('price'));
-      } else if (type === 'popularity') {
+        dispatch(setSortingType(SortType.Price));
+      } else if (type === SortType.Popularity) {
         setIsPopularityChecked(true);
         setIsPriceChecked(false);
-        dispatch(setSortingType('popularity'));
+        dispatch(setSortingType(SortType.Popularity));
       } else {
         dispatch(redirectToRoute(AppRoute.NotFound));
         return;
@@ -99,14 +100,14 @@ export const Sorting = () => {
     }
 
     if (direction) {
-      if (direction === 'top') {
+      if (direction === SortDirection.Top) {
         setIsTopChecked(true);
         setIsDownChecked(false);
-        dispatch(setSortingDirection('top'));
-      } else if (direction === 'down') {
+        dispatch(setSortingDirection(SortDirection.Top));
+      } else if (direction === SortDirection.Down) {
         setIsDownChecked(true);
         setIsTopChecked(false);
-        dispatch(setSortingDirection('down'));
+        dispatch(setSortingDirection(SortDirection.Down));
       } else {
         dispatch(redirectToRoute(AppRoute.NotFound));
         return;
@@ -114,7 +115,7 @@ export const Sorting = () => {
     }
 
     if (type && direction) {
-      updateURL(type as 'price' | 'popularity', direction as 'top' | 'down');
+      updateURL(type as SortTypeType, direction as SortDirectionType);
     }
   }, [location.search, dispatch, sortingType, sortingDirection, updateURL]);
 
@@ -130,8 +131,8 @@ export const Sorting = () => {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                checked={sortingType === 'price'}
-                onChange={() => handleTypeChange('price')}
+                checked={sortingType === SortType.Price}
+                onChange={() => handleTypeChange(SortType.Price)}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -140,8 +141,8 @@ export const Sorting = () => {
                 type="radio"
                 id="sortPopular"
                 name="sort"
-                checked={sortingType === 'popularity'}
-                onChange={() => handleTypeChange('popularity')}
+                checked={sortingType === SortType.Popularity}
+                onChange={() => handleTypeChange(SortType.Popularity)}
               />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
@@ -152,9 +153,9 @@ export const Sorting = () => {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                checked={sortingDirection === 'top'}
+                checked={sortingDirection === SortDirection.Top}
                 aria-label="По возрастанию"
-                onChange={() => handleDirectionChange('top')}
+                onChange={() => handleDirectionChange(SortDirection.Top)}
               />
               <label htmlFor="up">
                 <svg width={16} height={14} aria-hidden="true">
@@ -167,9 +168,9 @@ export const Sorting = () => {
                 type="radio"
                 id="down"
                 name="sort-icon"
-                checked={sortingDirection === 'down'}
+                checked={sortingDirection === SortDirection.Down}
                 aria-label="По убыванию"
-                onChange={() => handleDirectionChange('down')}
+                onChange={() => handleDirectionChange(SortDirection.Down)}
               />
               <label htmlFor="down">
                 <svg width={16} height={14} aria-hidden="true">

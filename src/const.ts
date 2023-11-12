@@ -114,3 +114,12 @@ export const FilterLevel = {
   Professional: 'Профессиональный',
 } as const;
 
+export const SortType = {
+  Price: 'price',
+  Popularity: 'popularity',
+} as const;
+
+export const SortDirection = {
+  Top: 'top',
+  Down: 'down',
+} as const;
