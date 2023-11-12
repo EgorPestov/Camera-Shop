@@ -38,7 +38,6 @@ export const formatDateToHumanType = (inputDate: string): string => {
 
 export const sortAndFilter = (state: ProductsProcessType) => {
   const {
-    products,
     backupProducts,
     filterCategory,
     filterType,
@@ -82,9 +81,9 @@ export const sortAndFilter = (state: ProductsProcessType) => {
   state.products = filteredProducts;
 
   if (filterCategory || filterType || filterLevel || filterCategory === null || filterType === null || filterLevel === null) {
-    if (state.products.length) {
-      state.priceLowest = products.reduce((minPrice, product) => minPrice === null || product.price < minPrice ? product.price : minPrice, products[0].price);
-      state.priceHighest = products.reduce((maxPrice, product) => maxPrice === null || product.price > maxPrice ? product.price : maxPrice, products[0].price);
+    if (state.products.length > 0) {
+      state.priceLowest = state.products.reduce((minPrice, product) => minPrice === null || product.price < minPrice ? product.price : minPrice, state.products[0].price);
+      state.priceHighest = state.products.reduce((maxPrice, product) => maxPrice === null || product.price > maxPrice ? product.price : maxPrice, state.products[0].price);
     } else {
       state.priceLowest = null;
       state.priceHighest = null;
