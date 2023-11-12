@@ -1,7 +1,7 @@
 import { NameSpace } from '../../const';
 import { State } from '../../hooks/use-app-selector/use-app-selector';
 import { ProductType, ReviewType } from '../../types';
-import { FilterCategory, FilterLevel, FilterType } from '../../types';
+import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
 
 export const getProducts = (state: State): ProductType[] => state[NameSpace.Products].products;
 export const getBackupProducts = (state: State): ProductType[] => state[NameSpace.Products].backupProducts;
@@ -20,9 +20,9 @@ export const getBuyingId = (state: State): number => state[NameSpace.Products].b
 export const getBuyingModalProduct = (state: State): ProductType | undefined => state[NameSpace.Products].products.find((product) => product.id === state[NameSpace.Products].buyingId);
 export const getProduct = (state: State): ProductType | null => state[NameSpace.Products].product;
 export const getProductLoadStatus = (state: State): boolean => state[NameSpace.Products].isProductLoading;
-export const getFilterCategory = (state: State): FilterCategory => state[NameSpace.Products].filterCategory;
-export const getFilterType = (state: State): FilterType => state[NameSpace.Products].filterType;
-export const getFilterLevel = (state: State): FilterLevel => state[NameSpace.Products].filterLevel;
+export const getFilterCategory = (state: State): FilterCategoryType => state[NameSpace.Products].filterCategory;
+export const getFilterType = (state: State): FilterTypeType => state[NameSpace.Products].filterType;
+export const getFilterLevel = (state: State): FilterLevelType => state[NameSpace.Products].filterLevel;
 export const getFilterLowestPrice = (state: State): number | null => state[NameSpace.Products].filterLowestPrice;
 export const getFilterHighestPrice = (state: State): number | null => state[NameSpace.Products].filterHighestPrice;
 export const getLowestPrice = (state: State): number | null => state[NameSpace.Products].priceLowest;

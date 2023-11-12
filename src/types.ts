@@ -43,6 +43,6 @@ export type ErrorsDataType = {
   rating: boolean;
 };
 
-export type FilterCategory = 'Фотоаппарат' | 'Видеокамера' | null;
-export type FilterType = 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null;
-export type FilterLevel = 'Нулевой' | 'Любительский' | 'Профессиональный' | null;
+export type FilterCategoryType = 'Фотоаппарат' | 'Видеокамера' | null;
+export type FilterTypeType = 'Цифровая' | 'Плёночная' | 'Моментальная' | 'Коллекционная' | null;
+export type FilterLevelType = 'Нулевой' | 'Любительский' | 'Профессиональный' | null;

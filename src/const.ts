@@ -95,3 +95,22 @@ export const ValidCatalogParams = [
 export const ValidItemParams = [
   'tab',
 ];
+
+export const FilterCategory = {
+  Photo: 'Фотоаппарат',
+  Video: 'Видеокамера',
+} as const;
+
+export const FilterType = {
+  Digital: 'Цифровая',
+  Film: 'Плёночная',
+  Instant: 'Моментальная',
+  Collection: 'Коллекционная',
+} as const;
+
+export const FilterLevel = {
+  Zero: 'Нулевой',
+  Amateur: 'Любительский',
+  Professional: 'Профессиональный',
+} as const;
+

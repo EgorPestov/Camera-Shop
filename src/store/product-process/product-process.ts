@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductType, ReviewType } from '../../types';
 import { NameSpace } from '../../const';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from '../../const';
-import { FilterCategory, FilterLevel, FilterType } from '../../types';
+import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
 
 export type ProductsProcessType = {
   products: ProductType[];
@@ -21,9 +21,9 @@ export type ProductsProcessType = {
   isReviewsLoading: boolean;
   product: ProductType | null;
   isProductLoading: boolean;
-  filterCategory: FilterCategory;
-  filterType: FilterType;
-  filterLevel: FilterLevel;
+  filterCategory: FilterCategoryType;
+  filterType: FilterTypeType;
+  filterLevel: FilterLevelType;
   filterLowestPrice: number | null;
   filterHighestPrice: number | null;
   priceLowest: number | null;
@@ -178,13 +178,13 @@ export const productsProcessSlice = createSlice({
         }
       }
     },
-    setFilterCategory: (state, action: PayloadAction<FilterCategory>) => {
+    setFilterCategory: (state, action: PayloadAction<FilterCategoryType>) => {
       state.filterCategory = action.payload;
     },
-    setFilterType: (state, action: PayloadAction<FilterType>) => {
+    setFilterType: (state, action: PayloadAction<FilterTypeType>) => {
       state.filterType = action.payload;
     },
-    setFilterLevel: (state, action: PayloadAction<FilterLevel>) => {
+    setFilterLevel: (state, action: PayloadAction<FilterLevelType>) => {
       state.filterLevel = action.payload;
     },
     setFilterLowestPrice: (state, action: PayloadAction<number | null>) => {

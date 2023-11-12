@@ -4,9 +4,9 @@ import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getFilterCategory, getFilterType, getFilterLevel } from '../../store/product-process/selectors';
 import { ChangeEvent, useEffect, useCallback } from 'react';
 import { redirectToRoute } from '../../store/actions';
-import { AppRoute } from '../../const';
+import { AppRoute, FilterCategory, FilterType, FilterLevel } from '../../const';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FilterCategory, FilterLevel, FilterType } from '../../types';
+import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
 import { PriceInput } from '../price-input/price-input';
 
 export const Filtration = () => {
@@ -19,9 +19,9 @@ export const Filtration = () => {
 
   const updateURL = useCallback(
     (
-      category: FilterCategory,
-      cameratype: FilterType,
-      level: FilterLevel,
+      category: FilterCategoryType,
+      cameratype: FilterTypeType,
+      level: FilterLevelType,
       needUpdate?: boolean,
     ) => {
       const params = new URLSearchParams(location.search);
@@ -51,25 +51,25 @@ export const Filtration = () => {
       });
     }, [location.search, location.pathname, navigate]);
 
-  const handleCategoryChange = (category: NonNullable<FilterCategory>) => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleCategoryChange = (category: NonNullable<FilterCategoryType>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newCategory = event.target.checked ? category : null;
     dispatch(setFilterCategory(newCategory));
 
-    if (event.target.checked && category === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная')) {
+    if (event.target.checked && category === FilterCategory.Video && (selectedType === FilterType.Film || selectedType === FilterType.Instant)) {
       dispatch(setFilterType(null));
     }
-    updateURL(newCategory, newCategory === 'Видеокамера' && (selectedType === 'Плёночная' || selectedType === 'Моментальная') ? null : selectedType, selectedLevel, true);
+    updateURL(newCategory, newCategory === FilterCategory.Video && (selectedType === FilterType.Film || selectedType === FilterType.Instant) ? null : selectedType, selectedLevel, true);
     dispatch(sortAndFilterProducts());
   };
 
-  const handleTypeChange = (type: NonNullable<FilterType>) => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleTypeChange = (type: NonNullable<FilterTypeType>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newType = event.target.checked ? type : null;
     dispatch(setFilterType(newType));
     updateURL(selectedCategory, newType, selectedLevel, true);
     dispatch(sortAndFilterProducts());
   };
 
-  const handleLevelChange = (level: NonNullable<FilterLevel>) => (event: ChangeEvent<HTMLInputElement>) => {
+  const handleLevelChange = (level: NonNullable<FilterLevelType>) => (event: ChangeEvent<HTMLInputElement>) => {
     const newLevel = event.target.checked ? level : null;
     dispatch(setFilterLevel(newLevel));
     updateURL(selectedCategory, selectedType, newLevel, true);
@@ -78,12 +78,12 @@ export const Filtration = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const category = searchParams.get('category') as FilterCategory;
-    const type = searchParams.get('cameratype') as FilterType;
-    const level = searchParams.get('level') as FilterLevel;
+    const category = searchParams.get('category') as FilterCategoryType;
+    const type = searchParams.get('cameratype') as FilterTypeType;
+    const level = searchParams.get('level') as FilterLevelType;
 
     if (category) {
-      if (category === 'Фотоаппарат' || category === 'Видеокамера') {
+      if (category === FilterCategory.Photo || category === FilterCategory.Video) {
         dispatch(setFilterCategory(category));
       } else if (category !== null) {
         setTimeout(() => {
@@ -92,7 +92,7 @@ export const Filtration = () => {
       }
     }
     if (type) {
-      if (type === 'Цифровая' || type === 'Плёночная' || type === 'Моментальная' || type === 'Коллекционная') {
+      if (type === FilterType.Digital || type === FilterType.Film || type === FilterType.Instant || type === FilterType.Collection) {
         dispatch(setFilterType(type));
       } else if (type !== null) {
         setTimeout(() => {
@@ -101,7 +101,7 @@ export const Filtration = () => {
       }
     }
     if (level) {
-      if (level === 'Нулевой' || level === 'Любительский' || level === 'Профессиональный') {
+      if (level === FilterLevel.Zero || level === FilterLevel.Amateur || level === FilterLevel.Professional) {
         dispatch(setFilterLevel(level));
       } else if (level !== null) {
         setTimeout(() => {
@@ -150,12 +150,12 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="photocamera"
-                  checked={selectedCategory === 'Фотоаппарат'}
-                  onChange={handleCategoryChange('Фотоаппарат')}
+                  checked={selectedCategory === FilterCategory.Photo}
+                  onChange={handleCategoryChange(FilterCategory.Photo)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Фотокамера
+                  {FilterCategory.Photo}
                 </span>
               </label>
             </div>
@@ -164,12 +164,12 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="videocamera"
-                  checked={selectedCategory === 'Видеокамера'}
-                  onChange={handleCategoryChange('Видеокамера')}
+                  checked={selectedCategory === FilterCategory.Video}
+                  onChange={handleCategoryChange(FilterCategory.Video)}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Видеокамера
+                  {FilterCategory.Video}
                 </span>
               </label>
             </div>
@@ -181,13 +181,13 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="digital"
-                  onChange={handleTypeChange('Цифровая')}
-                  checked={selectedType === 'Цифровая'}
+                  onChange={handleTypeChange(FilterType.Digital)}
+                  checked={selectedType === FilterType.Digital}
 
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Цифровая
+                  {FilterType.Digital}
                 </span>
               </label>
             </div>
@@ -196,13 +196,13 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="film"
-                  onChange={handleTypeChange('Плёночная')}
-                  checked={selectedType === 'Плёночная'}
-                  disabled={selectedCategory === 'Видеокамера'}
+                  onChange={handleTypeChange(FilterType.Film)}
+                  checked={selectedType === FilterType.Film}
+                  disabled={selectedCategory === FilterCategory.Video}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Плёночная
+                  {FilterType.Film}
                 </span>
               </label>
             </div>
@@ -211,13 +211,13 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="snapshot"
-                  onChange={handleTypeChange('Моментальная')}
-                  checked={selectedType === 'Моментальная'}
-                  disabled={selectedCategory === 'Видеокамера'}
+                  onChange={handleTypeChange(FilterType.Instant)}
+                  checked={selectedType === FilterType.Instant}
+                  disabled={selectedCategory === FilterCategory.Video}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Моментальная
+                  {FilterType.Instant}
                 </span>
               </label>
             </div>
@@ -226,12 +226,12 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="collection"
-                  onChange={handleTypeChange('Коллекционная')}
-                  checked={selectedType === 'Коллекционная'}
+                  onChange={handleTypeChange(FilterType.Collection)}
+                  checked={selectedType === FilterType.Collection}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Коллекционная
+                  {FilterType.Collection}
                 </span>
               </label>
             </div>
@@ -243,11 +243,11 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="zero"
-                  onChange={handleLevelChange('Нулевой')}
-                  checked={selectedLevel === 'Нулевой'}
+                  onChange={handleLevelChange(FilterLevel.Zero)}
+                  checked={selectedLevel === FilterLevel.Zero}
                 />
                 <span className="custom-checkbox__icon" />
-                <span className="custom-checkbox__label">Нулевой</span>
+                <span className="custom-checkbox__label">{FilterLevel.Zero}</span>
               </label>
             </div>
             <div className="custom-checkbox catalog-filter__item">
@@ -255,12 +255,12 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="non-professional"
-                  onChange={handleLevelChange('Любительский')}
-                  checked={selectedLevel === 'Любительский'}
+                  onChange={handleLevelChange(FilterLevel.Amateur)}
+                  checked={selectedLevel === FilterLevel.Amateur}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Любительский
+                  {FilterLevel.Amateur}
                 </span>
               </label>
             </div>
@@ -269,12 +269,12 @@ export const Filtration = () => {
                 <input
                   type="checkbox"
                   name="professional"
-                  onChange={handleLevelChange('Профессиональный')}
-                  checked={selectedLevel === 'Профессиональный'}
+                  onChange={handleLevelChange(FilterLevel.Professional)}
+                  checked={selectedLevel === FilterLevel.Professional}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">
-                  Профессиональный
+                  {FilterLevel.Professional}
                 </span>
               </label>
             </div>
