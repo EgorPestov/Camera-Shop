@@ -35,8 +35,8 @@ export const Sorting = () => {
     let direction: SortDirectionType = isDownChecked ? SortDirection.Down : SortDirection.Top;
     if (isTopChecked === false && isDownChecked === false) {
       setIsDownChecked(true);
-      dispatch(setSortingDirection(SortDirection.Down));
-      direction = SortDirection.Down;
+      dispatch(setSortingDirection(SortDirection.Top));
+      direction = SortDirection.Top;
     }
 
     if (item === SortType.Price) {
