@@ -7,6 +7,7 @@ import { LoadingScreen } from '../loading-screen/loading-screen';
 import { ProductCard } from '../product-card/product-card';
 import { MouseEvent } from 'react';
 import { SHOWABLE_SIMILAR_CARDS_COUNT, SIMILAR_CARDS_SLIDER_DELAY_TIME } from '../../const';
+import { BasketType } from '../../types';
 
 export const SimilarProducts = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +17,7 @@ export const SimilarProducts = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
+  const basket = JSON.parse(localStorage.getItem('Basket') || '{}') as BasketType;
 
   const handleNextClick = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation();
@@ -41,7 +43,6 @@ export const SimilarProducts = () => {
     }
   };
 
-
   useEffect(() => {
     let isMounted = true;
 
@@ -65,7 +66,12 @@ export const SimilarProducts = () => {
             <div className="product-similar__slider-list">
 
               {similarProducts.slice(currentIndex, currentIndex + SHOWABLE_SIMILAR_CARDS_COUNT).map((product) => (
-                <ProductCard key={product.id} product={product} isActive basket={false} />
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  isActive
+                  basket={basket[product.id] || false}
+                />
               ))}
 
             </div>
