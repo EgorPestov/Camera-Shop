@@ -5,6 +5,7 @@ import { getModalAddItemSuccessStatus } from '../../../store/modals-process/sele
 import { setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
 import { Link } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { redirectToRoute } from '../../../store/actions';
 
 export const ModalAddItemSuccess = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,7 @@ export const ModalAddItemSuccess = () => {
               className="btn btn--transparent modal__btn"
               onClick={() => {
                 dispatch(setModalAddItemSuccessStatus(false));
+                dispatch(redirectToRoute(AppRoute.Root));
               }}
               ref={buttonRef}
             >
