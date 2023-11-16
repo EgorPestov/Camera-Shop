@@ -69,6 +69,9 @@ export const Basket = () => {
 
   const totalSum = basketProducts.reduce((sum, product) => sum + product.price * productQuantities[product.id], 0);
 
+  const discount = 0.3; // УДАЛИТЬ ПОСЛЕ ДОБАВЛЕНИЯ СКИДОК
+  const finalSum = discount ? Math.round(totalSum * (1 - discount)) : totalSum;
+
   return (
     <div className='wrapper' data-testid="basket">
       <Helmet>
@@ -226,7 +229,7 @@ export const Basket = () => {
                   <p className="basket__summary-item">
                     <span className="basket__summary-text">Скидка:</span>
                     <span className="basket__summary-value basket__summary-value--bonus">
-                      0 ₽
+                      {discount ? formatPrice(totalSum - finalSum) : 0} ₽
                     </span>
                   </p>
                   <p className="basket__summary-item">
@@ -234,7 +237,7 @@ export const Basket = () => {
                       К оплате:
                     </span>
                     <span className="basket__summary-value basket__summary-value--total">
-                      111 390 ₽
+                      {formatPrice(finalSum)} ₽
                     </span>
                   </p>
                   <button className="btn btn--purple" type="submit">
