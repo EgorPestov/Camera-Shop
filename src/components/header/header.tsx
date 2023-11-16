@@ -3,7 +3,7 @@ import { AppRoute, MIN_SEARCH_LENGTH } from '../../const';
 import { ChangeEvent, useEffect, KeyboardEvent, useState, useRef } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getProducts } from '../../store/product-process/selectors';
-import { ProductType } from '../../types';
+import { BasketType, ProductType } from '../../types';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setCurrentId, setFilterCategory, setFilterLevel, setFilterType, setSortingDirection, setSortingType } from '../../store/product-process/product-process';
 import { redirectToRoute } from '../../store/actions';
@@ -18,6 +18,17 @@ export const Header = () => {
 
   const searchRef = useRef<HTMLInputElement>(null);
   const refList = useRef<Array<HTMLLIElement | null>>([]);
+
+  const [basketCount, setBasketCount] = useState(0);
+  const basketData = localStorage.getItem('Basket');
+
+  useEffect(() => {
+    if (basketData) {
+      const basket = JSON.parse(basketData) as BasketType;
+      const count = Object.keys(basket).length;
+      setBasketCount(count);
+    }
+  }, [basketData]);
 
   const handleSearchChange = (evt: ChangeEvent<HTMLInputElement>) => {
     evt.preventDefault();
@@ -204,6 +215,7 @@ export const Header = () => {
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
+          {basketCount > 0 && <span className="header__basket-count">{basketCount}</span>}
         </Link>
       </div>
     </header>
