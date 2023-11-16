@@ -13,7 +13,7 @@ export const ProductList = () => {
         <ProductCard
           key={product.id}
           product={product}
-          basket={basket[product.id] || false}
+          basket={!!basket[product.id]}
         />
       ))}
     </div>

@@ -44,7 +44,7 @@ export type ErrorsDataType = {
 };
 
 export type BasketType = {
-  [key: string]: boolean;
+  [key: string]: number;
 }
 
 export type SortTypeType = 'price' | 'popularity';

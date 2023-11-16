@@ -33,7 +33,7 @@ export const ModalAddItem = () => {
 
     const basket = JSON.parse(localStorage.getItem('Basket') || '{}') as BasketType;
     if (product !== undefined) {
-      basket[product.id] = true;
+      basket[product.id] = 1;
     }
     localStorage.setItem('Basket', JSON.stringify(basket));
   };

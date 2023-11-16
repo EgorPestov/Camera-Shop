@@ -70,7 +70,7 @@ export const SimilarProducts = () => {
                   key={product.id}
                   product={product}
                   isActive
-                  basket={basket[product.id] || false}
+                  basket={!!basket[product.id]}
                 />
               ))}
 
