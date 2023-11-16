@@ -65,7 +65,7 @@ export const SimilarProducts = () => {
             <div className="product-similar__slider-list">
 
               {similarProducts.slice(currentIndex, currentIndex + SHOWABLE_SIMILAR_CARDS_COUNT).map((product) => (
-                <ProductCard key={product.id} product={product} isActive />
+                <ProductCard key={product.id} product={product} isActive basket={false} />
               ))}
 
             </div>

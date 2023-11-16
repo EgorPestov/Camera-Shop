@@ -8,7 +8,7 @@ describe('Component: Product Card', () => {
   const mockProduct = mockProducts[0];
 
   it('should render correctly', () => {
-    const { withStoreComponent } = withStore(<ProductCard key={mockKey} product={mockProduct} />, {
+    const { withStoreComponent } = withStore(<ProductCard key={mockKey} product={mockProduct} basket={false} />, {
       PRODUCTS: {
         products: mockProducts,
         backupProducts: [],
