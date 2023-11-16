@@ -5,13 +5,15 @@ import { AppRoute } from '../../const';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setBuyingId, setCurrentId } from '../../store/product-process/product-process';
 import { setModalAddItemStatus } from '../../store/modals-process/modals-process';
+import { redirectToRoute } from '../../store/actions';
 
 interface ProductCardProps {
   product: ProductType;
   isActive?: boolean;
+  basket: boolean;
 }
 
-export const ProductCard = ({ product, isActive = false }: ProductCardProps) => {
+export const ProductCard = ({ product, isActive = false, basket }: ProductCardProps) => {
   const dispatch = useAppDispatch();
   const {
     id,
@@ -28,6 +30,10 @@ export const ProductCard = ({ product, isActive = false }: ProductCardProps) => 
   const handleBuyClick = () => {
     dispatch(setBuyingId(id));
     dispatch(setModalAddItemStatus(true));
+  };
+
+  const handleBasketClick = () => {
+    dispatch(redirectToRoute(AppRoute.Basket));
   };
 
   return (
@@ -67,17 +73,31 @@ export const ProductCard = ({ product, isActive = false }: ProductCardProps) => 
         </p>
       </div>
       <div className="product-card__buttons">
-        <button
-          className="btn btn--purple product-card__btn"
-          type="button"
-          onClick={handleBuyClick}
-        >
-          Купить
-        </button>
+        {basket ? (
+          <button
+            className="btn btn--purple-border product-card__btn"
+            type="button"
+            onClick={handleBasketClick}
+          >
+            <svg width="16" height="16" aria-hidden="true">
+              <use xlinkHref="#icon-basket"></use>
+            </svg>
+            В корзине
+          </button>
+        ) :
+          (
+            <button
+              className="btn btn--purple product-card__btn"
+              type="button"
+              onClick={handleBuyClick}
+            >
+              Купить
+            </button>
+          )}
         <Link className="btn btn--transparent" onClick={() => dispatch(setCurrentId(id))} to={`${AppRoute.Item}/${id}`}>
           Подробнее
         </Link>
       </div>
-    </div>
+    </div >
   );
 };

@@ -69,11 +69,16 @@ export const Item = () => {
   const product = useAppSelector(getProduct);
   const isProductLoading = useAppSelector(getProductLoadStatus);
 
-  const onButtonClick = () => {
+  const handleUpButtonClick = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
+  };
+
+  const handleBuyButtonClick = () => {
+    dispatch(setBuyingId(Number(currentId)));
+    dispatch(setModalAddItemStatus(true));
   };
 
   useEffect(() => {
@@ -182,11 +187,7 @@ export const Item = () => {
                     <p className="product__price">
                       <span className="visually-hidden">Цена:</span>73 450 ₽
                     </p>
-                    <button className="btn btn--purple" type="button" onClick={() => {
-                      dispatch(setBuyingId(Number(currentId)));
-                      dispatch(setModalAddItemStatus(true));
-                    }}
-                    >
+                    <button className="btn btn--purple" type="button" onClick={handleBuyButtonClick}>
                       <svg width={24} height={16} aria-hidden="true">
                         <use xlinkHref="#icon-add-basket" />
                       </svg>
@@ -257,7 +258,7 @@ export const Item = () => {
           {isModalAddItemOpen ? (<ModalAddItem />) : ''}
           {isModalAddItemSuccessOpen ? (<ModalAddItemSuccess />) : ''}
         </main>
-        <button className="up-btn" onClick={onButtonClick}>
+        <button className="up-btn" onClick={handleUpButtonClick}>
           <svg width={12} height={18} aria-hidden="true">
             <use xlinkHref="#icon-arrow2" />
           </svg>

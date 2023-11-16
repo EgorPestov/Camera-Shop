@@ -43,6 +43,10 @@ export type ErrorsDataType = {
   rating: boolean;
 };
 
+export type BasketType = {
+  [key: string]: boolean;
+}
+
 export type SortTypeType = 'price' | 'popularity';
 export type SortDirectionType = 'top' | 'down';
 

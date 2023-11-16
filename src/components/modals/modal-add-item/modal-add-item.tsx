@@ -6,6 +6,7 @@ import { getModalAddItemStatus } from '../../../store/modals-process/selectors';
 import { CameraNames } from '../../../const';
 import { formatPrice } from '../../../utils';
 import { useRef, useEffect } from 'react';
+import { BasketType } from '../../../types';
 
 
 export const ModalAddItem = () => {
@@ -24,6 +25,17 @@ export const ModalAddItem = () => {
     if (buttonRef.current) {
       buttonRef.current.focus();
     }
+  };
+
+  const handleBuyButtonClick = () => {
+    dispatch(setModalAddItemStatus(false));
+    dispatch(setModalAddItemSuccessStatus(true));
+
+    const basket = JSON.parse(localStorage.getItem('Basket') || '{}') as BasketType;
+    if (product !== undefined) {
+      basket[product.id] = true;
+    }
+    localStorage.setItem('Basket', JSON.stringify(basket));
   };
 
   if (product !== undefined) {
@@ -69,10 +81,7 @@ export const ModalAddItem = () => {
                 className="btn btn--purple modal__btn modal__btn--fit-width"
                 type="button"
                 ref={buttonRef}
-                onClick={() => {
-                  dispatch(setModalAddItemStatus(false));
-                  dispatch(setModalAddItemSuccessStatus(true));
-                }}
+                onClick={handleBuyButtonClick}
               >
                 <svg width={24} height={16} aria-hidden="true">
                   <use xlinkHref="#icon-add-basket" />

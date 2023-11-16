@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewStatus, setModalAddReviewSuccessStatus } from '../../store/modals-process/modals-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus } from '../../store/modals-process/selectors';
-
+import { useEffect } from 'react';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -35,6 +35,12 @@ export const App = () => {
   } else {
     document.body.style.overflow = 'auto';
   }
+
+  useEffect(() => {
+    if (!localStorage.getItem('Basket')) {
+      localStorage.setItem('Basket', JSON.stringify({}));
+    }
+  }, []);
 
   return (
     <HelmetProvider>
