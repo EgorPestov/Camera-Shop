@@ -23,6 +23,7 @@ export const Basket = () => {
   const [isBasketDataLoading, setIsBasketDataLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
   const [coupon, setCoupon] = useState('');
+  const [discount, setDiscount] = useState(0);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -46,6 +47,13 @@ export const Basket = () => {
       setIsInitialized(true);
     }
   }, [isProductsLoading, isBasketDataLoading, products]);
+
+  useEffect(() => {
+    const storedDiscount = localStorage.getItem('discount');
+    if (storedDiscount) {
+      setDiscount(parseFloat(storedDiscount));
+    }
+  }, []);
 
   const increaseQuantity = (productId: string) => {
     const newQuantities = { ...productQuantities };
@@ -82,8 +90,7 @@ export const Basket = () => {
 
   const totalSum = basketProducts.reduce((sum, product) => sum + product.price * productQuantities[product.id], 0);
 
-  const discount = 0.3; // УДАЛИТЬ ПОСЛЕ ДОБАВЛЕНИЯ СКИДОК
-  const finalSum = discount ? Math.round(totalSum * (1 - discount)) : totalSum;
+  const finalSum = discount ? Math.round(totalSum * (100 - discount) / 100) : totalSum;
 
   const handleCouponChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setCoupon(evt.target.value);
@@ -91,7 +98,13 @@ export const Basket = () => {
 
   const handleCouponSubmit = (evt: FormEvent<HTMLButtonElement>) => {
     evt.preventDefault();
-    dispatch(postCoupon({coupon: coupon}));
+    dispatch(postCoupon({ coupon: coupon }))
+      .then(() => {
+        const storedDiscount = localStorage.getItem('discount');
+        if (storedDiscount) {
+          setDiscount(parseFloat(storedDiscount));
+        }
+      });
   };
 
   if (!isInitialized) {

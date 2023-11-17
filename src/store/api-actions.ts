@@ -112,7 +112,6 @@ export const postCoupon = createAsyncThunk<number, CouponType, thunkObjType>(
       const responce = await api.post<number>(APIRoute.Coupons, couponData);
       return responce.data;
     } catch {
-      toast.error('Ошибка отправки купона, пожалуйста, попробуйте еще раз');
       throw new Error;
     }
   }
