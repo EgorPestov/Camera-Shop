@@ -4,6 +4,7 @@ import { NameSpace } from '../../const';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from '../../const';
 import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
 import { sortAndFilter } from '../../utils';
+import { postCoupon } from '../api-actions';
 
 export type ProductsProcessType = {
   products: ProductType[];
@@ -142,6 +143,12 @@ export const productsProcessSlice = createSlice({
       state.filterHighestPrice = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(postCoupon.fulfilled, (_, action) => {
+        localStorage.setItem('discount', action.payload.toString());
+      });
+  }
 });
 
 export const { setBackupProducts, setProducts, setProductsLoadStatus, setCurrentId, setBuyingId, setFilterCategory, setFilterType, setFilterLevel,

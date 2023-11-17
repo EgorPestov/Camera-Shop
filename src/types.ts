@@ -35,6 +35,10 @@ export type NewReviewType = {
   rating: number;
 };
 
+export type CouponType = {
+  coupon: string;
+};
+
 export type ErrorsDataType = {
   userName: boolean;
   advantage: boolean;

@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch } from '../hooks/use-app-dispatch/use-app-dispatch';
 import { State } from '../hooks/use-app-selector/use-app-selector';
-import { NewReviewType, ProductType, ReviewType } from '../types';
+import { CouponType, NewReviewType, ProductType, ReviewType } from '../types';
 import { APIRoute } from '../const';
 import { toast } from 'react-toastify';
 import {
@@ -101,6 +101,19 @@ export const postReview = createAsyncThunk<void, NewReviewType, thunkObjType>(
       throw new Error;
     } finally {
       dispatch(setProductsLoadStatus(false));
+    }
+  }
+);
+
+export const postCoupon = createAsyncThunk<number, CouponType, thunkObjType>(
+  'PRODUCTS/postCoupon',
+  async (couponData, { extra: api }) => {
+    try {
+      const responce = await api.post<number>(APIRoute.Coupons, couponData);
+      return responce.data;
+    } catch {
+      toast.error('Ошибка отправки купона, пожалуйста, попробуйте еще раз');
+      throw new Error;
     }
   }
 );

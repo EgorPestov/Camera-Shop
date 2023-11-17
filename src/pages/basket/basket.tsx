@@ -3,7 +3,7 @@ import { Footer } from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
 import { AppRoute, CameraNames, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getBackupProducts, getProductsLoadStatus } from '../../store/product-process/selectors';
@@ -11,6 +11,7 @@ import { BasketType, ProductType } from '../../types';
 import { fetchProducts } from '../../store/api-actions';
 import { formatPrice } from '../../utils';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
+import { postCoupon } from '../../store/api-actions';
 
 export const Basket = () => {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ export const Basket = () => {
   const isProductsLoading = useAppSelector(getProductsLoadStatus);
   const [isBasketDataLoading, setIsBasketDataLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [coupon, setCoupon] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -82,6 +84,15 @@ export const Basket = () => {
 
   const discount = 0.3; // УДАЛИТЬ ПОСЛЕ ДОБАВЛЕНИЯ СКИДОК
   const finalSum = discount ? Math.round(totalSum * (1 - discount)) : totalSum;
+
+  const handleCouponChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setCoupon(evt.target.value);
+  };
+
+  const handleCouponSubmit = (evt: FormEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+    dispatch(postCoupon({coupon: coupon}));
+  };
 
   if (!isInitialized) {
     return (<LoadingScreen />);
@@ -224,12 +235,17 @@ export const Basket = () => {
                               type="text"
                               name="promo"
                               placeholder="Введите промокод"
+                              onChange={handleCouponChange}
                             />
                           </label>
                           <p className="custom-input__error">Промокод неверный</p>
                           <p className="custom-input__success">Промокод принят!</p>
                         </div>
-                        <button className="btn" type="submit">
+                        <button
+                          className="btn"
+                          type="submit"
+                          onClick={handleCouponSubmit}
+                        >
                           Применить
                         </button>
                       </form>
