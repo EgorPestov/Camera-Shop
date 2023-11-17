@@ -1,16 +1,7 @@
 import { ProductsProcessType } from './store/product-process/product-process';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from './const';
 
-export const formatPrice = (number: number): string => {
-  const numberString = number.toString();
-  if (numberString.length <= 3) {
-    return numberString;
-  }
-  const lastIndex = numberString.length - 3;
-  const part1 = numberString.slice(0, lastIndex);
-  const part2 = numberString.slice(lastIndex);
-  return `${part1} ${part2}`;
-};
+export const formatPrice = (number: number): string => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 export const formatDateToMachineType = (inputDate: string): string => {
   const date = new Date(inputDate);

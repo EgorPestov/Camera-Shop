@@ -1,7 +1,7 @@
 import { Header } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, CameraNames } from '../../const';
+import { AppRoute, CameraNames, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
@@ -36,21 +36,21 @@ export const Basket = () => {
 
   const increaseQuantity = (productId: string) => {
     const newQuantities = { ...productQuantities };
-    newQuantities[productId] = Math.min(99, (newQuantities[productId] || 0) + 1);
+    newQuantities[productId] = Math.min(MAX_PRODUCT_QUANTITY, newQuantities[productId] + 1);
     setProductQuantities(newQuantities);
     localStorage.setItem('Basket', JSON.stringify(newQuantities));
   };
 
   const decreaseQuantity = (productId: string) => {
     const newQuantities = { ...productQuantities };
-    newQuantities[productId] = Math.max(1, (newQuantities[productId] || 1) - 1);
+    newQuantities[productId] = Math.max(MIN_PRODUCT_QUANTITY, newQuantities[productId] - 1);
     setProductQuantities(newQuantities);
     localStorage.setItem('Basket', JSON.stringify(newQuantities));
   };
 
   const handleQuantityChange = (productId: string, value: string) => {
     const quantity = parseInt(value, 10);
-    if (!isNaN(quantity) && quantity >= 1 && quantity <= 99) {
+    if (!isNaN(quantity) && quantity >= MIN_PRODUCT_QUANTITY && quantity <= MAX_PRODUCT_QUANTITY) {
       const newQuantities = { ...productQuantities };
       newQuantities[productId] = quantity;
       setProductQuantities(newQuantities);

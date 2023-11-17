@@ -20,6 +20,10 @@ export const MIN_SEARCH_LENGTH = 3;
 
 export const MIN_SYMBOLS_COUNT_FOR_HIGHPRICE_FILTER = 4;
 
+export const MIN_PRODUCT_QUANTITY = 1;
+
+export const MAX_PRODUCT_QUANTITY = 99;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',
