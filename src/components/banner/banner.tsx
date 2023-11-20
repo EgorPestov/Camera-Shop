@@ -5,12 +5,12 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { BANNER_SHOW_TIME, BannerInfo } from '../../const';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { getProducts } from '../../store/product-process/selectors';
+import { getBackupProducts } from '../../store/product-process/selectors';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 export const Banner = () => {
-  const products = useAppSelector(getProducts);
+  const products = useAppSelector(getBackupProducts);
 
   const findIdByName = (name: string) => {
     if (products) {
