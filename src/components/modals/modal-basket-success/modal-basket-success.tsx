@@ -24,7 +24,7 @@ export const ModalBasketSuccess = () => {
   };
 
   return (
-    <div className="modal is-active modal--narrow">
+    <div className="modal is-active modal--narrow" data-testid="modal-basket-success">
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={() => dispatch(setModalBasketSuccessStatus(false))} />
         <div className="modal__content">

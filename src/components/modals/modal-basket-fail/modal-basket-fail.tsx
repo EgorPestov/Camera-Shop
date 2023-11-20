@@ -22,7 +22,7 @@ export const ModalBasketFail = () => {
   };
 
   return (
-    <div className="modal is-active modal--narrow">
+    <div className="modal is-active modal--narrow" data-testid="modal-basket-fail">
       <div className="modal__wrapper">
         <div className="modal__overlay" onClick={() => dispatch(setModalBasketFailStatus(false))} />
         <div className="modal__content">
