@@ -37,6 +37,8 @@ describe('Component: Modal Add Review', () => {
         isModalAddItemSuccessOpen: false,
         isModalAddReviewOpen: true,
         isModalAddReviewSuccessOpen: false,
+        isModalBasketFailOpen: false,
+        isModalBasketSuccessOpen: false,
       }
     });
 

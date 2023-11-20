@@ -36,6 +36,8 @@ describe('Page: Catalog', () => {
         isModalAddItemSuccessOpen: false,
         isModalAddReviewOpen: false,
         isModalAddReviewSuccessOpen: false,
+        isModalBasketFailOpen: false,
+        isModalBasketSuccessOpen: false,
       }
     });
 
