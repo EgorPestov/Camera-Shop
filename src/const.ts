@@ -24,8 +24,6 @@ export const MIN_PRODUCT_QUANTITY = 1;
 
 export const MAX_PRODUCT_QUANTITY = 99;
 
-export const COUPON_VALIDATION_MESSAGE_TIME = 1000;
-
 export const AppRoute = {
   Root: '/',
   Item: '/item',

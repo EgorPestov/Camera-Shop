@@ -5,3 +5,4 @@ export const getModalAddItemStatus = (state: State): boolean => state[NameSpace.
 export const getModalAddItemSuccessStatus = (state: State): boolean => state[NameSpace.Modals].isModalAddItemSuccessOpen;
 export const getAddReviewModalStatus = (state: State): boolean => state[NameSpace.Modals].isModalAddReviewOpen;
 export const getReviewSuccessModalStatus = (state: State): boolean => state[NameSpace.Modals].isModalAddReviewSuccessOpen;
+export const getModalBasketSuccessStatus = (state: State): boolean => state[NameSpace.Modals].isModalBasketSuccessOpen;

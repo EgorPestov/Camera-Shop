@@ -27,6 +27,8 @@ export const Header = () => {
       const basket = JSON.parse(basketData) as BasketType;
       const count = Object.keys(basket).length;
       setBasketCount(count);
+    } else {
+      setBasketCount(0);
     }
   }, [basketData]);
 

@@ -1,7 +1,7 @@
 import { Header } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, COUPON_VALIDATION_MESSAGE_TIME, CameraNames, Coupons, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
+import { AppRoute, CameraNames, Coupons, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
 import { Link } from 'react-router-dom';
 import { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
@@ -11,10 +11,14 @@ import { BasketType, ProductType } from '../../types';
 import { fetchProducts, postCoupon, postOrder } from '../../store/api-actions';
 import { formatPrice } from '../../utils';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
+import { ModalBasketSuccess } from '../../components/modals/modal-basket-success/modal-basket-success';
+import { getModalBasketSuccessStatus } from '../../store/modals-process/selectors';
+import { setModalBasketSuccessStatus } from '../../store/modals-process/modals-process';
 
 export const Basket = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(getBackupProducts);
+  const isModalBasketSuccessOpen = useAppSelector(getModalBasketSuccessStatus);
   const [basketProducts, setBasketProducts] = useState<ProductType[]>([]);
   const [productQuantities, setProductQuantities] = useState<BasketType>({});
   const basketData = localStorage.getItem('Basket');
@@ -118,19 +122,17 @@ export const Basket = () => {
         }
       }).then(() => {
         setIsCouponValid(true);
-        setTimeout(() => {
-          setIsCouponValid(false);
-        }, COUPON_VALIDATION_MESSAGE_TIME);
+
       })
       .catch(() => {
         setIsCouponInvalid(true);
-        setTimeout(() => {
-          setIsCouponInvalid(false);
-        }, COUPON_VALIDATION_MESSAGE_TIME);
-      })
-      .finally(() => {
-        setCoupon('');
+
       });
+  };
+
+  const handleCouponClick = () => {
+    setIsCouponValid(false);
+    setIsCouponInvalid(false);
   };
 
   const handleSubmit = (evt: MouseEvent<HTMLButtonElement>) => {
@@ -148,6 +150,17 @@ export const Basket = () => {
       camerasIds: cameraIds,
       coupon: couponValue ? couponValue : null
     }));
+
+    setCoupon('');
+    setIsCouponValid(false);
+    setIsCouponInvalid(false);
+
+    localStorage.removeItem('Basket');
+    localStorage.removeItem('discount');
+    setDiscount(0);
+    setBasketProducts([]);
+
+    dispatch(setModalBasketSuccessStatus(true));
   };
 
   if (!isInitialized) {
@@ -293,6 +306,7 @@ export const Basket = () => {
                               placeholder="Введите промокод"
                               onChange={handleCouponChange}
                               onKeyDown={handleCouponKeyPress}
+                              onClick={handleCouponClick}
                               value={coupon}
                             />
                           </label>
@@ -344,6 +358,7 @@ export const Basket = () => {
               </div>
             </section>
           </div>
+          {isModalBasketSuccessOpen ? <ModalBasketSuccess /> : ''}
         </main>
         <Footer />
       </div>
