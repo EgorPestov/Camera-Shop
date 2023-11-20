@@ -12,13 +12,15 @@ import { fetchProducts, postCoupon, postOrder } from '../../store/api-actions';
 import { formatPrice } from '../../utils';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { ModalBasketSuccess } from '../../components/modals/modal-basket-success/modal-basket-success';
-import { getModalBasketSuccessStatus } from '../../store/modals-process/selectors';
-import { setModalBasketSuccessStatus } from '../../store/modals-process/modals-process';
+import { getModalBasketFailStatus, getModalBasketSuccessStatus } from '../../store/modals-process/selectors';
+import { setModalBasketSuccessStatus, setModalBasketFailStatus } from '../../store/modals-process/modals-process';
+import { ModalBasketFail } from '../../components/modals/modal-basket-fail/modal-basket-fail';
 
 export const Basket = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(getBackupProducts);
   const isModalBasketSuccessOpen = useAppSelector(getModalBasketSuccessStatus);
+  const isModalBasketFailOpen = useAppSelector(getModalBasketFailStatus);
   const [basketProducts, setBasketProducts] = useState<ProductType[]>([]);
   const [productQuantities, setProductQuantities] = useState<BasketType>({});
   const basketData = localStorage.getItem('Basket');
@@ -149,18 +151,25 @@ export const Basket = () => {
     dispatch(postOrder({
       camerasIds: cameraIds,
       coupon: couponValue ? couponValue : null
-    }));
+    }))
+      .unwrap()
+      .then(() => {
+        // Очищаем данные и показываем модальное окно успеха
+        setCoupon('');
+        setIsCouponValid(false);
+        setIsCouponInvalid(false);
 
-    setCoupon('');
-    setIsCouponValid(false);
-    setIsCouponInvalid(false);
+        localStorage.removeItem('Basket');
+        localStorage.removeItem('discount');
+        setDiscount(0);
+        setBasketProducts([]);
 
-    localStorage.removeItem('Basket');
-    localStorage.removeItem('discount');
-    setDiscount(0);
-    setBasketProducts([]);
-
-    dispatch(setModalBasketSuccessStatus(true));
+        dispatch(setModalBasketSuccessStatus(true));
+      })
+      .catch(() => {
+        // Показываем модальное окно ошибки
+        dispatch(setModalBasketFailStatus(true));
+      });
   };
 
   if (!isInitialized) {
@@ -359,6 +368,7 @@ export const Basket = () => {
             </section>
           </div>
           {isModalBasketSuccessOpen ? <ModalBasketSuccess /> : ''}
+          {isModalBasketFailOpen ? <ModalBasketFail /> : ''}
         </main>
         <Footer />
       </div>
