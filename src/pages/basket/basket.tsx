@@ -154,7 +154,6 @@ export const Basket = () => {
     }))
       .unwrap()
       .then(() => {
-        // Очищаем данные и показываем модальное окно успеха
         setCoupon('');
         setIsCouponValid(false);
         setIsCouponInvalid(false);
@@ -167,7 +166,6 @@ export const Basket = () => {
         dispatch(setModalBasketSuccessStatus(true));
       })
       .catch(() => {
-        // Показываем модальное окно ошибки
         dispatch(setModalBasketFailStatus(true));
       });
   };
