@@ -24,6 +24,8 @@ export const MIN_PRODUCT_QUANTITY = 1;
 
 export const MAX_PRODUCT_QUANTITY = 99;
 
+export const COUPON_VALIDATION_MESSAGE_TIME = 1000;
+
 export const AppRoute = {
   Root: '/',
   Item: '/item',
@@ -132,3 +134,9 @@ export const OptionType = {
   Description: 'dscrptn',
   Specs: 'specs',
 } as const;
+
+export const Coupons: { [key: string]: string } = {
+  '15': 'camera-333',
+  '25': 'camera-444',
+  '35': 'camera-555',
+};

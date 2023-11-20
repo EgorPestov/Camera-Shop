@@ -1,17 +1,16 @@
 import { Header } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, CameraNames, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
+import { AppRoute, COUPON_VALIDATION_MESSAGE_TIME, CameraNames, Coupons, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
 import { Link } from 'react-router-dom';
-import { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getBackupProducts, getProductsLoadStatus } from '../../store/product-process/selectors';
 import { BasketType, ProductType } from '../../types';
-import { fetchProducts } from '../../store/api-actions';
+import { fetchProducts, postCoupon, postOrder } from '../../store/api-actions';
 import { formatPrice } from '../../utils';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
-import { postCoupon } from '../../store/api-actions';
 
 export const Basket = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +22,10 @@ export const Basket = () => {
   const [isBasketDataLoading, setIsBasketDataLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
   const [coupon, setCoupon] = useState('');
+  const [couponValue, setCouponValue] = useState('');
   const [discount, setDiscount] = useState(0);
+  const [isCouponValid, setIsCouponValid] = useState(false);
+  const [isCouponInvalid, setIsCouponInvalid] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -48,12 +50,16 @@ export const Basket = () => {
     }
   }, [isProductsLoading, isBasketDataLoading, products]);
 
+  const storedDiscount = localStorage.getItem('discount');
+
   useEffect(() => {
-    const storedDiscount = localStorage.getItem('discount');
     if (storedDiscount) {
       setDiscount(parseFloat(storedDiscount));
+      if (storedDiscount in Coupons) {
+        setCouponValue(Coupons[storedDiscount]);
+      }
     }
-  }, []);
+  }, [storedDiscount]);
 
   const increaseQuantity = (productId: string) => {
     const newQuantities = { ...productQuantities };
@@ -93,18 +99,55 @@ export const Basket = () => {
   const finalSum = discount ? Math.round(totalSum * (100 - discount) / 100) : totalSum;
 
   const handleCouponChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setCoupon(evt.target.value);
+    const updatedCoupon = evt.target.value.replace(/\s/g, '');
+    setCoupon(updatedCoupon);
   };
 
-  const handleCouponSubmit = (evt: FormEvent<HTMLButtonElement>) => {
+  const handleCouponKeyPress = (evt: React.KeyboardEvent<HTMLInputElement>) => {
+    if (evt.key === ' ') {
+      evt.preventDefault();
+    }
+  };
+
+  const handleCouponSubmit = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.preventDefault();
     dispatch(postCoupon({ coupon: coupon }))
       .then(() => {
-        const storedDiscount = localStorage.getItem('discount');
         if (storedDiscount) {
           setDiscount(parseFloat(storedDiscount));
         }
+      }).then(() => {
+        setIsCouponValid(true);
+        setTimeout(() => {
+          setIsCouponValid(false);
+        }, COUPON_VALIDATION_MESSAGE_TIME);
+      })
+      .catch(() => {
+        setIsCouponInvalid(true);
+        setTimeout(() => {
+          setIsCouponInvalid(false);
+        }, COUPON_VALIDATION_MESSAGE_TIME);
+      })
+      .finally(() => {
+        setCoupon('');
       });
+  };
+
+  const handleSubmit = (evt: MouseEvent<HTMLButtonElement>) => {
+    evt.preventDefault();
+
+    let cameraIds: number[] = [];
+
+    if (basketData) {
+      const basket = JSON.parse(basketData) as BasketType;
+
+      cameraIds = Object.entries(basket).reduce((acc: number[], [id, quantity]) => [...acc, ...Array(quantity).fill(Number(id)) as number[]], []);
+    }
+
+    dispatch(postOrder({
+      camerasIds: cameraIds,
+      coupon: couponValue ? couponValue : null
+    }));
   };
 
   if (!isInitialized) {
@@ -241,7 +284,7 @@ export const Basket = () => {
                     </p>
                     <div className="basket-form">
                       <form action="#">
-                        <div className="custom-input">
+                        <div className={`custom-input ${isCouponValid ? 'is-valid' : ''} ${isCouponInvalid ? 'is-invalid' : ''}`} >
                           <label>
                             <span className="custom-input__label">Промокод</span>
                             <input
@@ -249,6 +292,8 @@ export const Basket = () => {
                               name="promo"
                               placeholder="Введите промокод"
                               onChange={handleCouponChange}
+                              onKeyDown={handleCouponKeyPress}
+                              value={coupon}
                             />
                           </label>
                           <p className="custom-input__error">Промокод неверный</p>
@@ -286,7 +331,12 @@ export const Basket = () => {
                         {formatPrice(finalSum)} ₽
                       </span>
                     </p>
-                    <button className="btn btn--purple" type="submit">
+                    <button
+                      className="btn btn--purple"
+                      type="submit"
+                      disabled={basketProducts.length === 0}
+                      onClick={handleSubmit}
+                    >
                       Оформить заказ
                     </button>
                   </div>

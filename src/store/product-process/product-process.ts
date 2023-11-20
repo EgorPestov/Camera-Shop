@@ -147,6 +147,9 @@ export const productsProcessSlice = createSlice({
     builder
       .addCase(postCoupon.fulfilled, (_, action) => {
         localStorage.setItem('discount', action.payload.toString());
+      })
+      .addCase(postCoupon.rejected, () => {
+        throw new Error;
       });
   }
 });

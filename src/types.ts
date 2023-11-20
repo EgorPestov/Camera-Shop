@@ -39,6 +39,11 @@ export type CouponType = {
   coupon: string;
 };
 
+export type OrderType = {
+  camerasIds: number[];
+  coupon: string | null;
+};
+
 export type ErrorsDataType = {
   userName: boolean;
   advantage: boolean;
