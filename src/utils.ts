@@ -1,5 +1,5 @@
 import { ProductsProcessType } from './store/product-process/product-process';
-import { SHOWABLE_CARDS_PER_PAGE_COUNT } from './const';
+import { SHOWABLE_CARDS_PER_PAGE_COUNT, SortDirection, SortType } from './const';
 
 export const formatPrice = (number: number): string => number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
@@ -58,11 +58,11 @@ export const sortAndFilter = (state: ProductsProcessType) => {
     filteredProducts = filteredProducts.filter((product) => product.price <= filterHighestPrice);
   }
 
-  if (sortingType === 'price') {
-    const directionMultiplier = sortingDirection === 'top' ? 1 : -1;
+  if (sortingType === SortType.Price) {
+    const directionMultiplier = sortingDirection === SortDirection.Top ? 1 : -1;
     filteredProducts = filteredProducts.sort((a, b) => (a.price - b.price) * directionMultiplier);
-  } else if (sortingType === 'popularity') {
-    const directionMultiplier = sortingDirection === 'top' ? 1 : -1;
+  } else if (sortingType === SortType.Popularity) {
+    const directionMultiplier = sortingDirection === SortDirection.Top ? 1 : -1;
     filteredProducts = filteredProducts.sort((a, b) => (a.rating - b.rating) * directionMultiplier);
   }
 

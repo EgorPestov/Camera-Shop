@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getSortingType, getSortingDirection } from '../../store/product-process/selectors';
 import { redirectToRoute } from '../../store/actions';
-import { AppRoute, SortType, SortDirection } from '../../const';
+import { AppRoute, SortType, SortDirection, SortingOptions } from '../../const';
 import { SortTypeType, SortDirectionType } from '../../types';
 
 export const Sorting = () => {
@@ -22,8 +22,8 @@ export const Sorting = () => {
 
   const updateURL = useCallback((type: SortTypeType, direction: SortDirectionType) => {
     const currentQueryParams = new URLSearchParams(location.search);
-    currentQueryParams.set('type', type);
-    currentQueryParams.set('direction', direction);
+    currentQueryParams.set(SortingOptions.Type, type);
+    currentQueryParams.set(SortingOptions.Direction, direction);
 
     navigate({
       pathname: location.pathname,
@@ -73,8 +73,8 @@ export const Sorting = () => {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    let type = queryParams.get('type');
-    let direction = queryParams.get('direction');
+    let type = queryParams.get(SortingOptions.Type);
+    let direction = queryParams.get(SortingOptions.Direction);
 
     if (!type && sortingType) {
       type = sortingType;

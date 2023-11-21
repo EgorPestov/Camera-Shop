@@ -3,7 +3,7 @@ import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
 import { sortAndFilterProducts, setFilterLowestPrice, setFilterHighestPrice } from '../../store/product-process/product-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getHighestPrice, getLowestPrice } from '../../store/product-process/selectors';
-import { Filters, MIN_SYMBOLS_COUNT_FOR_HIGHPRICE_FILTER } from '../../const';
+import { FilteringOptions, MIN_SYMBOLS_COUNT_FOR_HIGHPRICE_FILTER } from '../../const';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute } from '../../const';
@@ -19,8 +19,8 @@ export const PriceInput = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const pricelow = params.get(Filters.PriceLow);
-    const pricehigh = params.get(Filters.PriceHigh);
+    const pricelow = params.get(FilteringOptions.PriceLow);
+    const pricehigh = params.get(FilteringOptions.PriceHigh);
 
     if (pricelow) {
       if (isNaN(Number(pricelow))) {
@@ -59,15 +59,15 @@ export const PriceInput = () => {
     const params = new URLSearchParams(location.search);
 
     if (lowest) {
-      params.set(Filters.PriceLow, lowest);
+      params.set(FilteringOptions.PriceLow, lowest);
     } else if (lowest === '') {
-      params.delete(Filters.PriceLow);
+      params.delete(FilteringOptions.PriceLow);
     }
 
     if (highest) {
-      params.set(Filters.PriceHigh, highest);
+      params.set(FilteringOptions.PriceHigh, highest);
     } else if (highest === '') {
-      params.delete(Filters.PriceHigh);
+      params.delete(FilteringOptions.PriceHigh);
     }
 
     navigate({ pathname: location.pathname, search: params.toString() }, { replace: true });
