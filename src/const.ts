@@ -147,3 +147,8 @@ export const Filters = {
   PriceHigh: 'pricehigh',
   PriceLow: 'pricelow',
 } as const;
+
+export const LocalStorageEntries = {
+  Basket: 'Basket',
+  Discount: 'discount',
+} as const;

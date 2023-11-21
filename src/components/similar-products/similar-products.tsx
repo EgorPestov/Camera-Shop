@@ -6,7 +6,7 @@ import { getCurrentId, getSimilarProductsLoadStatus, getSimilarProducts } from '
 import { LoadingScreen } from '../loading-screen/loading-screen';
 import { ProductCard } from '../product-card/product-card';
 import { MouseEvent } from 'react';
-import { SHOWABLE_SIMILAR_CARDS_COUNT, SIMILAR_CARDS_SLIDER_DELAY_TIME } from '../../const';
+import { LocalStorageEntries, SHOWABLE_SIMILAR_CARDS_COUNT, SIMILAR_CARDS_SLIDER_DELAY_TIME } from '../../const';
 import { BasketType } from '../../types';
 
 export const SimilarProducts = () => {
@@ -17,7 +17,7 @@ export const SimilarProducts = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPrevDisabled, setIsPrevDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
-  const basket = JSON.parse(localStorage.getItem('Basket') || '{}') as BasketType;
+  const basket = JSON.parse(localStorage.getItem(LocalStorageEntries.Basket) || '{}') as BasketType;
 
   const handleNextClick = (evt: MouseEvent<HTMLButtonElement>) => {
     evt.stopPropagation();

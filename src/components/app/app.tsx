@@ -1,6 +1,6 @@
 import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, LocalStorageEntries } from '../../const';
 import { Catalog } from '../../pages/catalog/catalog';
 import { NotFound } from '../../pages/404/404';
 import { Basket } from '../../pages/basket/basket';
@@ -41,8 +41,8 @@ export const App = () => {
   }
 
   useEffect(() => {
-    if (!localStorage.getItem('Basket')) {
-      localStorage.setItem('Basket', JSON.stringify({}));
+    if (!localStorage.getItem(LocalStorageEntries.Basket)) {
+      localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify({}));
     }
   }, []);
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AppRoute, MIN_SEARCH_LENGTH } from '../../const';
+import { AppRoute, LocalStorageEntries, MIN_SEARCH_LENGTH } from '../../const';
 import { ChangeEvent, useEffect, KeyboardEvent, useState, useRef } from 'react';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getProducts } from '../../store/product-process/selectors';
@@ -20,7 +20,7 @@ export const Header = () => {
   const refList = useRef<Array<HTMLLIElement | null>>([]);
 
   const [basketCount, setBasketCount] = useState(0);
-  const basketData = localStorage.getItem('Basket');
+  const basketData = localStorage.getItem(LocalStorageEntries.Basket);
 
   useEffect(() => {
     if (basketData) {

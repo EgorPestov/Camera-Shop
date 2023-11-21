@@ -1,7 +1,7 @@
 import { Header } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
 import { Helmet } from 'react-helmet-async';
-import { AppRoute, CameraNames, Coupons, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
+import { AppRoute, CameraNames, Coupons, LocalStorageEntries, MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from '../../const';
 import { Link } from 'react-router-dom';
 import { useEffect, useState, ChangeEvent, MouseEvent } from 'react';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
@@ -23,7 +23,7 @@ export const Basket = () => {
   const isModalBasketFailOpen = useAppSelector(getModalBasketFailStatus);
   const [basketProducts, setBasketProducts] = useState<ProductType[]>([]);
   const [productQuantities, setProductQuantities] = useState<BasketType>({});
-  const basketData = localStorage.getItem('Basket');
+  const basketData = localStorage.getItem(LocalStorageEntries.Basket);
   const isProductsLoading = useAppSelector(getProductsLoadStatus);
   const [isBasketDataLoading, setIsBasketDataLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -56,7 +56,7 @@ export const Basket = () => {
     }
   }, [isProductsLoading, isBasketDataLoading, products]);
 
-  const storedDiscount = localStorage.getItem('discount');
+  const storedDiscount = localStorage.getItem(LocalStorageEntries.Discount);
 
   useEffect(() => {
     if (storedDiscount) {
@@ -71,14 +71,14 @@ export const Basket = () => {
     const newQuantities = { ...productQuantities };
     newQuantities[productId] = Math.min(MAX_PRODUCT_QUANTITY, newQuantities[productId] + 1);
     setProductQuantities(newQuantities);
-    localStorage.setItem('Basket', JSON.stringify(newQuantities));
+    localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(newQuantities));
   };
 
   const decreaseQuantity = (productId: string) => {
     const newQuantities = { ...productQuantities };
     newQuantities[productId] = Math.max(MIN_PRODUCT_QUANTITY, newQuantities[productId] - 1);
     setProductQuantities(newQuantities);
-    localStorage.setItem('Basket', JSON.stringify(newQuantities));
+    localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(newQuantities));
   };
 
   const handleQuantityChange = (productId: string, value: string) => {
@@ -87,7 +87,7 @@ export const Basket = () => {
       const newQuantities = { ...productQuantities };
       newQuantities[productId] = quantity;
       setProductQuantities(newQuantities);
-      localStorage.setItem('Basket', JSON.stringify(newQuantities));
+      localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(newQuantities));
     }
   };
 
@@ -95,7 +95,7 @@ export const Basket = () => {
     const newQuantities = { ...productQuantities };
     delete newQuantities[productId];
     setProductQuantities(newQuantities);
-    localStorage.setItem('Basket', JSON.stringify(newQuantities));
+    localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(newQuantities));
     const updatedBasketProducts = basketProducts.filter((product) => String(product.id) !== productId);
     setBasketProducts(updatedBasketProducts);
   };
@@ -158,8 +158,8 @@ export const Basket = () => {
         setIsCouponValid(false);
         setIsCouponInvalid(false);
 
-        localStorage.removeItem('Basket');
-        localStorage.removeItem('discount');
+        localStorage.removeItem(LocalStorageEntries.Basket);
+        localStorage.removeItem(LocalStorageEntries.Discount);
         setDiscount(0);
         setBasketProducts([]);
 

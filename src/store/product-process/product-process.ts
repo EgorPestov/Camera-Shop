@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductType, ReviewType } from '../../types';
-import { NameSpace } from '../../const';
+import { LocalStorageEntries, NameSpace } from '../../const';
 import { SHOWABLE_CARDS_PER_PAGE_COUNT } from '../../const';
 import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
 import { sortAndFilter } from '../../utils';
@@ -146,7 +146,7 @@ export const productsProcessSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(postCoupon.fulfilled, (_, action) => {
-        localStorage.setItem('discount', action.payload.toString());
+        localStorage.setItem(LocalStorageEntries.Discount, action.payload.toString());
       })
       .addCase(postCoupon.rejected, () => {
         throw new Error;

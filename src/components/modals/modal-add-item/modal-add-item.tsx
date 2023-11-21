@@ -3,7 +3,7 @@ import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector
 import { setModalAddItemStatus, setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
 import { getBuyingModalProduct } from '../../../store/product-process/selectors';
 import { getModalAddItemStatus } from '../../../store/modals-process/selectors';
-import { CameraNames } from '../../../const';
+import { CameraNames, LocalStorageEntries } from '../../../const';
 import { formatPrice } from '../../../utils';
 import { useRef, useEffect } from 'react';
 import { BasketType } from '../../../types';
@@ -31,11 +31,11 @@ export const ModalAddItem = () => {
     dispatch(setModalAddItemStatus(false));
     dispatch(setModalAddItemSuccessStatus(true));
 
-    const basket = JSON.parse(localStorage.getItem('Basket') || '{}') as BasketType;
+    const basket = JSON.parse(localStorage.getItem(LocalStorageEntries.Basket) || '{}') as BasketType;
     if (product !== undefined) {
       basket[product.id] = 1;
     }
-    localStorage.setItem('Basket', JSON.stringify(basket));
+    localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(basket));
   };
 
   if (product !== undefined) {
