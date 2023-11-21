@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
 import { getFilterCategory, getFilterType, getFilterLevel } from '../../store/product-process/selectors';
 import { ChangeEvent, useEffect, useCallback } from 'react';
 import { redirectToRoute } from '../../store/actions';
-import { AppRoute, FilterCategory, FilterType, FilterLevel } from '../../const';
+import { AppRoute, FilterCategory, FilterType, FilterLevel, Filters } from '../../const';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FilterCategoryType, FilterLevelType, FilterTypeType } from '../../types';
 import { PriceInput } from '../price-input/price-input';
@@ -26,23 +26,23 @@ export const Filtration = () => {
     ) => {
       const params = new URLSearchParams(location.search);
       if (category) {
-        params.set('category', category);
+        params.set(Filters.Category, category);
       } else {
-        params.delete('category');
+        params.delete(Filters.Category);
       }
       if (cameratype) {
-        params.set('cameratype', cameratype);
+        params.set(Filters.Cameratype, cameratype);
       } else {
-        params.delete('cameratype');
+        params.delete(Filters.Cameratype);
       }
       if (level) {
-        params.set('level', level);
+        params.set(Filters.Level, level);
       } else {
-        params.delete('level');
+        params.delete(Filters.Level);
       }
 
       if (needUpdate) {
-        params.set('page', '1');
+        params.set(Filters.Page, '1');
       }
 
       navigate({
@@ -78,9 +78,9 @@ export const Filtration = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const category = searchParams.get('category') as FilterCategoryType;
-    const type = searchParams.get('cameratype') as FilterTypeType;
-    const level = searchParams.get('level') as FilterLevelType;
+    const category = searchParams.get(Filters.Category) as FilterCategoryType;
+    const type = searchParams.get(Filters.Cameratype) as FilterTypeType;
+    const level = searchParams.get(Filters.Level) as FilterLevelType;
 
     if (category) {
       if (category === FilterCategory.Photo || category === FilterCategory.Video) {
@@ -125,11 +125,11 @@ export const Filtration = () => {
     dispatch(setFilterHighestPrice(null));
     updateURL(null, null, null);
     const params = new URLSearchParams(location.search);
-    params.delete('pricelow');
-    params.delete('pricehigh');
-    params.delete('category');
-    params.delete('cameratype');
-    params.delete('level');
+    params.delete(Filters.PriceLow);
+    params.delete(Filters.PriceHigh);
+    params.delete(Filters.Category);
+    params.delete(Filters.Cameratype);
+    params.delete(Filters.Level);
     dispatch(sortAndFilterProducts());
     navigate({
       pathname: location.pathname,

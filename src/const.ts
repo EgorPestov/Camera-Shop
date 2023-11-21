@@ -138,3 +138,12 @@ export const Coupons: { [key: string]: string } = {
   '25': 'camera-444',
   '35': 'camera-555',
 };
+
+export const Filters = {
+  Category: 'category',
+  Cameratype: 'cameratype',
+  Level: 'level',
+  Page: 'page',
+  PriceHigh: 'pricehigh',
+  PriceLow: 'pricelow',
+} as const;
