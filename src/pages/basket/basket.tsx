@@ -124,11 +124,12 @@ export const Basket = () => {
         }
       }).then(() => {
         setIsCouponValid(true);
+        setIsCouponInvalid(false);
 
       })
       .catch(() => {
         setIsCouponInvalid(true);
-
+        setIsCouponValid(false);
       });
   };
 
