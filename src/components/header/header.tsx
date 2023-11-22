@@ -25,7 +25,10 @@ export const Header = () => {
   useEffect(() => {
     if (basketData) {
       const basket = JSON.parse(basketData) as BasketType;
-      const count = Object.keys(basket).length;
+      let count = 0;
+      Object.values(basket).forEach((item) => {
+        count += item;
+      });
       setBasketCount(count);
     } else {
       setBasketCount(0);
