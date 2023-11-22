@@ -7,3 +7,4 @@ export const getAddReviewModalStatus = (state: State): boolean => state[NameSpac
 export const getReviewSuccessModalStatus = (state: State): boolean => state[NameSpace.Modals].isModalAddReviewSuccessOpen;
 export const getModalBasketSuccessStatus = (state: State): boolean => state[NameSpace.Modals].isModalBasketSuccessOpen;
 export const getModalBasketFailStatus = (state: State): boolean => state[NameSpace.Modals].isModalBasketFailOpen;
+export const getModalBasketRemoveItemStatus = (state: State): boolean => state[NameSpace.Modals].isModalBasketRemoveItemOpen;

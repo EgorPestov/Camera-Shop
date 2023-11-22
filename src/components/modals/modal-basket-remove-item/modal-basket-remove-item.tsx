@@ -1,24 +1,28 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setModalAddItemStatus, setModalAddItemSuccessStatus } from '../../../store/modals-process/modals-process';
+import { setModalAddItemStatus, setModalBasketRemoveItemStatus } from '../../../store/modals-process/modals-process';
 import { getBuyingModalProduct } from '../../../store/product-process/selectors';
-import { getModalAddItemStatus } from '../../../store/modals-process/selectors';
-import { CameraNames, LocalStorageEntries } from '../../../const';
+import { getModalBasketRemoveItemStatus } from '../../../store/modals-process/selectors';
+import { CameraNames } from '../../../const';
 import { formatPrice } from '../../../utils';
 import { useRef, useEffect } from 'react';
-import { BasketType } from '../../../types';
 
-export const ModalAddItem = () => {
+
+type ModalBasketRemoveItemProps = {
+  handleDelete: (productId: string) => void;
+};
+
+export const ModalBasketRemoveItem = ({ handleDelete }: ModalBasketRemoveItemProps) => {
   const dispatch = useAppDispatch();
   const product = useAppSelector(getBuyingModalProduct);
-  const isModalAddItemOpen = useAppSelector(getModalAddItemStatus);
+  const isModalRemoveItemOpen = useAppSelector(getModalBasketRemoveItemStatus);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    if (isModalAddItemOpen && buttonRef.current) {
+    if (isModalRemoveItemOpen && buttonRef.current) {
       buttonRef.current.focus();
     }
-  }, [isModalAddItemOpen]);
+  }, [isModalRemoveItemOpen]);
 
   const handleCloseBlur = () => {
     if (buttonRef.current) {
@@ -26,24 +30,13 @@ export const ModalAddItem = () => {
     }
   };
 
-  const handleBuyButtonClick = () => {
-    dispatch(setModalAddItemStatus(false));
-    dispatch(setModalAddItemSuccessStatus(true));
-
-    const basket = JSON.parse(localStorage.getItem(LocalStorageEntries.Basket) || '{}') as BasketType;
-    if (product !== undefined) {
-      basket[product.id] = 1;
-    }
-    localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(basket));
-  };
-
   if (product !== undefined) {
     return (
-      <div className="modal is-active" data-testid="modal-add-item">
+      <div className="modal is-active" data-testid="modal-basket-remove-item">
         <div className="modal__wrapper">
-          <div className="modal__overlay" onClick={() => dispatch(setModalAddItemStatus(false))} />
+          <div className="modal__overlay" onClick={() => dispatch(setModalBasketRemoveItemStatus(false))} />
           <div className="modal__content">
-            <p className="title title--h4">Добавить товар в корзину</p>
+            <p className="title title--h4">Удалить этот товар?</p>
             <div className="basket-item basket-item--short">
               <div className="basket-item__img">
                 <picture>
@@ -77,22 +70,27 @@ export const ModalAddItem = () => {
             </div>
             <div className="modal__buttons">
               <button
-                className="btn btn--purple modal__btn modal__btn--fit-width"
+                className="btn btn--purple modal__btn modal__btn--half-width"
                 type="button"
                 ref={buttonRef}
-                onClick={handleBuyButtonClick}
+                onClick={() => {
+                  handleDelete(String(product.id));
+                }}
               >
-                <svg width={24} height={16} aria-hidden="true">
-                  <use xlinkHref="#icon-add-basket" />
-                </svg>
-                Добавить в корзину
+                Удалить
+              </button>
+              <button className="btn btn--transparent modal__btn modal__btn--half-width"
+                type='button'
+                onClick={() => dispatch(setModalBasketRemoveItemStatus(false))}
+              >
+                Продолжить покупки
               </button>
             </div>
             <button
               className="cross-btn"
               type="button"
               aria-label="Закрыть попап"
-              onClick={() => dispatch(setModalAddItemStatus(false))}
+              onClick={() => dispatch(setModalBasketRemoveItemStatus(false))}
               onBlur={handleCloseBlur}
             >
               <svg width={10} height={10} aria-hidden="true">

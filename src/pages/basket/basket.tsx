@@ -12,15 +12,18 @@ import { fetchProducts, postCoupon, postOrder } from '../../store/api-actions';
 import { formatPrice } from '../../utils';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { ModalBasketSuccess } from '../../components/modals/modal-basket-success/modal-basket-success';
-import { getModalBasketFailStatus, getModalBasketSuccessStatus } from '../../store/modals-process/selectors';
-import { setModalBasketSuccessStatus, setModalBasketFailStatus } from '../../store/modals-process/modals-process';
+import { getModalBasketFailStatus, getModalBasketRemoveItemStatus, getModalBasketSuccessStatus } from '../../store/modals-process/selectors';
+import { setModalBasketSuccessStatus, setModalBasketFailStatus, setModalBasketRemoveItemStatus } from '../../store/modals-process/modals-process';
 import { ModalBasketFail } from '../../components/modals/modal-basket-fail/modal-basket-fail';
+import { ModalBasketRemoveItem } from '../../components/modals/modal-basket-remove-item/modal-basket-remove-item';
+import { setBuyingId } from '../../store/product-process/product-process';
 
 export const Basket = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(getBackupProducts);
   const isModalBasketSuccessOpen = useAppSelector(getModalBasketSuccessStatus);
   const isModalBasketFailOpen = useAppSelector(getModalBasketFailStatus);
+  const isModalBasketRemoveItemOpen = useAppSelector(getModalBasketRemoveItemStatus);
   const [basketProducts, setBasketProducts] = useState<ProductType[]>([]);
   const [productQuantities, setProductQuantities] = useState<BasketType>({});
   const basketData = localStorage.getItem(LocalStorageEntries.Basket);
@@ -91,13 +94,19 @@ export const Basket = () => {
     }
   };
 
-  const handleDeleteClick = (productId: string) => {
+  const handleDelete = (productId: string) => {
     const newQuantities = { ...productQuantities };
     delete newQuantities[productId];
     setProductQuantities(newQuantities);
     localStorage.setItem(LocalStorageEntries.Basket, JSON.stringify(newQuantities));
     const updatedBasketProducts = basketProducts.filter((product) => String(product.id) !== productId);
     setBasketProducts(updatedBasketProducts);
+    dispatch(setModalBasketRemoveItemStatus(false));
+  };
+
+  const handleDeleteClick = (id: number) => {
+    dispatch(setBuyingId(id));
+    dispatch(setModalBasketRemoveItemStatus(true));
   };
 
   const totalSum = basketProducts.reduce((sum, product) => sum + product.price * productQuantities[product.id], 0);
@@ -288,7 +297,7 @@ export const Basket = () => {
                         className="cross-btn"
                         type="button"
                         aria-label="Удалить товар"
-                        onClick={() => handleDeleteClick(String(product.id))}
+                        onClick={() => handleDeleteClick(product.id)}
                       >
                         <svg width={10} height={10} aria-hidden="true">
                           <use xlinkHref="#icon-close" />
@@ -370,6 +379,7 @@ export const Basket = () => {
           </div>
           {isModalBasketSuccessOpen ? <ModalBasketSuccess /> : ''}
           {isModalBasketFailOpen ? <ModalBasketFail /> : ''}
+          {isModalBasketRemoveItemOpen ? <ModalBasketRemoveItem handleDelete={handleDelete} /> : ''}
         </main>
         <Footer />
       </div>

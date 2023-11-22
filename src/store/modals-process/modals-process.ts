@@ -8,6 +8,7 @@ export type ModalsProcessType = {
   isModalAddReviewSuccessOpen: boolean;
   isModalBasketSuccessOpen: boolean;
   isModalBasketFailOpen: boolean;
+  isModalBasketRemoveItemOpen: boolean;
 }
 
 export const initialState: ModalsProcessType = {
@@ -17,6 +18,7 @@ export const initialState: ModalsProcessType = {
   isModalAddReviewSuccessOpen: false,
   isModalBasketSuccessOpen: false,
   isModalBasketFailOpen: false,
+  isModalBasketRemoveItemOpen: false,
 };
 
 export const modalsProcessSlice = createSlice({
@@ -41,7 +43,11 @@ export const modalsProcessSlice = createSlice({
     setModalBasketFailStatus: (state, action: PayloadAction<boolean>) => {
       state.isModalBasketFailOpen = action.payload;
     },
+    setModalBasketRemoveItemStatus: (state, action: PayloadAction<boolean>) => {
+      state.isModalBasketRemoveItemOpen = action.payload;
+    },
   },
 });
 
-export const { setModalAddReviewStatus, setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewSuccessStatus, setModalBasketSuccessStatus, setModalBasketFailStatus } = modalsProcessSlice.actions;
+export const { setModalAddReviewStatus, setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewSuccessStatus,
+  setModalBasketSuccessStatus, setModalBasketFailStatus, setModalBasketRemoveItemStatus } = modalsProcessSlice.actions;

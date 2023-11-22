@@ -6,9 +6,9 @@ import { NotFound } from '../../pages/404/404';
 import { Basket } from '../../pages/basket/basket';
 import { Item } from '../../pages/item/item';
 import { useAppDispatch } from '../../hooks/use-app-dispatch/use-app-dispatch';
-import { setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewStatus, setModalAddReviewSuccessStatus, setModalBasketFailStatus, setModalBasketSuccessStatus } from '../../store/modals-process/modals-process';
+import { setModalAddItemStatus, setModalAddItemSuccessStatus, setModalAddReviewStatus, setModalAddReviewSuccessStatus, setModalBasketFailStatus, setModalBasketRemoveItemStatus, setModalBasketSuccessStatus } from '../../store/modals-process/modals-process';
 import { useAppSelector } from '../../hooks/use-app-selector/use-app-selector';
-import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus, getModalBasketSuccessStatus, getModalBasketFailStatus } from '../../store/modals-process/selectors';
+import { getModalAddItemStatus, getModalAddItemSuccessStatus, getAddReviewModalStatus, getReviewSuccessModalStatus, getModalBasketSuccessStatus, getModalBasketFailStatus, getModalBasketRemoveItemStatus } from '../../store/modals-process/selectors';
 import { useEffect } from 'react';
 
 export const App = () => {
@@ -22,6 +22,7 @@ export const App = () => {
       dispatch(setModalAddReviewSuccessStatus(false));
       dispatch(setModalBasketSuccessStatus(false));
       dispatch(setModalBasketFailStatus(false));
+      dispatch(setModalBasketRemoveItemStatus(false));
     }
   };
 
@@ -33,8 +34,9 @@ export const App = () => {
   const isModalAddReviewSuccessOpen = useAppSelector(getReviewSuccessModalStatus);
   const isModalBasketSuccessOpen = useAppSelector(getModalBasketSuccessStatus);
   const isModalBasketFailOpen = useAppSelector(getModalBasketFailStatus);
+  const isModalBasketRemoveItemOpen = useAppSelector(getModalBasketRemoveItemStatus);
 
-  if (isModalAddItemOpen || isModalAddItemSuccessOpen || isModalAddReviewOpen || isModalAddReviewSuccessOpen || isModalBasketSuccessOpen || isModalBasketFailOpen) {
+  if (isModalAddItemOpen || isModalAddItemSuccessOpen || isModalAddReviewOpen || isModalAddReviewSuccessOpen || isModalBasketSuccessOpen || isModalBasketFailOpen || isModalBasketRemoveItemOpen) {
     document.body.style.overflow = 'hidden';
   } else {
     document.body.style.overflow = 'auto';
