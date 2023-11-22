@@ -252,6 +252,7 @@ export const Basket = () => {
                           className="btn-icon btn-icon--prev"
                           aria-label="уменьшить количество товара"
                           onClick={() => decreaseQuantity(String(product.id))}
+                          disabled={productQuantities[product.id] === MIN_PRODUCT_QUANTITY}
                         >
                           <svg width={7} height={12} aria-hidden="true">
                             <use xlinkHref="#icon-arrow" />
@@ -271,6 +272,7 @@ export const Basket = () => {
                           className="btn-icon btn-icon--next"
                           aria-label="увеличить количество товара"
                           onClick={() => increaseQuantity(String(product.id))}
+                          disabled={productQuantities[product.id] === MAX_PRODUCT_QUANTITY}
                         >
                           <svg width={7} height={12} aria-hidden="true">
                             <use xlinkHref="#icon-arrow" />
