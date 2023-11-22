@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../../hooks/use-app-dispatch/use-app-dispatch';
 import { useAppSelector } from '../../../hooks/use-app-selector/use-app-selector';
-import { setModalAddItemStatus, setModalBasketRemoveItemStatus } from '../../../store/modals-process/modals-process';
+import { setModalBasketRemoveItemStatus } from '../../../store/modals-process/modals-process';
 import { getBuyingModalProduct } from '../../../store/product-process/selectors';
 import { getModalBasketRemoveItemStatus } from '../../../store/modals-process/selectors';
 import { CameraNames } from '../../../const';

@@ -12,6 +12,7 @@ describe('Component: Modal basket Fail', () => {
         isModalAddReviewSuccessOpen: false,
         isModalBasketFailOpen: true,
         isModalBasketSuccessOpen: false,
+        isModalBasketRemoveItemOpen: false,
       }
     });
 

@@ -38,6 +38,7 @@ describe('Page: Catalog', () => {
         isModalAddReviewSuccessOpen: false,
         isModalBasketFailOpen: false,
         isModalBasketSuccessOpen: false,
+        isModalBasketRemoveItemOpen: false,
       }
     });
 

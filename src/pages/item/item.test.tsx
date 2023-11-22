@@ -39,6 +39,7 @@ describe('Page: Item', () => {
         isModalAddReviewSuccessOpen: false,
         isModalBasketFailOpen: false,
         isModalBasketSuccessOpen: false,
+        isModalBasketRemoveItemOpen: false,
       }
     });
 

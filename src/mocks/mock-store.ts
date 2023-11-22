@@ -35,6 +35,7 @@ export const mockStore = (initialState?: Partial<State>): State => ({
     isModalAddReviewSuccessOpen: false,
     isModalBasketFailOpen: false,
     isModalBasketSuccessOpen: false,
+    isModalBasketRemoveItemOpen: false,
   },
   ...initialState ?? {},
 });
