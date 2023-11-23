@@ -138,7 +138,7 @@ export const Header = () => {
                 Каталог
               </Link>
             </li>
-            <li className="main-nav__item">
+            {/* <li className="main-nav__item">
               <a className="main-nav__link" href="#">
                 Гарантии
               </a>
@@ -152,7 +152,7 @@ export const Header = () => {
               <a className="main-nav__link" href="#">
                 О компании
               </a>
-            </li>
+            </li> */}
           </ul>
         </nav>
         <div className={`form-search ${isListOpened ? 'list-opened' : ''}`}>
