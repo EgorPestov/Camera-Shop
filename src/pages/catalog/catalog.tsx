@@ -56,7 +56,7 @@ export const Catalog = () => {
     return (
       <div className="wrapper" data-testid="catalog">
         <Helmet>
-          <title>Фотошоп</title>
+          <title>Camera Shop</title>
         </Helmet>
         <Header />
         <main>
